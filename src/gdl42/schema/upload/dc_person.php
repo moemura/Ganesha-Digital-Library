@@ -1,0 +1,178 @@
+<?
+
+if (eregi("dc_person.php",$_SERVER['PHP_SELF'])) {
+    die();
+}
+
+include ("./config/type.php");
+
+$gdl_form->set_name("metadata");
+$gdl_form->action="./gdl.php?mod=upload&amp;op=step3";
+$gdl_form->add_field(array(
+			"type"=>"hidden",
+			"name"=>"frm[IDENTIFIER]",
+			"value"=>"$frm[IDENTIFIER]"));
+$gdl_form->add_field(array(
+			"type"=>"hidden",
+			"name"=>"frm[IDENTIFIER_HIERARCHY]",
+			"value"=>"$frm[IDENTIFIER_HIERARCHY]"));
+$gdl_form->add_field(array(
+			"type"=>"hidden",
+			"name"=>"frm[TYPE_SCHEMA]",
+			"value"=>"dc_person"));
+$gdl_form->add_field(array(
+			"type"=>"title",
+			"text"=>_TYPE));
+$gdl_form->add_field(array(
+			"type"=>"select",
+			"name"=>"frm[TYPE]",
+			"value"=>"$frm[TYPE]",
+			"required"=>true,
+			"option"=>array("person"=>_PEOPLEDOCUMENT),
+			"text"=>_TYPEOFTHEDOCUMENT));
+$gdl_form->add_field(array(
+			"type"=>"title",
+			"text"=>_PERSONALDATA));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[PERSON_FULLNAME]",
+			"required"=>true,
+			"value"=>"$frm[PERSON_FULLNAME]",
+			"text"=>_FULLNAME,
+			"size"=>45));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[PERSON_TITLE]",
+			"required"=>false,
+			"value"=>"$frm[PERSON_TITLE]",
+			"text"=>_PERSONTITLE,
+			"size"=>45));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[PERSON_BIRTHDAY]",
+			"value"=>"$frm[PERSON_BIRTHDAY]",
+			"text"=>_BIRTHDAY,
+			"size"=>45));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[PERSON_BIRTHPLACE]",
+			"value"=>"$frm[PERSON_BIRTHPLACE]",
+			"text"=>_BIRTHPLACE,
+			"size"=>45));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[PERSON_ORGNAME]",
+			"value"=>"$frm[PERSON_ORGNAME]",
+			"text"=>_ORGANIZATIONNAME,
+			"size"=>45));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[PERSON_POSITION]",
+			"value"=>"$frm[PERSON_POSITION]",
+			"text"=>_POSITION,
+			"size"=>45));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[PERSON_EMAIL]",
+			"value"=>"$frm[PERSON_EMAIL]",
+			"text"=>"E-mail",
+			"size"=>45));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[PERSON_URL]",
+			"value"=>"$frm[PERSON_URL]",
+			"text"=>"Website",
+			"size"=>45));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[PERSON_ADDRESS]",
+			"value"=>"$frm[PERSON_ADDRESS]",
+			"text"=>_ADDRESS,
+			"size"=>45));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[PERSON_PHONE]",
+			"value"=>"$frm[PERSON_PHONE]",
+			"text"=>_PHONE,
+			"size"=>45));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[PERSON_FAX]",
+			"value"=>"$frm[PERSON_FAX]",
+			"text"=>_FAX,
+			"size"=>45));
+$gdl_form->add_field(array(
+			"type"=>"title",
+			"text"=>_DESCRIPTION));
+$gdl_form->add_field(array(
+			"type"=>"textarea",
+			"name"=>"frm[DESCRIPTION_EXPERTISE]",
+			"text"=>_EXPERTISE1,
+			"required"=>true,
+			"column"=>false,
+			"value"=>"$frm[DESCRIPTION_EXPERTISE]",
+			"rows"=>20,
+			"cols"=>59));
+$gdl_form->add_field(array(
+			"type"=>"textarea",
+			"name"=>"frm[DESCRIPTION_EXPERIENCE]",
+			"text"=>_EXPERIENCE,
+			"column"=>false,
+			"value"=>"$frm[DESCRIPTION_EXPERIENCE]",
+			"rows"=>20,
+			"cols"=>59));
+$gdl_form->add_field(array(
+			"type"=>"textarea",
+			"name"=>"frm[DESCRIPTION_EDUCATION]",
+			"text"=>_EDUCATION,
+			"column"=>false,
+			"value"=>"$frm[DESCRIPTION_EDUCATION]",
+			"rows"=>20,
+			"cols"=>59));
+$gdl_form->add_field(array(
+			"type"=>"textarea",
+			"name"=>"frm[DESCRIPTION_WRITING]",
+			"text"=>_PAPERNPUBLICATION,
+			"column"=>false,
+			"value"=>"$frm[DESCRIPTION_WRITING]",
+			"rows"=>20,
+			"cols"=>59));
+$gdl_form->add_field(array(
+			"type"=>"textarea",
+			"name"=>"frm[DESCRIPTION_INTEREST]",
+			"text"=>_INTEREST,
+			"column"=>false,
+			"value"=>"$frm[DESCRIPTION_INTEREST]",
+			"rows"=>20,
+			"cols"=>59));
+$gdl_form->add_field(array(
+			"type"=>"title",
+			"text"=>_DATE));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[DATE]",
+			"value"=>"$frm[DATE]",
+			"column"=>false,
+			"text"=>_CREATEDDATE,
+			"size"=>10));
+$gdl_form->add_field(array(
+			"type"=>"title",
+			"text"=>_RELATEDFILES));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[RELATION_COUNT]",
+			"value"=>"$frm[RELATION_COUNT]",
+			"text"=>_NUMBEROFFILE,
+			"required"=>true,
+			"size"=>10));
+$gdl_form->add_button(array(
+			"type"=>"submit",
+			"name"=>"submit",
+			"column"=>false,
+			"value"=>_SUBMIT));
+$gdl_form->add_button(array(
+			"type"=>"reset",
+			"name"=>"reset",
+			"value"=>_RESET));
+$content = $gdl_form->generate("30%");
+?>

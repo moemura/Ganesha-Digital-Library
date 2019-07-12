@@ -1,0 +1,36 @@
+<dc>
+	<title>#ORGANIZATION_NAME#</title>
+	<organization>
+		<name>#ORGANIZATION_NAME#</name>
+		<email>#ORGANIZATION_EMAIL#</email>
+		<url>#ORGANIZATION_URL#</url>
+		<address>#ORGANIZATION_ADDRESS#</address>
+		<phone>#ORGANIZATION_PHONE#</phone>
+		<fax>#ORGANIZATION_FAX#</fax>
+	</organization>
+	<publisher>#PUBLISHER#</publisher>
+	<creator>#PUBLISHER#</creator>
+	<description>
+		<expertise>#DESCRIPTION_EXPERTISE#</expertise>
+		<experience>#DESCRIPTION_EXPERIENCE#</experience>
+	</description>
+	<contributor>
+		<modifiedby>#CONTRIBUTOR_MODIFIEDBY#</modifiedby>
+	</contributor>
+	<date>#DATE#</date>
+	<date>
+		<modified>#DATE_MODIFIED#</modified>
+	</date>
+	<type>#TYPE#</type>
+	<type>
+		<schema>dc_organization</schema>
+	</type>
+	<identifier>#IDENTIFIER#</identifier>
+	<identifier>
+		<hierarchy>#IDENTIFIER_HIERARCHY#</hierarchy>
+	</identifier>
+	<relation>
+		<count>#RELATION_COUNT#</count>
+	</relation>
+	<relation>#RELATION_EXTERNAL_ENTITIES#</relation>
+</dc>

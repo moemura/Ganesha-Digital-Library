@@ -1,0 +1,32 @@
+#NETWORK#/#PUBLISHER_ID#
+#PUBLISHER#
+-----------------------------------------
+#DATESTAMP#
+
+
+Dear #FULLNAME#,
+
+You have completed our membership registration form with
+the following information:
+
+Fullname           : #FULLNAME#
+Email/your loginID : #EMAIL#
+Address            : #ADDRESS#
+City               : #CITY#
+Country            : #COUNTRY#
+Institution        : #INSTITUTION#
+Job type           : #JOBTYPE#
+VALIDATION NUMBER  : #VALIDATION#
+
+You need to activate your membership by following this URL:
+http://#SERVER#/gdl.php?mod=register&op=activate&account=#EMAIL#&vn=#VALIDATION#
+
+If you find any problem in activation, please do not 
+hesitate to contact us. Thank you for joining us.
+
+Best regards,
+#PUBLISHER#
+Chief Knowledge Officer
+Email: #CKO#
+------------------------------
+Sent by GDL Version 4.2

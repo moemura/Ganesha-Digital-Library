@@ -1,0 +1,11 @@
+<relation>
+	<no>#RELATION_NO#</no>
+	<datemodified>#RELATION_DATEMODIFIED#</datemodified>
+	<haspart>#RELATION_HASPART#</haspart>
+	<haspath>#RELATION_HASPATH#</haspath>
+	<hasuri>#RELATION_HASURI#</hasuri>
+	<hasfilename>#RELATION_HASFILENAME#</hasfilename>
+	<hasformat>#RELATION_HASFORMAT#</hasformat>
+	<hassize>#RELATION_HASSIZE#</hassize>
+	<hasnote>#RELATION_HASNOTE#</hasnote>
+</relation>

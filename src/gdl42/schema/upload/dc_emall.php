@@ -1,0 +1,105 @@
+<?
+
+if (eregi("dc_emall.php",$_SERVER['PHP_SELF'])) {
+    die();
+}
+
+include ("./config/type.php");
+
+$gdl_form->set_name("metadata");
+$gdl_form->action="./gdl.php?mod=upload&amp;op=step3";
+$gdl_form->add_field(array(
+			"type"=>"hidden",
+			"name"=>"frm[IDENTIFIER]",
+			"value"=>"$frm[IDENTIFIER]"));
+$gdl_form->add_field(array(
+			"type"=>"hidden",
+			"name"=>"frm[CREATOR]",
+			"value"=>"$frm[CREATOR]"));
+$gdl_form->add_field(array(
+			"type"=>"hidden",
+			"name"=>"frm[IDENTIFIER_HIERARCHY]",
+			"value"=>"$frm[IDENTIFIER_HIERARCHY]"));
+$gdl_form->add_field(array(
+			"type"=>"hidden",
+			"name"=>"frm[TYPE_SCHEMA]",
+			"value"=>"dc_emall"));
+$gdl_form->add_field(array(
+			"type"=>"title",
+			"text"=>_TYPE));
+$gdl_form->add_field(array(
+			"type"=>"select",
+			"name"=>"frm[TYPE]",
+			"value"=>"$frm[TYPE]",
+			"required"=>true,
+			"option"=>array("emall"=>_EMALLCOMODITY),
+			"text"=>_TYPEOFTHEDOCUMENT));
+$gdl_form->add_field(array(
+			"type"=>"title",
+			"text"=>_TITLE));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[TITLE]",
+			"required"=>true,
+			"value"=>"$frm[TITLE]",
+			"text"=>_COMODITYNAME,
+			"size"=>35));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[DESCRIPTION_MODEL]",
+			"required"=>false,
+			"value"=>"$frm[DESCRIPTION_MODEL]",
+			"text"=>"Model",
+			"size"=>35));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[DESCRIPTION_DIMENSION]",
+			"value"=>"$frm[DESCRIPTION_DIMENSION]",
+			"text"=>_SIZE,
+			"size"=>35));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[DESCRIPTION_UNIT]",
+			"value"=>"$frm[DESCRIPTION_UNIT]",
+			"text"=>"Unit",
+			"size"=>35));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[DESCRIPTION_PRICE]",
+			"value"=>"$frm[DESCRIPTION_PRICE]",
+			"text"=>_PRICEPERUNIT,
+			"size"=>35));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[DESCRIPTION_STOCK]",
+			"value"=>"$frm[DESCRIPTION_STOCK]",
+			"text"=>_STOCK,
+			"size"=>35));
+$gdl_form->add_field(array(
+			"type"=>"textarea",
+			"name"=>"frm[DESCRIPTION]",
+			"value"=>"$frm[DESCRIPTION]",
+			"text"=>_DESCRIPTION,
+			"cols"=>33,
+			"rows"=>4));
+$gdl_form->add_field(array(
+			"type"=>"title",
+			"text"=>_RELATEDFILES));
+$gdl_form->add_field(array(
+			"type"=>"text",
+			"name"=>"frm[RELATION_COUNT]",
+			"value"=>"$frm[RELATION_COUNT]",
+			"text"=>_NUMBEROFFILE,
+			"required"=>true,
+			"size"=>10));
+$gdl_form->add_button(array(
+			"type"=>"submit",
+			"name"=>"submit",
+			"column"=>false,
+			"value"=>_SUBMIT));
+$gdl_form->add_button(array(
+			"type"=>"reset",
+			"name"=>"reset",
+			"value"=>_RESET));
+$content = $gdl_form->generate("30%");
+?>

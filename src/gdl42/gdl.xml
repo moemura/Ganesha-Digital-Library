@@ -1,0 +1,46 @@
+<? header('Content-type: text/xml'); ?>
+<?php echo '<?xml version="1.0" encoding="iso-8859-1"?'.'>'; ?>
+<?
+	include "./class/db.php";
+	include "./class/metadata.php";
+	include "./config/publisher.php";
+	include "./class/folder.php";
+	$gdl_folder=new folder();
+	$gdl_db=new database();
+	$gdl_metadata=new metadata();	
+
+$dbLast = $gdl_db->select("metadata","date_modified","xml_data LIKE '%<publisher>".$gdl_publisher[id]."</publisher>%'","date_modified","DESC","0,1");
+$lastBuild = @mysql_result ($dbLast, 0, "date_modified");
+$dayOnly = substr ($lastBuild, 0, 10);
+$daySplit = explode ("-", $dayOnly);
+$dayLast = date('D', mktime(0,0,0, $daySplit['1'], $daySplit['2'], $daySplit['0']));
+echo "
+<rss version=\"2.0\">
+    <channel>
+	  <title>".$gdl_publisher["publisher"]."</title>
+          <description>$gdl_publisher[orgname]</description>
+          <link>http://".$gdl_publisher['hostname']."</link>
+          <lastBuildDate>".$dayLast.", ".$lastBuild." +0700</lastBuildDate>
+";		
+		$dbres=$gdl_db->select("metadata","*","xml_data LIKE '%<publisher>".$gdl_publisher[id]."</publisher>%'","date_modified","DESC","0,10");
+	  	while ($row=mysql_fetch_array($dbres)) {
+		$property=$gdl_metadata->get_property($row["identifier"]);
+		$itemDayOnly = substr ($row['date_modified'], 0, 10);
+		$itemDaySplit = explode ("-", $itemDayOnly);
+		$itemDay = date('D', mktime(0,0,0, $itemDaySplit['1'], $itemDaySplit['2'], $itemDaySplit['0']));
+		
+			echo "
+			   <item>
+				<title>".htmlspecialchars(strip_tags($property["title"]))."</title>
+		            <description>".substr(htmlspecialchars(strip_tags($property["description"])),0,300)." [...]"."</description>
+		            <link>http://".$gdl_publisher["hostname"]."/gdl.php?mod=browse&amp;op=read&amp;id=".$row["identifier"]."</link>
+		            <pubDate>".$itemDay.", ".$row["date_modified"]."</pubDate>
+					<guid>http://".$gdl_publisher["hostname"]."/gdl.php?mod=browse&amp;op=read&amp;id=".$row["identifier"]."</guid>
+		        </item>
+				";
+			}
+echo"		
+     </channel>
+</rss>
+";
+?>

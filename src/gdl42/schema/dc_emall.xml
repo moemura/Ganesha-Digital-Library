@@ -1,0 +1,34 @@
+<dc>
+	<title>#TITLE#</title>
+	<description>#DESCRIPTION#</description>
+	<description>
+		<price>#DESCRIPTION_PRICE#</price>
+		<model>#DESCRIPTION_MODEL#</model>
+		<dimension>#DESCRIPTION_DIMENSION#</dimension>
+		<unit>#DESCRIPTION_UNIT#</unit>
+		<stock>#DESCRIPTION_STOCK#</stock>
+	</description>
+
+	<creator>#CREATOR#</creator>
+
+	<publisher>#PUBLISHER#</publisher>
+	<contributor>
+		<modifiedby>#CONTRIBUTOR_MODIFIEDBY#</modifiedby>
+	</contributor>
+	<date>#DATE#</date>
+	<date>
+		<modified>#DATE_MODIFIED#</modified>
+	</date>
+	<type>#TYPE#</type>
+	<type>
+		<schema>dc_emall</schema>
+	</type>
+	<identifier>#IDENTIFIER#</identifier>
+	<identifier>
+		<hierarchy>#IDENTIFIER_HIERARCHY#</hierarchy>
+	</identifier>
+	<relation>
+		<count>#RELATION_COUNT#</count>
+	</relation>
+	<relation>#RELATION_EXTERNAL_ENTITIES#</relation>
+</dc>

@@ -1,0 +1,721 @@
+/*
+------------------------------------------------------------
+Theme Name: GDL
+Theme URI: http://digilib.itb.ac.id
+Description: Theme for GDL Digital Library
+Version: 1.0 ALPHA
+Author: ITB / INHERENT Team
+Author URI: http://www.itb.ac.id
+------------------------------------------------------------
+*/
+
+/*
+------------------------------------------------------------
+- TOC (Table of Contents)
+
+ROOT
+  Layout
+    Fluid
+    Wrap
+    Width Float
+  Colors
+    Backgrounds
+    Borders
+    Hyperlink
+  Fonts
+  Common Shared Properties
+REGIONS
+  Top
+  Header
+  Main
+    Nav
+    Contentwide
+      Navsub
+      Content
+  Mainsub
+  Footer
+BOXES
+  Nodes
+  Blocks
+    Block Lists
+    Utility
+  Forms
+    Search
+MISC
+  Tables
+  Splash
+------------------------------------------------------------
+*/
+
+
+/* ROOT ------------------------- */
+
+/* - Layout */
+
+body {
+	margin: 0;
+	padding: 0;
+	min-width: 870px;
+}
+
+img {
+	border: none;
+}
+
+
+/* -- Fluid */
+
+.fluid {
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	min-width: 870px;
+}
+
+#contentwidebox {
+	min-height: 250px;
+}
+
+#welcome {
+	text-align: right;
+}
+
+
+/* -- Wrap */
+
+.wrap {
+	margin: 0 auto;
+	padding: 0;
+/*	width: 870px; */
+	text-align: left;
+}
+
+#top, #header, #footer {
+	margin: 0;
+	padding: 0 10px;
+}
+
+.fluidtop .wrap, .fluidheader .wrap {
+	width: 870px;
+}
+
+.fluidmain .wrap, .fluidfooter .wrap {
+	width: 870px;
+}
+
+#main {
+	margin: 10px 0 0;
+	padding: 0 10px;
+	color: #333;
+}
+
+
+/* -- Width Float */
+
+.left, .right {
+	width: 205px;
+}
+
+.centerleft, .centerright {
+	width: 635px;
+}
+
+.center {
+	width: 420px;
+}
+
+.floatleft {
+	float: left;
+}
+
+.floatright {
+	float: right;
+}
+
+
+/* - Colors */
+
+
+/* -- Backgrounds */
+
+body, .splash {
+	color: #333;
+	background-color: #eee;
+}
+
+.fluidtop {
+	color: #9c3;
+	background-color: #693;
+}
+
+.fluidtop strong {
+	color: #9f6;
+	background-color: #693;
+}
+
+.fluidheader {
+	color: #000;
+	background-color: #9c3;
+}
+
+.fluidheader .wrap {
+	background-position: 10px 0px;
+	background-repeat: no-repeat;
+	background-image: url("./image/gdl.png");
+}
+
+.fluidfooter {
+	color: #666;
+}
+
+/* -- Hyperlinks */
+
+.fluidmain a, .fluidfooter a {
+	color: #393;
+	text-decoration: none;
+}
+
+.fluidmain a:hover, .fluidfooter a:hover {
+	color: #393;
+/*	background-color: #393; */
+	text-decoration: underline;
+}
+
+.fluidtop a {
+	color: #fff;
+	text-decoration: none;
+}
+
+.fluidtop a:hover {
+	color: #9f6;
+}
+
+.fluidheader a {
+	color: #fff;
+	text-decoration: none;
+}
+
+.fluidheader a:hover {
+	color: #000; /*#693;*/
+	background-color: #9c3;
+}
+
+
+/* -- Borders */
+
+.fluidtop {
+	border-top: 2px solid #000;
+}
+
+.fluidheader {
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #999;
+}
+
+.fluidmain {
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #aaa;
+}
+
+.fluidfooter {
+	border-top: 1px solid #fff;
+}
+
+
+/* - Fonts */
+
+html, body, input, #s, #searchsubmit {
+/*	font-family: Georgia, "Bitstream Vera Serif", "Times New Roman", Times, serif; */
+	font-family: "Lucida Grande", "Luxi Sans", Verdana, sans-serif;
+	font-size: 11px;
+}
+
+h1, h2, h3, h4, .baru .entry, p.dirpath {
+/*	font-family: Georgia, "Bitstream Vera Serif", "Times New Roman", Times, serif; */
+	font-family: "Trebuchet MS", "Bitstream Vera Serif", Times, serif;
+}
+
+h1 {
+	font-size: 20px;
+}
+
+h2, p.dirpath {
+	font-size: 18px;
+}
+
+h3 {
+	font-size: 16px;
+}
+
+h4 {
+	font-size: 14px;
+}
+
+.fluidheader h2 {
+	margin: 0;
+	padding: 7px 0 0;
+}
+
+.baru .entry {
+	font-size: 14px;
+}
+
+.block h2, .block h3, .block h4 {
+	font-weight: normal;
+}
+
+#footer {
+	font-size: 10px;
+}
+
+
+/* - Common Shared Properties */
+
+.clearboth, #top, #header, .main, #footer {
+	clear: both;
+}
+
+.node:hover, .block:hover {
+}
+
+#nav, #navsub {
+	margin: 0;
+	padding: 0;
+}
+
+
+/* Hidden */
+
+hr, .hide {
+	display: none;
+}
+
+
+/* REGIONS ------------------------- */
+
+/* - Top */
+
+.fluidtop .block {
+	margin: 0;
+	padding: 7px 0;
+}
+
+
+/* - Header */
+
+#header {
+	height: 50px;
+}
+
+#headerimg h1 {
+	display: none;
+}
+
+
+/* - Main */
+/* -- Nav */
+/* -- Contentwide */
+/* --- Navsub */
+/* --- Content */
+
+p.dirpath {
+	line-height: 20px;
+	text-indent : 0;
+	background-image: url(./image/icon_dir_up_list.png);
+	background-repeat: no-repeat;
+	background-position: 12px 6px;
+	background-color: #ddd;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #999;
+	margin: 0;
+	padding: 6px 16px 2px 36px;
+}
+
+p.dirpath:hover {
+/*	background: #ccc url(./image/icon_dir_up_list.png) no-repeat 12px 6px; */
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #666;
+}
+
+p.print {
+	margin: 10px 0;
+	padding: 10px 10px 10px 35px;
+	background: #cfc url(./image/icon_print.png) no-repeat 10px 8px;
+	font-weight: bold;
+	border: 1px dotted #ccc;
+}
+
+p.print:hover {
+	background: #ffc url(./image/icon_print.png) no-repeat 10px 8px;
+}
+
+p.title {
+	margin: 0;
+	padding: 12px 10px 0;
+	background: #fff;
+	font: bold 18px "Trebuchet MS", "Bitstream Vera Serif", Times, serif;
+/*	border-top: 2px solid #ccc; */
+	border-bottom: 1px solid #999;
+}
+
+p.title:hover {
+	border-bottom: 1px solid #888;
+}
+
+p.box {
+	padding: 5px;
+	background: #ccc;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #fff;
+	margin: 0px;
+}
+
+#content h2 {
+	font: bold 18px "Trebuchet MS", "Bitstream Vera Serif", Times, serif;
+	color: #000;
+	margin: 0;
+	padding: 15px 10px 4px;
+	background: #fff;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #ccc;
+}
+
+p.contentlisttop {
+	margin: 0;
+	padding: 2px 0;
+	text-align: right;
+	border-bottom: 4px solid #ccc;
+	line-height: 16px;
+}
+
+p.contentlistbottom {
+	margin: 0 0 8px;
+	padding: 2px 0;
+	text-align: right;
+	border-top: 4px solid #ccc;
+	line-height: 16px;
+}
+
+ul.dirlist, ul.filelist {
+	margin: 0;
+	padding: 4px 0;
+	list-style : none;
+}
+
+ul.dirlist li {
+	margin: 0;
+	padding: 4px 0 4px 24px;
+	text-indent : 0;
+	background: url(./image/icon_dir_list.png) no-repeat 1px 4px;
+}
+
+ul.dirlist li a {
+	font-size: 12px;
+}
+
+ul.filelist li {
+	margin: 0;
+	padding: 4px 0 4px 20px;
+	text-indent : 0;
+	background: url(./image/icon_file_list.png) no-repeat 1px 6px;
+}
+
+ul.filelist li a {
+	font-size: 12px;
+}
+
+#nav p.title, #rel p.title {
+	margin: 0;
+	padding: 16px 0 4px;
+	border-bottom: 1px solid #fff;
+	font-weight: bold;
+}
+
+#rel ul {
+	list-style: none;
+	margin: 0;
+	padding: 4px 0;
+}
+
+#rel ul li {
+	margin: 0;
+	padding: 3px 10px 2px;
+	display: block;
+}
+
+
+/* - Mainsub */
+
+#mainsub .block {
+	margin: 0;
+	padding: 0 0 15px;
+}
+
+
+/* - Footer */
+
+.fluidfooter .block {
+	margin: 0;
+	padding: 14px 0;
+}
+
+
+/* BOXES ------------------------- */
+
+/* - Nodes */
+
+.node {
+	margin: 0 0 10px;
+	padding: 0 9px 9px;
+	clear: both;
+	color: #000;
+	background-color: #fff;
+	border: 1px solid #ccc;
+}
+
+.node:hover {
+	border: 1px solid #999;
+}
+
+.contentbox {
+	margin: 0 0 10px;
+	padding: 0 9px 9px;
+	clear: both;
+	color: #000;
+	background-color: #fff;
+	border-top: 2px solid #ccc;
+	border-bottom: 1px solid #999;
+}
+
+.contentbox:hover {
+	border-top: 2px solid #bbb;
+	border-bottom: 1px solid #888;
+}
+
+.nodetitle {
+/*	text-align: right; */
+}
+
+.contentbox h2, .node h2 {
+	margin: 15px 0 1px;
+	padding: 0;
+}
+
+.contentbox h3, .node h3 {
+	margin: 10px 0 1px;
+	padding: 0;
+}
+
+.contentbox h4, .node h4 {
+	margin: 5px 0 1px;
+	padding: 0;
+}
+
+
+/* - Blocks */
+
+#main .block {
+	margin: 0 0 10px;
+	padding: 0;
+	color: #000;
+	background-color: #fff;
+	border-top: 1px solid #fff;
+	border-bottom: 1px solid #ccc;
+}
+
+#rel {
+	margin: 0 0 10px;
+	padding: 0 9px 9px;
+	color: #000;
+	background-color: #fff;
+	border-top: 1px solid #ccc;
+	border-right: 1px solid #fff;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #fff;
+}
+
+#rel:hover, #main .block:hover {
+	border-bottom: 1px solid #888;
+}
+
+.block h2, .block h3, .block h4 {
+	margin: 0;
+	padding: 6px 10px 2px;
+	background-color: #ddd;
+	border-bottom: 1px solid #999;
+}
+
+
+/* -- Block lists */
+
+.block ul {
+	list-style: none;
+	margin: 10px 0 20px;
+	padding: 0;	clear: both;
+}
+
+.block ul li {
+	margin: 0;
+	display: block;
+	padding: 5px 20px 5px 25px;
+	border-bottom: 1px solid #eee;
+	background: url(image/icon_list_square.png) no-repeat 10px 10px;
+}
+
+.block ul li:hover {
+	border-bottom: 1px solid #ccc;
+	background: url(image/icon_list_square_hover.png) no-repeat 10px 10px;
+}
+
+.block li ul {
+	list-style: none;
+	margin: 0;	padding: 3px 0 0;
+}
+
+.block li ul li {
+	margin: 0;	display: block;
+	padding: 5px 10px 3px;
+	border-bottom: 1px solid #fff;
+	background: url(image/icon_list_square.png) no-repeat 0px 10px;
+}
+
+.block li ul li:hover {
+	border-bottom: 1px solid #fff;
+	background: url(image/icon_list_square_hover.png) no-repeat 0px 10px;
+}
+
+
+/* -- Utility */
+
+
+/* - Forms */
+
+#commentform textarea {
+	width: 350px;
+}
+
+
+/* -- Search */
+
+.block form {
+	margin: 0;
+	padding: 10px;
+}
+
+.textsearch {
+	border: 2px solid #ddd;
+	background-color: #ddd;
+}
+
+.textsearch:hover {
+	border: 2px solid #393;
+	background-color: #fff;
+}
+
+.submit {
+	margin-top: 2px;
+	color: #fff;
+	background-color: #693;
+	border: 2px solid #693;
+	font-weight: bold;
+}
+
+.submit:hover {
+	color: #000;
+	background-color: #9c3;
+	border: 2px solid #9c3;
+}
+
+
+/* MISC */
+
+/* - Tables */
+
+.block table caption {
+	font-size: 11px;
+	margin: 1px 1px 0;
+	padding: 3px 0;
+	border: 1px solid #fff;
+}
+
+.block table th, .block table caption {
+	background: #eee;
+}
+
+.block table td, .block table th {
+	font-size: 11px;
+	padding: 2px;
+	text-align: right;
+	border: 1px solid #ccc;
+}
+
+.contentbox table, .node table {
+	padding: 0;
+	border: none;
+}
+
+.contentbox table th, .node table th {
+	font-size: 11px;
+	padding: 7px 5px 5px;
+	color: #000;
+	background: #ccc;
+	font-weight: bold;
+	text-align: center;
+	border-bottom: 2px solid #999;
+}
+
+.contentbox table td, .node table td {
+	font-size: 11px;
+	margin: 0;
+	padding: 5px;
+	color: #000;
+	background: #efe;
+/*	vertical-align: top; */
+	border-top: 1px solid #fff;
+	border-right: 1px solid #eee;
+	border-bottom: 1px solid #ccc;
+	border-left: 1px solid #fff;
+}
+
+.contentbox table td:hover, .node table td:hover {
+	border-top: 1px solid #eee;
+	border-right: 1px solid #eee;
+	border-bottom: 1px solid #999;
+	border-left: 1px solid #eee;
+}
+
+
+/* - Splash */
+
+.splash {
+/*	margin-top: 10px; */
+	width: inherit;
+	height: 125px;
+	color: #000;
+	border-top: 1px solid #fff;
+	border-bottom: 10px solid #693;
+	background-repeat: no-repeat;
+	background-color: #ccc;
+	background-image: url("./image/gdlsplash.jpg");
+}
+
+.state_offline_open {
+	display: none;
+}
+
+.state_offline_close {
+	display: block;
+}
+
+
+/*
+#home .splash {
+	height: 240px;
+	background-position: 0px 0px;
+}
+
+#page .splash {
+	height: 120px;
+	background-position: 0px -30px;
+}
+*/
