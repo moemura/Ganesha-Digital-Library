@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (eregi("repeater.php",$_SERVER['PHP_SELF'])) {
     die();

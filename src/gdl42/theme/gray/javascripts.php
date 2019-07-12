@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (eregi("javascripts.php",$_SERVER['PHP_SELF'])) {
     die();

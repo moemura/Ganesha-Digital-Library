@@ -1,4 +1,4 @@
-<?
+<?php
 if (eregi("file.php",$_SERVER['PHP_SELF'])) die();
 
 require_once ("./module/browse/function.php");

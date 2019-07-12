@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (eregi("parser.php",$_SERVER['PHP_SELF'])) {
     die();

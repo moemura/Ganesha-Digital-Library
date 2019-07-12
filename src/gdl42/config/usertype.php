@@ -1,4 +1,4 @@
-<?
+<?php
 $user_type['1'] 	= "Student, Lower Level School";
 $user_type['2']		= "Student, Diploma";
 $user_type['3']		= "Student, S1";

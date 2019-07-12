@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (eregi("theme.php",$_SERVER['PHP_SELF'])) {
     die();

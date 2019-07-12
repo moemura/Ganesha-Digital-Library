@@ -1,4 +1,4 @@
-<?
+<?php
 			# Automatically generated on 2007-01-16 15:42:06
 		
 			# ******* Repository Name

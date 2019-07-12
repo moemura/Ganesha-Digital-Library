@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (eregi("form.php",$_SERVER['PHP_SELF'])) {
     die();

@@ -1,4 +1,4 @@
-<?
+<?php
 if (eregi("function.php",$_SERVER['PHP_SELF'])) die();
 
 function search_result($schema,$methods="") {

@@ -1,4 +1,4 @@
-<?
+<?php
 if (eregi("metadata.php",$_SERVER['PHP_SELF'])) die();
 
 include("./module/migration/conf.php");

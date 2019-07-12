@@ -1,4 +1,4 @@
-<?
+<?php
 if (eregi("publisher.php",$_SERVER['PHP_SELF'])) die();
 
 

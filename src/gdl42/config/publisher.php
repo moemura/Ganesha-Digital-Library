@@ -1,4 +1,4 @@
-<?
+<?php
 			# Automatically generated on 2007-01-13 13:24:25
 		
 			$gdl_publisher['id']  = "";

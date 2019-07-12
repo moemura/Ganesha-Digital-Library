@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (eregi("search.php",$_SERVER['PHP_SELF'])) {
     die();

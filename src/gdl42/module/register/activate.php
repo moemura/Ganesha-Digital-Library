@@ -1,4 +1,4 @@
-<?
+<?php
 if (eregi("activate.php",$_SERVER['PHP_SELF'])) die();
 
 

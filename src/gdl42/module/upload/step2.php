@@ -1,4 +1,4 @@
-<?
+<?php
 if (eregi("step2.php",$_SERVER['PHP_SELF'])) die();
 
 $schema = $_GET['s'];

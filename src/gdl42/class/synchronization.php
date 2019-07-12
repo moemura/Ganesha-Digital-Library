@@ -1,4 +1,4 @@
-<?
+<?php
 	class synchronization {
 		var $response_connection;
 		var $response_target;

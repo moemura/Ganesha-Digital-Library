@@ -1,4 +1,4 @@
-<?
+<?php
 
 include ("./config/system.php");
 include ("./config/publisher.php");

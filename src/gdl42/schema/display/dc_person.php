@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (eregi("dc_person.php",$_SERVER['PHP_SELF'])) {
     die();

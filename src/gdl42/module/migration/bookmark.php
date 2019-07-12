@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (eregi("bookmark.php",$_SERVER['PHP_SELF'])) die();
 

@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once ("./config/system.php");
 $gdl_mod = $_GET['mod'];

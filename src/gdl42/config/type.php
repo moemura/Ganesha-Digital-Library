@@ -1,4 +1,4 @@
-<?
+<?php
 $gdl_type['s1'] 		= "Undergraduate Theses";
 $gdl_type['s2'] 		= "Master Theses";
 $gdl_type['s3'] 		= "PhD Theses";

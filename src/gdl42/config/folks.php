@@ -1,4 +1,4 @@
-<?
+<?php
 		# Automatically generated on 2007-01-16 15:33:06
 		
 		# ******** Setting Konfigurasi

@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (eregi("general.php",$_SERVER['PHP_SELF'])) {
     die();

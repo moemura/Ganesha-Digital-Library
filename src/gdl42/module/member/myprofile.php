@@ -1,4 +1,4 @@
-<?
+<?php
 if (eregi("myprofile.php",$_SERVER['PHP_SELF'])) {
 	die();
 }

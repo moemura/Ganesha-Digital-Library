@@ -1,4 +1,4 @@
-<?
+<?php
 $db_source["host"]="localhost";
 $db_source["uname"]="root";
 $db_source["password"]="idlnhub";

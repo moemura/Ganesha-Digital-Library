@@ -1,4 +1,4 @@
-<?
+<?php
 $gdl_sys["theme"]="green";
 $gdl_sys["language"]="indonesian";
 $gdl_sys["page_caching"]="120";
