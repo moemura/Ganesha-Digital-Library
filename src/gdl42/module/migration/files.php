@@ -48,7 +48,7 @@ if (file_exists("./files/misc/files.lck")){
 			$file=$_POST["file"];
 			$bin=get_bin();
 			
-			if (ereg("Copy",$submit)) {
+			if (preg_match("/Copy/",$submit)) {
 					if ($window==1) {
 						if (is_array($folder)) {			
 							foreach ($folder as $valfolder) {
@@ -93,7 +93,7 @@ if (file_exists("./files/misc/files.lck")){
 							}
 						}
 					}
-			} elseif (ereg("Delete",$submit)) {
+			} elseif (preg_match("/Delete/",$submit)) {
 					if ($window==1) {
 						if (is_array($folder)) {			
 							foreach ($folder as $valfolder) {

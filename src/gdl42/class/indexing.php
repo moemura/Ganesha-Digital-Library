@@ -38,7 +38,7 @@ class indexing{
 				$size = strlen($data);	
 			}
 
-			if (ereg("oai_dc",$row['prefix'])) {
+			if (preg_match("/oai_dc/",$row['prefix'])) {
 				$data=str_replace(substr($data,0,strpos($data,">")+1),"<dc>",$data);
 				$data=str_replace("<oai_dc:dc xmlns:oai_dc=http://www.openarchives.org/OAI/2.0/oai_dc/ xmlns:dc=http://purl.org/dc/elements/1.1/ xmlns:xsi=http://www.w3.org/2001/XMLSchema-instance xsi:schemaLocation=http://www.openarchives.org/OAI/2.0/oai_dc/ http://www.openarchives.org/OAI/2.0/oai_dc.xsd>","<dc>",$data);
 				$data=str_replace("<dc:","<",$data);				
@@ -116,10 +116,10 @@ class indexing{
 		$res = explode("\n",$cmd);
 		
 		for ($i = 0;$i< sizeof($res);$i++){
-			if (ereg("!!!Adding",$res[$i])){
+			if (preg_match("/!!!Adding/",$res[$i])){
 				$meta = explode("'",$res[$i]);
 				$main .= "MetaName $meta[1]\n";			
-			} elseif (ereg("XML parse error",$res[$i])){
+			} elseif (preg_match("/XML parse error/",$res[$i])){
 				$errline = substr($res[$i],35);
 				$main .= "File $errline\n";
 			} else {
@@ -215,9 +215,9 @@ class indexing{
 	// print
 	$mergeres = explode("\n",$merge_result);
 	while (list($k,$v) = each($mergeres)){
-		if (ereg("Replaced",$v)){
+		if (preg_match("/Replaced/",$v)){
 			$replaced++;
-		} elseif (ereg("Processing",$v)) {
+		} elseif (preg_match("/Processing/",$v)) {
 			continue;
 		} else {
 			$return.= $v."<br>";

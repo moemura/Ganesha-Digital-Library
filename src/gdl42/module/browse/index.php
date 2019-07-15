@@ -22,7 +22,7 @@ if($is_offline){
 	$stop 		= false;
 	$c_arr_child= count($arr_child);
 	for($i=0;($i<$c_arr_child) && !$stop;$i++){
-		$stop = ereg("^[0-9]+$",$arr_child[$i])?false:true;
+		$stop = preg_match("/^[0-9]+$/",$arr_child[$i])?false:true;
 	}
 	if($stop) $is_offline = false;
 	else

@@ -105,10 +105,10 @@ function insert_organization() {
 	global $frm,$gdl_folder;
 	
 	$organization_node=$gdl_folder->check_folder("Organization",0);
-	if (ereg("err",$organization_node))
+	if (preg_match("/err/",$organization_node))
 		$content.=_ADDORGANIZATIONFAILED;
 	else {
-		if (!ereg("err",$gdl_folder->check_folder($frm["orgname"],$organization_node)))
+		if (!preg_match("/err/",$gdl_folder->check_folder($frm["orgname"],$organization_node)))
 			$content.=_ADDORGANIZATIONFAILED;
 		else {
 			$folder["name"]=$frm["orgname"];
@@ -127,11 +127,11 @@ function edit_organization() {
 	global $frm,$gdl_folder,$id;
 	
 	$organization_node=$gdl_folder->check_folder("Organization",0);
-	if (ereg("err",$organization_node))
+	if (preg_match("/err/",$organization_node))
 		$content.=_EDITORGANIZATIONFAILED;
 	else {
 		$org_node=$gdl_folder->check_folder($frm["orgname"],$organization_node);
-		if (!ereg("err",$org_node) && $id <> $org_node)
+		if (!preg_match("/err/",$org_node) && $id <> $org_node)
 			$content.=_EDITORGANIZATIONFAILED;
 		else {
 			$folder["node"]=$id;

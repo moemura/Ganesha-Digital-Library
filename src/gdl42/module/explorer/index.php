@@ -39,10 +39,10 @@ if (isset($n2)) {
 	$destination=$_SESSION["node1"];	
 }
 
-if (ereg("err",$gdl_folder->check_folder_id($_SESSION["node1"])) && isset($_SESSION["node1"]))
+if (preg_match("/err/",$gdl_folder->check_folder_id($_SESSION["node1"])) && isset($_SESSION["node1"]))
 	$_SESSION["node1"]=0;
 	
-if (ereg("err",$gdl_folder->check_folder_id($_SESSION["node2"]))&& isset($_SESSION["node2"]))
+if (preg_match("/err/",$gdl_folder->check_folder_id($_SESSION["node2"]))&& isset($_SESSION["node2"]))
 	$_SESSION["node2"]=0;
 	
 // display explorer
@@ -58,7 +58,7 @@ if (isset($submit)) {
 			$oldproperty=$gdl_folder->get_property($valFolder);
 			$newproperty["name"]=$oldproperty["name"];
 			$newproperty["node"]=$valFolder;
-			if (($destination == 0) || (!ereg($valFolder,$destproperty["path"]) && ($valFolder != $destproperty["parent"]) && $valFolder != $destination)) {
+			if (($destination == 0) || (!preg_match('/'.$valFolder.'/',$destproperty["path"]) && ($valFolder != $destproperty["parent"]) && $valFolder != $destination)) {
 				$newproperty["parent"]=$destination;
 				$gdl_folder->edit_property($newproperty);
 			} 

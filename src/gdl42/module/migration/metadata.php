@@ -43,7 +43,7 @@ if (file_exists("./files/misc/metadata.lck")){
 			$len =strlen($rows[6])-1;
 			$path = substr($rows[6], 0, $len);
 			$str_sql = "'".$rows[0]."',".$rows[1].",'".$rows[2]."','".addslashes($rows[3])."','".$rows[4]."','$owner','$path'";
-			if (ereg("disc",$rows[2])) {
+			if (preg_match("/disc/",$rows[2])) {
 				if (!empty($rows[3]) && !empty($rows[0])) {
 					$id=explode("@",$rows[0]);
 					$xml=$gdl_metadata->read_xml($rows[3]);

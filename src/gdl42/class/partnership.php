@@ -73,7 +73,7 @@ class partnership{
 				$hub_server	= $gdl_sync['sync_hub_server_name'];
 				
 				$gdl_session->session_remote($sess_id,$gdl_session->user_id,$gdl_session->user_name,$gdl_publisher['id']);
-				$hub_server	= (ereg("http",$hub_server))?$hub_server:"http://$hub_server";
+				$hub_server	= (preg_match("/http/",$hub_server))?$hub_server:"http://$hub_server";
 				$redirect 	= $this->form_Posting_InfoRemoteLogin($hub_server,$xmldata);
 
 				$msg		= "<table>\n".

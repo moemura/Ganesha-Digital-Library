@@ -41,7 +41,7 @@ class requestFormatter_GN extends requestFormatter {
 		}
 		$this->verb		= $verb;
 		
-		$lastToken		= (!ereg("^[0-9]+$",$lastToken))?0:$lastToken;
+		$lastToken		= (!preg_match("/^[0-9]+$/",$lastToken))?0:$lastToken;
 		
 		$this->metadataPrefix = "general";
 		
@@ -300,7 +300,7 @@ class requestFormatter_GN extends requestFormatter {
 		// generate request 
 		$request_data 	= $this->request_file_Job();
 		$file_posting	= $request_data['file_posting'];
-		$file_posting	= (ereg("files/",$file_posting))?$file_posting:"files/$file_posting";
+		$file_posting	= (preg_match("/files\//",$file_posting))?$file_posting:"files/$file_posting";
 		$request_data 	= $this->request_data_MergeFileFragments($request_data['c_fragment'],$file_posting);
 		
 		$DATA = "data=".urlencode($request_data);
@@ -331,7 +331,7 @@ class requestFormatter_GN extends requestFormatter {
 		
 		$limit 	= $this->rf_sync['sync_count_records'];
 		
-		$limit	= (!ereg("^[0-9]+$",$limit))?10:$limit;
+		$limit	= (!preg_match("/^[0-9]+$/",$limit))?10:$limit;
 
 		// get metadata	
 		
@@ -441,7 +441,7 @@ class requestFormatter_GN extends requestFormatter {
 		if($status == "queue"){ //echo "QUEUE-0-RF<br/>";
 			 $size_fragment = trim($this->rf_sync['sync_fragment_size']);
 			 
-			 $size_fragment = (ereg("^[0-9]+$",$size_fragment) && ($size_fragment > 10000))?$size_fragment:10000;
+			 $size_fragment = (preg_match("/^[0-9]+$/",$size_fragment) && ($size_fragment > 10000))?$size_fragment:10000;
 			 
 			 // cek file
 			 $fp = fopen("$path","r");

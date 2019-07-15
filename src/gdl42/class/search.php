@@ -38,7 +38,7 @@ class search{
 	function query_quick($q){
 		// Function for quick search
 		$str = $this->clean_query($q);
-		if (ereg("\"",$q)){
+		if (preg_match("/\"/",$q)){
 			$query = "dc = $str";
 		} else {
 			$query = "dc = ($str)";

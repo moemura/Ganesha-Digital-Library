@@ -24,7 +24,7 @@ $frm=$_POST["frm"];
 require_once("./module/member/function.php");
 require_once("./module/register/function.php");
 $action = "./gdl.php?mod=member";
-if (ereg("{member->*}",$gdl_session->authority) || $gdl_session->authority=="*") {
+if (preg_match("/{member->*}/",$gdl_session->authority) || $gdl_session->authority=="*") {
 	$main = "<p>".search_member_form ()."</p>\n";
 	$main .= display_member($y);
 	$main = gdl_content_box($main,_MEMBERMANAGEMENT);

@@ -201,7 +201,7 @@ function insert_cdsisis($db_name) {
 	
 	$return=$gdl_isisdb->insert_new_db($db_name,$frm);
 	foreach ($return as $idxReturn => $valReturn) {
-		if (ereg("file",$idxReturn)) {
+		if (preg_match("/file/",$idxReturn)) {
 			if (is_array($valReturn)) {
 				foreach ($valReturn as $idxValReturn => $valValReturn)  {
 					if ($valValReturn)
@@ -210,12 +210,12 @@ function insert_cdsisis($db_name) {
 						$content.=_UPLOADFILEFAILED." <b>".$idxValReturn."</b><br>";
 				}
 			}
-		} elseif (ereg("add",$idxReturn)) {
+		} elseif (preg_match("/add/",$idxReturn)) {
 			if ($valReturn)
 				$content.="<b>"._ADDCDSISISSUCCESS."</b><br>";
 			else
 				$content.="<b>"._ADDCDSISISFAILED."</b><br>";
-		} elseif (ereg("edit",$idxReturn)) {
+		} elseif (preg_match("/edit/",$idxReturn)) {
 			if ($valReturn)
 				$content.="<b>"._EDITCDSISISSUCCESS."</b><br>";
 			else
@@ -234,7 +234,7 @@ function configure_cdsisis($db_name) {
 		
 	$nextid=$id+1;
 	$record=$gdl_isisdb->get_record($db_name,$id);
-	if (ereg("<row>",$record)) {
+	if (preg_match("/<row>/",$record)) {
 		$xml=$gdl_metadata->readXML($record);
 		$main.=_READSUCCESS;
 		$main.="<p><a href='./gdl.php?mod=cdsisis&amp;db_name=".$db_name."&amp;op=configure&amp;id=".$nextid.">"._NEXTRECORD." (".$nextid.")</a></p>";
@@ -322,7 +322,7 @@ function save_configuration($db_name) {
 function configuration_test($db_name) {
 	global $gdl_isisdb,$gdl_metadata;
 	$record=$gdl_isisdb->get_record($db_name,1);
-	if (!ereg("row",$record))
+	if (!preg_match("/row/",$record))
 		$main.=_FAILEDCDSISIS;
 	else {
 		$xmlrecord=$gdl_isisdb->get_xml_record($db_name,1,$record);
@@ -358,7 +358,7 @@ function export_database($db_name) {
 		while (!$end_of_record){
 			$id++;
 			$record = $gdl_isisdb->get_record($db_name,$id);
-			if (ereg("<row>",$record)){
+			if (preg_match("/<row>/",$record)){
 				$skip = 0;
 				$xml = $gdl_isisdb->get_xml_record($db_name,$id,$record);
 				$filename = "catalog=".$db_name."=".$id;
@@ -380,12 +380,12 @@ function export_database($db_name) {
 		}
 		
 		$main.="<p><b>"._EXPORTDATABASE."</b></p>";
-		if (ereg("META",$main))	{
+		if (preg_match("/META/",$main))	{
 			$main.="<p><b>"._EXPORTINGINPROGRESS."</b>, ".$id." "._RECORDEXPORTED."</p>";
 		} else
 			$main.="<p><b>"._EXPORTINGFINISHED."</b></p>";
 			
-		if (!ereg("META",$main)){
+		if (!preg_match("/META/",$main)){
 				$main.="<b>".($id-50)."</b> "._RECORDEXPORTED;
 				$main.="<p><a href='./gdl.php?mod=cdsisis&amp;op=build&amp;step=2&amp;db_name=".$db_name."'>"._BUILDINDEX."</a></p>";
 			}
@@ -411,7 +411,7 @@ function indexing_process($db_name) {
 		$result=explode("\n",$result);
 		
 		foreach ($result as $idxResult => $valResult) {
-			if (ereg("!!!Adding",$result[$idxResult])){
+			if (preg_match("/!!!Adding/",$result[$idxResult])){
 				$meta=explode("'",$result[$idxResult]);
 				$main.="Meta : ".$meta[1]."<br>";
 			} else
@@ -432,7 +432,7 @@ function list_isis_index() {
 	if ($dirhandle) {
 		$main.="<ol>";
 		while (false !== ($file=readdir($dirhandle))) {
-			if ($file != "." && $file != ".." && is_file($dir."/".$file) && ereg("isis_",substr($file,0,5)) && ereg("idx",substr($file,-3,3))) {
+			if ($file != "." && $file != ".." && is_file($dir."/".$file) && preg_match("/isis_/",substr($file,0,5)) && preg_match("/idx/",substr($file,-3,3))) {
 				$idxfile.=$dir."/".$file." ";
 				$main.="<li><b>".$idxfile."</b>";				
 			}
@@ -460,7 +460,7 @@ function union_isis_index() {
 	
 	if($dirhandle) {
 		while (false !== ($file=readdir($dirhandle))) {
-			if ($file != "." && $file != ".." && is_file($dir."/".$file) && ereg("isis_",substr($file,0,5)) && ereg("idx",substr($file,-3,3))) {
+			if ($file != "." && $file != ".." && is_file($dir."/".$file) && preg_match("/isis_/",substr($file,0,5)) && preg_match("/idx/",substr($file,-3,3))) {
 				$idxfile.=$dir."/".$file." ";			
 			}
 		}

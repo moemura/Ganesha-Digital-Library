@@ -24,7 +24,7 @@
 			
 			$len = strlen($date);
 			if($len != 20) return $default;
-			if(!ereg("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z",$date))return $default;
+			if(!preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/",$date))return $default;
 			$f_date = substr($date,0,10);
 			$f_time = substr($date,11,8);
 			if($opt == 0)
@@ -329,7 +329,7 @@
 		function delete_record_repository($id){
 			global $gdl_db,$gdl_sync,$gdl_sys;
 			
-			$id	= (ereg("^[0-9]+$",$id))?$id:"";
+			$id	= (preg_match("/^[0-9]+$/",$id))?$id:"";
 			
 			if(!empty($id)){
 				$gdl_db->delete("repository","nomor = $id");
@@ -615,9 +615,9 @@
 			global $gdl_sync,$gdl_publisher,$gdl_db,$gdl_stdout;
 		
 			$token	= $_GET['token'];
-			$token	= (ereg("^[0-9]+$",$token))?$token:0;
+			$token	= (preg_match("/^[0-9]+$/",$token))?$token:0;
 			$limit		= $gdl_sync['sync_count_records'];
-			$limit	= (ereg("^[0-9]+$",$limit))?$limit:10;
+			$limit	= (preg_match("/^[0-9]+$/",$limit))?$limit:10;
 			
 			$cursor		= $token*$limit;
 			$publisher	= $gdl_publisher['id'];

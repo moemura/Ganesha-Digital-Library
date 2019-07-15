@@ -16,7 +16,7 @@ function display_member($q){
 	require_once("./class/repeater.php");
 
 	$page = $_GET['page'];
-	if (!isset($page) || ereg("add",$page) || ereg("updt",$page) ){
+	if (!isset($page) || preg_match("/add/",$page) || preg_match("/updt/",$page) ){
 	 	$page = 0 ;
 	}else{
 		$page = $page-1;

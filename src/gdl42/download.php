@@ -71,7 +71,7 @@ function download_redirect(){
 				$pub_property=$gdl_publisher2->get_property($publisher);					
 			}
 			
-			if (ereg("files/",@mysql_result($dbres,0,"path")))
+			if (preg_match("/files\//",@mysql_result($dbres,0,"path")))
 				$file_target="http://".$pub_property[_PUBLISHERHOSTNAME]."/".@mysql_result($dbres,0,"path");
 			else
 				$file_target="http://".$pub_property[_PUBLISHERHOSTNAME]."/files/".@mysql_result($dbres,0,"path");			

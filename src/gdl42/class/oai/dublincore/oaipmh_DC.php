@@ -188,7 +188,7 @@ class oaipmh_DC extends  oai {
 				for($i=0;$i<$c_list;$i++){
 					$identifier	= trim($dummy[$i]);
 					if(!empty($identifier)){
-						if(!ereg("\(.*",$identifier)){
+						if(!preg_match("/\(.*/",$identifier)){
 							array_push($arr_identifier,$identifier);
 						}
 					}

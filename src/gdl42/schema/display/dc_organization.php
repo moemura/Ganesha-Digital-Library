@@ -29,7 +29,7 @@ if (!empty($orgmail) && (substr($orgmail,0,1) != '#') && (substr($orgmail,-1,1) 
 	$content .= "<b>E-mail</b> : $orgmail<br/>";
 
 if (!empty($orgurl) && (substr($orgurl,0,1) != '#') && (substr($orgurl,-1,1) != '#')) {
-		if (!ereg("http://",$orgurl)) 
+		if (!preg_match("/http:\/\//",$orgurl)) 
 			$orgurl="http://".$orgurl;
 		$content .= "<b>Website</b> : <a href='".$orgurl."'>$orgurl</a><br/>";
 	}

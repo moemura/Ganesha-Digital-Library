@@ -45,7 +45,7 @@ class form{
 			$fields_required = trim(preg_replace("/\]/", "", $fields_required));
 			
 			if (!($fields_required=="" or $required=="") and $newfield['value']==""){
-				if (ereg($fields_required,$required)){
+				if (preg_match('/'.$fields_required.'/',$required)){
 					$title = "<span class=\"red\">$newfield[text]</span>";
 				}else{
 					$title = "$newfield[text]";

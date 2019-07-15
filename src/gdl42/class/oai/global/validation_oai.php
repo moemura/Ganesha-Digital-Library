@@ -78,7 +78,7 @@ class validation_oai{
 		$err_msg	= "";
 		$title		= $action;
 
-		$lastToken = (ereg("^[0-9]+$",$lastToken))?$lastToken:0;
+		$lastToken = (preg_match("/^[0-9]+$/",$lastToken))?$lastToken:0;
 		
 		$this->oai_lastToken = $lastToken;
 		//echo "Token[$verb] : $lastToken";
@@ -88,9 +88,9 @@ class validation_oai{
 			$opt2	= "The request includes illegal arguments or is missing required arguments";
 			$opt3	= "No available posting file";
 			
-			if(ereg($opt1, $error_result) 
-					|| (ereg($opt2, $error_result)  && ($verb == "GetRecord"))
-					||(ereg($opt3, $error_result)  && ($verb == "PutFileFragment"))
+			if(preg_match('/'.$opt1.'/', $error_result) 
+					|| (preg_match('/'.$opt2.'/', $error_result)  && ($verb == "GetRecord"))
+					||(preg_match('/'.$opt3.'/', $error_result)  && ($verb == "PutFileFragment"))
 				){
 				if($lastToken > 0){
 					switch($verb){
@@ -220,12 +220,12 @@ class validation_oai{
 	}
 	
 	function cek_valid_date_format($date){
-		$cek = (ereg("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z",$date))?true:false;
+		$cek = (preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/",$date))?true:false;
 		return $cek;
 	}
 	
 	function cek_valid_number_format($number){
-		return (ereg("^[0-9]+$",$number))?true:false;	
+		return (preg_match("/^[0-9]+$/",$number))?true:false;	
 	}
 	
 	function cek_valid_set_format($set){
@@ -233,7 +233,7 @@ class validation_oai{
 		$match	= 0;
 		$type	= 0;
 		for($i=0;($i<count($array_type)) && !$match;$i++){
-			if(ereg("$array_type[$i]",$set)){ 
+			if(preg_match("/$array_type[$i]/",$set)){ 
 				$match 	= 1;
 				$type	= $i;
 			}

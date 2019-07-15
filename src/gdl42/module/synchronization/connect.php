@@ -11,7 +11,7 @@ if(strcasecmp($sub_operation,"connecting") == 0){
 					$main = $gdl_stdout->print_message($l['timeout'],$title);
 				break;
 		case 0  :// failed					
-					if(!ereg("<table",$gdl_synchronization->response_connection["ERROR"])){
+					if(!preg_match("/<table/",$gdl_synchronization->response_connection["ERROR"])){
 
 						$msg .= "<b>"._FAILEDCONNECTION."</b>
 								<br>Error code: <b>".$gdl_synchronization->response_connection["ERROR_CODE"]

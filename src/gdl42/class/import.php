@@ -58,7 +58,7 @@ class import{
 			$val = trim($val);
 			
 			// check start boundaries
-			if (ereg("<record>",$val)) {
+			if (preg_match("/<record>/",$val)) {
 				$metadata_start = 1;
 				continue;
 			}
@@ -66,7 +66,7 @@ class import{
 			// check stop boundaries
 			
 			// -- for metadata
-			if (ereg("</record>",$val)){
+			if (preg_match("/</record>/",$val)){
 				$no++;
 				$metadata_start 	= 0;
 				
@@ -86,9 +86,9 @@ class import{
 			}
 			
 			// *** resumption token
-			if (ereg("<resumptionToken",$val)) $resumption_start = 1;
+			if (preg_match("/<resumptionToken/",$val)) $resumption_start = 1;
 			if ($resumption_start == 1) $resumption_string .= $val."\n";
-			if (ereg("</resumptionToken>",$val)){
+			if (preg_match("/</resumptionToken>/",$val)){
 				$resumption_start = 0;
 				$resumption_string	= $gdl_metadata->xmlheading()."<dc>$resumption_string</dc>";
 				$resumption_xml		= $gdl_metadata->read_xml($resumption_string);
@@ -546,7 +546,7 @@ class import{
 					// check metadata if has type discussion / disc
 					$arr_identifier	= explode("@",$identifier);
 					if(count($arr_identifier) > 1){
-						if(ereg("^[0-9]+$",$arr_identifier[1])){
+						if(preg_match("/^[0-9]+$/",$arr_identifier[1])){
 							$field	= "date,identifier,user_id,name,email,subject,comment";
 
 							$date	= addslashes($xml[DATE][0]);
@@ -580,7 +580,7 @@ class import{
 				}
 				break;
 			case "update":
-				if(!ereg("@",$identifier)){//echo "IM_4 ";
+				if(!preg_match("/@/",$identifier)){//echo "IM_4 ";
 					$gdl_db->update("metadata","date_modified='".$xml["DATE.MODIFIED"][0]."',owner='".$xml["CONTRIBUTOR.MODIFIEDBY"][0]."',xml_data='".addslashes($xmldata)."'","identifier='".$xml["IDENTIFIER"][0]."'");
 					$gdl_db->update($box,"datemodified='".$xml["DATE.MODIFIED"][0]."'","identifier='".$xml["IDENTIFIER"][0]."'");
 					$this->update_relation($xmldata);
@@ -590,7 +590,7 @@ class import{
 			default:			
 		}
 	
-		if (ereg("Duplicate",mysql_error())) {
+		if (preg_match("/Duplicate/",mysql_error())) {
 			$this->import_metadata($identifier,$xmldata,"update",$box,$optPrefix);
 		}
 		
@@ -757,10 +757,10 @@ class import{
 			$no			= 0;
 			while (!gzeof($gzhandle))	{
 					$xmldata.=gzgetc($gzhandle);
-					if (ereg("</record>",$xmldata)) {
-						if (ereg("<dc>",$xmldata))
+					if (preg_match("/</record>/",$xmldata)) {
+						if (preg_match("/<dc>/",$xmldata))
 							$prefix="general";
-						elseif (ereg("<dc:",$xmldata))
+						elseif (preg_match("/<dc:/",$xmldata))
 							$prefix="oai_dc";
 						
 						$result	= $this->extract_record($xmldata,"inbox",$prefix);						
@@ -782,11 +782,11 @@ class import{
 	}
 	
 	function cek_valid_date_format($date){
-		return (ereg("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z",$date))?1:0;
+		return (preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/",$date))?1:0;
 	}
 	
 	function cek_valid_date_format2($date){
-		return (ereg("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}",$date))?1:0;
+		return (preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}/",$date))?1:0;
 	}
 	
 	
@@ -796,7 +796,7 @@ class import{
 			$datestamp_date	= substr($date,0,10);
 			$datestamp_time	= substr($date,11,8);
 			
-			if(!ereg("[0-9]{2}:[0-9]{2}:[0-9]{2}",$datestamp_time))
+			if(!preg_match("/[0-9]{2}:[0-9]{2}:[0-9]{2}/",$datestamp_time))
 				$datestamp	= $datestamp_date." ".$datestamp_time;
 			else
 				$datestamp	= $datestamp_date;
@@ -960,7 +960,7 @@ class import{
 			if(!empty($no_relation) && ($no_relation != "0")){
 				$gdl_db->insert("relation","identifier,date_modified,no,name,part,path,format,size,uri,note","'".$xml["IDENTIFIER"][0]."','".$xml["RELATION.DATEMODIFIED"][$counter]."','$no_relation','".$xml["RELATION.HASFILENAME"][$counter]."','".$xml["RELATION.HASPART"][$counter]."','".$xml["RELATION.HASPATH"][$counter]."','".$xml["RELATION.HASFORMAT"][$counter]."','".$xml["RELATION.HASSIZE"][$counter]."','".$xml["RELATION.HASURI"][$counter]."','".$xml["RELATION.HASNOTE"][$counter]."'");
 
-				if(ereg("Duplicate",mysql_error()))
+				if(preg_match("/Duplicate/",mysql_error()))
 					$gdl_db->update("relation",",date_modified='".$xml["RELATION.DATEMODIFIED"][$counter]."',name='".$xml["RELATION.HASFILENAME"][$counter]."',part='".$xml["RELATION.HASPART"][$counter]."',path='".$xml["RELATION.HASPATH"][$counter]."',format='".$xml["RELATION.HASFORMAT"][$counter]."',size='".$xml["RELATION.HASSIZE"][$counter]."',uri='".$xml["RELATION.HASURI"][$counter]."',note='".$xml["RELATION.HASNOTE"][$counter]."'","identifier='$identifier' AND no='$no_relation'");
 
 			}

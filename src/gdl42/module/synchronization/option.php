@@ -29,7 +29,7 @@ if(!empty($action)){
 		if(!$failed){
 			$page	= $_GET['page'];
 			if(isset($page)){
-				$page = (ereg("^[0-9]+$",$page))?$page-1:1;
+				$page = (preg_match("/^[0-9]+$/",$page))?$page-1:1;
 				$page = ($page > 0)?$page:1;
 			}else
 				$page = 1;

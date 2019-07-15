@@ -5,7 +5,7 @@ function form_register($action){
 	global $gdl_form, $gdl_content, $frm,$gdl_mod,$gdl_op,$gdl_captcha;
 	include "./config/usertype.php";
 
-if ((ereg("member",$gdl_mod) && ereg("edit",$gdl_op)) || (ereg("member",$gdl_mod) && ereg("index",$gdl_op)))
+if ((preg_match("/member/",$gdl_mod) && preg_match("/edit/",$gdl_op)) || (preg_match("/member/",$gdl_mod) && preg_match("/index/",$gdl_op)))
 	$required=false;
 else
 	$required=true;

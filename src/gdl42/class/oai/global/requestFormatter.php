@@ -170,19 +170,19 @@ class requestFormatter{
 												
 				case "from"	 				: 	if($this->metadataPrefix == "oai_dc"){
 													if(!empty($this->from))
-														if(!ereg("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z",$this->from))
+														if(!preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/",$this->from))
 															$result .= "&from=".$this->from;
 												}else
-													$result .= (ereg("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z",$this->from))?"&from=":"&from=".$this->from;
+													$result .= (preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/",$this->from))?"&from=":"&from=".$this->from;
 													
 												break;
 												
 				case "until"	 			: 	if($this->metadataPrefix == "oai_dc"){
 													if(!empty($this->until))
-														if(!ereg("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z",$this->until))
+														if(!preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/",$this->until))
 															$result .= "&until=".$this->until;
 												}else
-													$result .= (ereg("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z",$this->until))?"&until=":"&until=".$this->until;
+													$result .= (preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/",$this->until))?"&until=":"&until=".$this->until;
 													
 												break;
 
@@ -239,7 +239,7 @@ class requestFormatter{
 	function request_resumptionToken(){
 		//echo "TOKEN : ".$this->metadataPrefix." :: ".$this->token."<br/>\n";
 		if($this->metadataPrefix == "oai_dc"){
-			if(($this->token != 0) || ereg("oai_dc",$this->token))
+			if(($this->token != 0) || preg_match("/oai_dc/",$this->token))
 				$query	= "&resumptionToken=".$this->token;
 		}else{
 			$query	= "&resumptionToken=".$this->token;

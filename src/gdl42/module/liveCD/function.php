@@ -491,7 +491,7 @@ function box_folder($url){
 	global $gdl_liveCD,$gdl_content,$gdl_sys;
 	
 	$node	= $_GET['node'];
-	$node	= ereg("^[0-9]+$",$node)?$node:0;
+	$node	= preg_match("/^[0-9]+$/",$node)?$node:0;
 
 	$rs_folder	= $gdl_liveCD->getListFolder($node);
 	$arr_name	= $gdl_liveCD->getTaksonomyFolder($node);
@@ -750,7 +750,7 @@ function list_of_uploaded_file($url) {
 }
 
 function convertSizeInfo($size){
-	if(!ereg("^[0-9]+$",$size)) return null;
+	if(!preg_match("/^[0-9]+$/",$size)) return null;
 	
 	$arr_info  = array("Byte","KBs","MBs","GBs","TBs");
 	$idx 		= 1;

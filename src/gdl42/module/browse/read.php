@@ -23,12 +23,12 @@ if(isset($query)) $query = explode("+",$query);
 if (is_array($query)){
 	while (list($qkey,$qval) = each($query)){
 		while (list($key,$val) = each($frm)){
-			if(ereg("DC:",$key))
+			if(preg_match("/DC:/",$key))
 			   {
 				if ($key<>"DC:IDENTIFIER" && $key <> "DC:PREFIX" && $key <> "DC:PUBLISHER") $frm[$key] = $search->mark_term($val[0],$qval);
 			}	
 			else {
-				if ($key<>"IDENTIFIER" && $key <> "PREFIX" && $key <> "PUBLISHER" && !ereg("URL",$key)) {
+				if ($key<>"IDENTIFIER" && $key <> "PREFIX" && $key <> "PUBLISHER" && !preg_match("/URL/",$key)) {
 					$frm[$key] = $search->mark_term($val[0],$qval);
 				}
 			}

@@ -29,7 +29,7 @@ function create_mydocs() {
 	global $gdl_folder,$gdl_session;
 	
 	$member_node=$gdl_folder->check_folder("Member",0);
-	if (ereg("err",$member_node)){
+	if (preg_match("/err/",$member_node)){
 		$folder["name"]="Member";
 		$folder["parent"]=0;
 		if (!$gdl_folder->add($folder)) {

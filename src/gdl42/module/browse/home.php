@@ -36,12 +36,12 @@ if($state == "offline"){
 	$stop 		= false;
 	if(is_array($arr_node)){
 		for($i=0;($i<count($arr_node)) && !$stop;$i++){
-			$stop = ereg("^[0-9]+$",$arr_node[$i])?false:true;
+			$stop = preg_match("/^[0-9]+$/",$arr_node[$i])?false:true;
 		}
 		
 		$node_offline = $stop?"":$arr_node;
 	}else
-		$node_offline = ereg("^[0-9]+$",$node_offline)?$node_offline:"";
+		$node_offline = preg_match("/^[0-9]+$/",$node_offline)?$node_offline:"";
 }else
 	$node_offline = "";
 	
@@ -72,18 +72,18 @@ if(($state == "offline")){
 	$is_offline	= true;
 	
 	if($ext == "single")
-		$under_node = ereg("^[0-9]+$",$parent)?$parent:0;
+		$under_node = preg_match("/^[0-9]+$/",$parent)?$parent:0;
 	else if($ext == "multiply"){
 		$arr_parent	= explode(",",$parent);
 		$stop 		= false;
 		if(is_array($arr_parent)){
 			$arr_parent	= array_unique($arr_parent);
 			for($i=0;($i<count($arr_parent)) && !$stop;$i++){
-				$stop = ereg("^[0-9]+$",$arr_parent[$i])?false:true;
+				$stop = preg_match("/^[0-9]+$/",$arr_parent[$i])?false:true;
 			}
 			$under_node 	= $stop?0:$arr_parent;
 		}else
-			$under_node = ereg("^[0-9]+$",$parent)?$parent:0;
+			$under_node = preg_match("/^[0-9]+$/",$parent)?$parent:0;
 	}
 	
 }

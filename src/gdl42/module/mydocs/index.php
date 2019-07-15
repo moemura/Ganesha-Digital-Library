@@ -16,7 +16,7 @@ $_SESSION['DINAMIC_TITLE'] = "My Documents";
 
 require_once("./module/mydocs/function.php");
 $member_node=$gdl_folder->check_folder("Member",0);
-if (!ereg("err",$gdl_folder->check_folder($gdl_session->user_id,$member_node)) && !ereg("err",$member_node)) {
+if (!preg_match("/err/",$gdl_folder->check_folder($gdl_session->user_id,$member_node)) && !preg_match("/err/",$member_node)) {
 	$main.=mydocs_exist();
 } else {
 	$main.=mydocs_not_exist();

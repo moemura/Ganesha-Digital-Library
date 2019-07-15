@@ -52,7 +52,7 @@ if (!empty($p_email) && (substr($p_email,0,1) != '#') && (substr($p_email,-1,1) 
 	$content .= "<b>E-mail</b> : $p_email<br/>";
 
 if (!empty($p_url) && (substr($p_url,0,1) != '#') && (substr($p_url,-1,1) != '#')) {
-	if (!ereg("http://",$p_url)) 
+	if (!preg_match("/http:\/\//",$p_url)) 
 		$p_url="http://".$p_url;
 	$content .= "<b>Website</b> : <a href='".$p_url."'>$p_url</a><br/>";
 	}

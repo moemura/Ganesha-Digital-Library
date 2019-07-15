@@ -16,7 +16,7 @@ if (preg_match("/index.php/i",$_SERVER['PHP_SELF'])) {
 $_SESSION['DINAMIC_TITLE'] = _ORGANIZATION;
 require_once("./module/organization/function.php");
 $organization_node=$gdl_folder->check_folder("Organization",0);
-if (!ereg("err",$organization_node)) {
+if (!preg_match("/err/",$organization_node)) {
 	$main.=list_of_organization();
 } else {
 	$main.=organization_not_exist();

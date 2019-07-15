@@ -141,7 +141,7 @@ class requestAction_GN extends requestAction {
 							$p_identifier	= $xmldata['HEADER.IDENTIFIERS'][$i];	
 							$p_size			= (int)$xmldata['HEADER.SIZE'][$i];
 							$p_status		= $xmldata['HEADER.STATUS'][$i];
-							$p_size			= (ereg("^[0-9]+$",$p_size))?$p_size:0;
+							$p_size			= (preg_match("/^[0-9]+$/",$p_size))?$p_size:0;
 							
 							if(!empty($p_identifier)){
 								$result['size']	+= $p_size;

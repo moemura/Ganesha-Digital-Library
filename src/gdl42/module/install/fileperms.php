@@ -18,7 +18,7 @@ include "./module/install/function.php";
 
 if (!file_exists("./files/misc/install.lck")) {	
 	$main.=checking_dir();
-	if (!ereg(_CANTWRITE,$main))
+	if (!preg_match('/'._CANTWRITE.'/',$main))
 		$main.="<p><a href='./gdl.php?mod=install&amp;op=database'>"._DATABASECONF."</a></p>";
 }
 else

@@ -22,7 +22,7 @@ if (!file_exists("./files/misc/install.lck")) {
 	if ($gdl_form->verification($frm) && $frm) {
 		$main.="<p>".create_table()."</p>";
 	} else {
-		if (ereg("err",$gdl_db->test_connection()))
+		if (preg_match("/err/",$gdl_db->test_connection()))
 			$main.="<p>"._DATABASECONNECTIONERROR."</p>";
 		else {
 			$main.="<p><b>"._DATABASECONNECTIONSUCCESS."</b></p>";

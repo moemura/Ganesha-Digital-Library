@@ -34,7 +34,7 @@ $gdl_harvest->init("$opt_script");
 
 function getScriptType($option){
 	$opt		= (int)$option;
-	$val_opt	= (ereg("^[0-9]+$",$opt))?$opt:0;
+	$val_opt	= (preg_match("/^[0-9]+$/",$opt))?$opt:0;
 	
 	return ($val_opt < 2)?$val_opt:0;
 }

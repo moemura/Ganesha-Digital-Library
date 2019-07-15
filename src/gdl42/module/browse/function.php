@@ -112,7 +112,7 @@ function display_metadata($frm){
 		$prefix = "general";
 		$fKey	= key($frm);
 		
-		if(ereg("DC:",$fKey))
+		if(preg_match("/DC:/",$fKey))
 			$prefix = "oai_dc";
 		
 		

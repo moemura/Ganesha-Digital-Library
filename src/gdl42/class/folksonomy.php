@@ -5,7 +5,7 @@ class folksonomy{
 function save_configuration($frm) {
 
 		$date = $frm['folks_start_date'];
-		if(!ereg("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z",$date))
+		if(!preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/",$date))
 			$date = "0000-00-00T00:00:00Z";
 		
 		$sync_conf = "<?
@@ -97,7 +97,7 @@ function update_folksonomy(){
 	$token 			= $_GET['token'];
 	$total			= $_GET['total'];
 	$date_filter	= $gdl_folks['folks_start_date'];
-	if(!ereg("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z",$date_filter)){
+	if(!preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/",$date_filter)){
 		$date_filter = "date_modified >= '0000-00-00 00:00:00'";
 	}else{
 		$date_filter = "date_modified >= '".substr($date_filter,0,10)." ".substr($date_filter,11,8)."'";
@@ -107,7 +107,7 @@ function update_folksonomy(){
 	if(empty($total)) $total = $this->getTotalMetadata($date_filter);
 	$limit	= $gdl_folks['folks_fetch_records'];
 	
-	if(ereg("^[0-9]+$",$limit) == FALSE) $limit = 30;
+	if(preg_match("/^[0-9]+$/",$limit) == FALSE) $limit = 30;
 	$start 	= $token*$limit;
 	
 	$rMetadata = $gdl_db->select("metadata","xml_data",$date_filter,"","","$start,$limit");
@@ -143,7 +143,7 @@ function clean_stopwordToken(){
 	if(empty($token)) $token = 0;
 	if(empty($total)) $total = $this-> getTotalStopWord();
 	$limit	= $gdl_sync['sync_count_records'];
-	if(ereg("^[0-9]+$",$limi) == FALSE) $limit = 20;
+	if(preg_match("/^[0-9]+$/",$limi) == FALSE) $limit = 20;
 	$start 	= $token*$limit;
 	
 	$rToken = $gdl_db->select("garbagetoken","Token","","","","$start,$limit");
@@ -179,7 +179,7 @@ function update_box_folksonomy($array){
 				$word 	= trim($array[$i]);
 				if(!empty($word)){
 					$word	= ucfirst($word);
-					if(ereg("[:alpha]",$word) == TRUE)
+					if(preg_match("/[:alpha]/",$word) == TRUE)
 						$gdl_import->update_token_folksonomy($word);
 				}
 			}
@@ -187,7 +187,7 @@ function update_box_folksonomy($array){
 		}else {
 			$word = trim($array);
 			if(!empty($word)){
-				if(ereg("[:alnum]",$word) == TRUE)
+				if(preg_match("/[:alnum]/",$word) == TRUE)
 					$gdl_import->update_token_folksonomy($word);
 			}
 		}
@@ -213,7 +213,7 @@ function replace_karakter($kalimat){
 		$kalimat = str_replace($arr[$i],$replace,$kalimat);
 	}
 
-	if(ereg(".*>",$kalimat)){
+	if(preg_match("/.*>/",$kalimat)){
 		$kalimat	= str_replace(" ","\t",$kalimat);
 		$kalimat	= str_replace(">","\t>\t",$kalimat);
 		$kalimat	= str_replace("<","\t<\t",$kalimat);
@@ -292,7 +292,7 @@ function box_folksonomy(){
 	if(substr($bColor,0,1) != "#")
 		$bColor = "#".$bColor;
 
-	if(ereg("^[0-9]+$",$min_hz) == FALSE) $min_hz = 30;
+	if(preg_match("/^[0-9]+$/",$min_hz) == FALSE) $min_hz = 30;
 	for($i='A';$i<'Z';$i++){
 
 		$tables		= $gdl_db->tables("folksonomy");

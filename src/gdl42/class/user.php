@@ -50,7 +50,7 @@ class user {
 	}
 	
 	function cek_mail($mail){
-	 	if(ereg("^([a-z0-9_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z ]{2,4}$",$mail))
+	 	if(preg_match("/^([a-z0-9_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z ]{2,4}$/",$mail))
 			return true;
  		else 
 			return false;	

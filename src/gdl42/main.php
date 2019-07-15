@@ -74,20 +74,20 @@ if (file_exists("./theme/".$gdl_content->theme."/function.php")) {
 }
 
 // modul and operation authentication
-if (ereg("\.\.",$gdl_mod)|| ereg("\.\.",$gdl_op)) {
+if (preg_match("/\.\./",$gdl_mod)|| preg_match("/\.\./",$gdl_op)) {
 		    $gdl_content->set_error(_YOUCANACCESSDIRECLY);
 		} else {
 			
-			if (!file_exists("./files/misc/install.lck") && (!ereg("install",$gdl_mod))) {
+			if (!file_exists("./files/misc/install.lck") && (!preg_match("/install/",$gdl_mod))) {
 					$gdl_content->main=gdl_content_box("<p>"._INSTALLATIONPAGE."</p>",_INSTALLATION);
 			} else {			
-					if ($gdl_auth->module() || (ereg("install",$gdl_mod) && !file_exists("./files/misc/install.lck"))){
+					if ($gdl_auth->module() || (preg_match("/install/",$gdl_mod) && !file_exists("./files/misc/install.lck"))){
 						// define language per modul
 						if (file_exists("./module/$gdl_mod/lang/".$gdl_content->language.".php")) {
 							include("./module/$gdl_mod/lang/".$gdl_content->language.".php");
 						}
 						
-						if ($gdl_auth->operation() || (ereg("install",$gdl_mod) && !file_exists("./files/misc/install.lck"))){
+						if ($gdl_auth->operation() || (preg_match("/install/",$gdl_mod) && !file_exists("./files/misc/install.lck"))){
 							if (file_exists("./module/$gdl_mod/$gdl_op.php")) {
 								include("./module/$gdl_mod/$gdl_op.php");
 							}else{
@@ -107,7 +107,7 @@ if(empty($dinamic_title) || ($request_uri == "/index.php")){ $dinamic_title = "W
 
 // display error, replace all content
 $gdl_session->set_access_log();
-if ($gdl_content->error<>"" && (!ereg("install",$gdl_mod)) && (file_exists("./files/misc/install.lck"))) $gdl_content->main = $gdl_content->error;
+if ($gdl_content->error<>"" && (!preg_match("/install/",$gdl_mod)) && (file_exists("./files/misc/install.lck"))) $gdl_content->main = $gdl_content->error;
 echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n\n"
 	."<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\">\n"
 	."<head>\n"

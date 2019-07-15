@@ -229,7 +229,7 @@ class liveCD{
 
 			$dh = opendir($dir_css);
 			while($file = readdir($dh)){
-				if(ereg("\.css",$file))
+				if(preg_match("/\.css/",$file))
 					@copy("$dir_css/$file","$p_css/$file");
 			}
 			closedir($dh);
@@ -608,7 +608,7 @@ class liveCD{
 						//echo "CURR_PATH : $curr_path - $arr_curr_path[0] - $arr_curr_path[1]\n";
 						if($curr_path == "0"){
 							$list_parent = (strlen($list_parent) == 0)?"$curr_node":"$list_parent,$curr_node";
-						}else if(ereg("^[0-9]+$",$arr_curr_path[1])){ // cek available folder under node
+						}else if(preg_match("/^[0-9]+$/",$arr_curr_path[1])){ // cek available folder under node
 							$list_parent = (strlen($list_parent) == 0)?"$arr_curr_path[1]":"$list_parent,$arr_curr_path[1]";
 						}
 					}

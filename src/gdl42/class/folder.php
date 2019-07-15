@@ -138,7 +138,7 @@ class folder{
 		$dbres = $gdl_db->select("metadata","identifier,folder,prefix",$filter);
 		while ($rows = @mysql_fetch_row($dbres)){
 			$new_path = $this->get_path($rows[1]);
-			if (ereg("general",$rows[2])) {
+			if (preg_match("/general/",$rows[2])) {
 				$frm=$gdl_metadata->read($rows[0]);
 				$frm['IDENTIFIER_HIERARCHY']=$this->get_hierarchy($rows[1]);
 				$property=$gdl_metadata->get_property ($rows[0]);

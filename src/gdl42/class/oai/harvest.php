@@ -120,7 +120,7 @@ class harvest{
 		
 		if(($verb == "GetRecord") || ($verb == "ListRecords") || ($verb == "ListIdentifiers")){
 			$repo_name = trim($this->harvest_sync['sync_repository_name']);
-			if(empty($repo_name) || ereg("N/A",$repo_name)){
+			if(empty($repo_name) || preg_match("/N\/A/",$repo_name)){
 				$result	= "<b>You cannot use this operation until you have receive the repository name.</b>";
 				return $result;	
 			}

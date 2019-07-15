@@ -150,7 +150,7 @@ function save_configuration() {
 		";
 		
 		foreach ($frm as $idx => $val) {
-		  if (!ereg("submit",$idx)) {
+		  if (!preg_match("/submit/",$idx)) {
 		  	$strcfg.="\$gdl_db_conf[\"".$idx."\"]=\"".$val."\";
 			";
 		  }
@@ -273,7 +273,7 @@ function create_table() {
 	global $frm,$gdl_db;
 	include ("./config/db.php");
 	
-	if (ereg("yes",$frm["database"])) {
+	if (preg_match("/yes/",$frm["database"])) {
 		$result=$gdl_db->create_db($gdl_db_conf["name"]);
 		if ($result)
 				$content.="<p>"._CREATEDBSUCCESS." <b>".$gdl_db_conf["name"]."</b></p>";					

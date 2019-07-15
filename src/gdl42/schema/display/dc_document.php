@@ -27,7 +27,7 @@ $url		= $gdl_metadata->get_value($frm,"SOURCE_URL");
 $source	= $gdl_metadata->get_value($frm,"SOURCE");
 $coverage    = $gdl_metadata->get_value($frm,"COVERAGE");
 $key = key($frm);
-if(ereg("DC:",$key) && empty($keyword)){
+if(preg_match("/DC:/",$key) && empty($keyword)){
 	$keyword = $subject;
 	$subject = "";
 }
@@ -74,7 +74,7 @@ if (!empty($ddc)&& (substr($ddc,0,1) != '#') && (substr($ddc,-1,1) != '#')){
 	$content .=	"<b>".ucfirst(_SUBJECT_DDC)." :</b> $ddc<br/>\n";
 }
 if (!empty($url)&& (substr($url,0,1) != '#') && (substr($url,-1,1) != '#')){
-	if (!ereg("http://",$url)) 
+	if (!preg_match("/http:\/\//",$url)) 
 		$url="http://".$url;
 	$content .=	"<b>Url :</b> <a href='".$url."'>$url</a><br/>\n";
 }

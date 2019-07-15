@@ -8,10 +8,10 @@ function shortcut_repository(){
 	global $gdl_sync;
 	
 	$id	= $gdl_sync['sync_repository_id'];
-	$id	= (ereg("^[0-9]+$",$id))?$id:"";
+	$id	= (preg_match("/^[0-9]+$/",$id))?$id:"";
 	
 	$page	= $_GET['page'];
-	$page	= (ereg("^[0-9]+$",$page))?$page:1;
+	$page	= (preg_match("/^[0-9]+$/",$page))?$page:1;
 	
 	$content="";
 	if(!empty($id)){

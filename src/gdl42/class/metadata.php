@@ -162,7 +162,7 @@ class metadata extends parser {
 			$gdl_folder->refresh($folder);
 		}
 
-		if (ereg("general",$prefix)) {
+		if (preg_match("/general/",$prefix)) {
 			$frm=$this->read($values['id']);
 			$frm['IDENTIFIER_HIERARCHY']=$gdl_folder->get_hierarchy($values['folder']);
 			$this->write($frm,$values);

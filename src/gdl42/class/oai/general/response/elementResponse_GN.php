@@ -53,7 +53,7 @@ class elementResponse_GN extends elementResponse {
 		$until				= $request_query['until'];
 		$limit				= $request_query['limit'];
 		
-		if (ereg("under:node:",$set)){
+		if (preg_match("/under:node:/",$set)){
 			
 			$node 		= substr($set,11);
 			$path 		= $this->node_path($node);
@@ -569,7 +569,7 @@ class elementResponse_GN extends elementResponse {
 		$arr_path_file	= explode("=",$file);
 		
 		// remove file/..... or files/.....
-		if(ereg("file",$arr_path_file[0])) array_shift($arr_path_file);
+		if(preg_match("/file/",$arr_path_file[0])) array_shift($arr_path_file);
 		
 		
 		$no_fragment	= array_pop($arr_path_file);

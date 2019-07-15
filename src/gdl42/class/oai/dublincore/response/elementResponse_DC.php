@@ -51,7 +51,7 @@ class elementResponse_DC extends elementResponse{
 		$from				= $request_query['from'];
 		$until				= $request_query['until'];
 		
-		if (ereg("under:node:",$set)){
+		if (preg_match("/under:node:/",$set)){
 			
 			$node 		= substr($set,11);
 			$path 		= $this->node_path($node);

@@ -69,7 +69,7 @@ if (preg_match(\"/conf.php/i\",\$_SERVER['PHP_SELF'])) {
 
 	if (is_array($frm)) {
 		foreach ($frm as $idxFrm => $valFrm) {
-			if (ereg("true",$valFrm)) {
+			if (preg_match("/true/",$valFrm)) {
 $str.="\$accesslog[\"".$idxFrm."\"] = true;
 ";
 			}

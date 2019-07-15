@@ -5,15 +5,15 @@ $_SESSION['DINAMIC_TITLE'] = "Upload Data";
 $node = $_SESSION['gdl_node'];
 $member_node=$gdl_folder->check_folder("Member",0);
 
-if (!ereg("err",$member_node)) {
+if (!preg_match("/err/",$member_node)) {
 		$mydocs_node=$gdl_folder->check_folder($gdl_session->user_id,$member_node);
 	}
 	
 if ($node==0) {
-		if (!ereg("err",$mydocs_node))
+		if (!preg_match("/err/",$mydocs_node))
 			$node=$mydocs_node;	
 }
-if (!ereg("err",$node) && ($node > 0)) {
+if (!preg_match("/err/",$node) && ($node > 0)) {
 	if (($gdl_session->group_id=="Editor" && $mydocs_node==$node) || ($gdl_session->group_id <> "Editor")) {
 	
 		$_SESSION['gdl_node'] = $node;

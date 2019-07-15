@@ -42,12 +42,12 @@ function box_partnership(){
 	if (!isset($page)){
 	 	$page = 0 ;
 	}else{
-		$page	= (ereg("^[0-9]+$",$page))?(int)$page:0;
+		$page	= (preg_match("/^[0-9]+$/",$page))?(int)$page:0;
 		$page	= ($page >0)?$page-1:0;
 	}
 	
 	$limit	= $gdl_sys['perpage_browse'];
-	$limit	= (ereg("^[0-9]+$",$limit))?$limit:15;
+	$limit	= (preg_match("/^[0-9]+$/",$limit))?$limit:15;
 	$limit	= ($limit == 0)?15:$limit;
 	
 	$start 	= $page * $limit;
@@ -160,7 +160,7 @@ function getDataPublisher($cursor,$limit){
 				echo "[$index][$value]<br/>";
 		*/
 		$hostname	= $row['host_url'];
-		$hostname	= (ereg("http",$hostname))?$hostname:"http://$hostname";
+		$hostname	= (preg_match("/http/",$hostname))?$hostname:"http://$hostname";
 		
 		$element	= array("idpublisher"=>$row['IDPUBLISHER'],
 							"publisher_id"=>$row['DC_PUBLISHER_ID'],

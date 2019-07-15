@@ -95,10 +95,10 @@ function search_result($schema,$methods="") {
 		if(is_array($result))
 			while (list($key,$val) = each($result)){
 				if ($gdl_sys['os']=="freebsd") $val = str_replace("/","", $val);
-				if (ereg("catalog",$val)) {
+				if (preg_match("/catalog/",$val)) {
 					$catalog=explode("=",$val);
 					$res=$gdl_isisdb->get_record($catalog[1],$catalog[2]);
-					if (ereg("row",$res))
+					if (preg_match("/row/",$res))
 						$xml=$gdl_isisdb->get_xml_record($catalog[1],$catalog[2],$res);				
 					
 					$xmlarr=$gdl_metadata->read_xml($xml);

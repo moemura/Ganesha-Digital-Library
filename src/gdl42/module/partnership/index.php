@@ -10,7 +10,7 @@ $_SESSION['DINAMIC_TITLE'] = _PARTNERSHIP;
 $id_repository	= $_GET['remote'];
 
 if(isset($id_repository)){
-	$id_repository	= (ereg("^[0-9]+$",$id_repository))?(int)$id_repository:-1;
+	$id_repository	= (preg_match("/^[0-9]+$/",$id_repository))?(int)$id_repository:-1;
 	
 	if($id_repository > -1)
 		$info_remote	=	$gdl_partner->execute_remoteLogin($id_repository);

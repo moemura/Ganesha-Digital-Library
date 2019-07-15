@@ -69,17 +69,17 @@ class requestAction{
 				// get response
 				
 				if(!$is_gzip)
-					$is_gzip = ereg("Content-Encoding: gzip",$line)?true:false;
+					$is_gzip = preg_match("/Content-Encoding: gzip/",$line)?true:false;
 				
 				if($is_gzip && !$is_read_gzip){
-					$is_read_gzip	= (ereg("Proxy-Connection: close",$line))?true:false;
+					$is_read_gzip	= (preg_match("/Proxy-Connection: close/",$line))?true:false;
 				}
 				
 				if ($response_start) $response .= $line;
-				if (ereg("Content-Type: ",$line)) $response_start = 1;
+				if (preg_match("/Content-Type: /",$line)) $response_start = 1;
 					
 				if(!$is_read_gzip){
-					if (ereg("<error code=",$line)){
+					if (preg_match("/<error code=/",$line)){
 							$str_error	= "error";
 							$pos_A	= strpos($line,"<$str_error");
 							$pos_B	= strpos($line,"</$str_error>")+3+strlen($str_error);
@@ -87,9 +87,9 @@ class requestAction{
 					}
 									
 					// get put response
-					if (ereg("<$verb>",$line)){
+					if (preg_match("/<$verb>/",$line)){
 						$pos_A	= strpos($line,"<$verb>");
-						if(ereg("</$verb>",$line)){
+						if(preg_match("/</$verb>/",$line)){
 							$pos_B	= strpos($line,"</$verb>") + strlen($verb)+3;
 							
 							if ($start) $put_response .= $line;
@@ -102,7 +102,7 @@ class requestAction{
 						}
 					}
 					
-					if (ereg("</$verb>",$line)){
+					if (preg_match("/</$verb>/",$line)){
 						// Remove all information after </$verb>
 						
 						$pos_B	 = strpos($line,"</$verb>") + strlen($verb)+3;
@@ -125,7 +125,7 @@ class requestAction{
 			$rs_gzip	= str_replace("\n","",$rs_gzip);
 			$rs_gzip	= str_replace("\r","",$rs_gzip);
 
-			if (ereg("<error code=",$rs_gzip)){
+			if (preg_match("/<error code=/",$rs_gzip)){
 			
 				$str_error	= "error";
 				$pos_A	= strpos($rs_gzip,"<$str_error");
