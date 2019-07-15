@@ -9,7 +9,7 @@
 
  ***************************************************************************/
 
-if (eregi("server.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/server.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

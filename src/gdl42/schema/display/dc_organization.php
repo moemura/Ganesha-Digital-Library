@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("dc_organization.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/dc_organization.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 global $gdl_metadata;

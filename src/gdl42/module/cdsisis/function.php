@@ -9,7 +9,7 @@
 
  ***************************************************************************/
  
-if (eregi("function.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 
 function list_cdsisis(){
 	
@@ -66,7 +66,7 @@ function list_cdsisis_files($db_name) {
 		
 		$no=1;
 		while (false !== ($file = readdir($dirhandle))) { 
-			if ($file != "." && $file != ".." && !eregi("owner",$file)) {
+			if ($file != "." && $file != ".." && !preg_match("/owner/i",$file)) {
 					$field[1]=$no;
 					$field[2]=$file;
 					$field[3]=filesize($dir."/".$file);

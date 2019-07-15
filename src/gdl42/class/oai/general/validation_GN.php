@@ -17,7 +17,7 @@
  *
  ***************************************************************************/
  
- if (eregi("validation_GN.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/validation_GN.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

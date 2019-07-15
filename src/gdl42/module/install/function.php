@@ -9,7 +9,7 @@
 
  ***************************************************************************/
 
-if (eregi("function.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 
 function checking_dir() {
 	$dirfiles="./files";
@@ -70,7 +70,7 @@ function checking_dir() {
 	$dirhandle=opendir($dirconfig);
 	if ($dirhandle) {
 		while (false !== ($filename=readdir($dirhandle))) {
-			if ($filename != "." && $filename != ".." && !eregi("type",$filename)) {
+			if ($filename != "." && $filename != ".." && !preg_match("/type/i",$filename)) {
 				if (is_writable($dirconfig."/".$filename))
 					$canwrite=_CANWRITE;
 				else

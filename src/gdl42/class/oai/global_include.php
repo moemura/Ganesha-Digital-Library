@@ -16,7 +16,7 @@
  *
  ***************************************************************************/
  
- if (eregi("global_include.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/global_include.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

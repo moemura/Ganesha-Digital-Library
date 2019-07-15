@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("search.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/search.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 
@@ -84,7 +84,7 @@ class search{
 			$f = explode(" ",$res[$i]);
 			$s = explode("\"",$res[$i]);
 			
-			if (eregi("no results",$res[$i])){
+			if (preg_match("/no results/i",$res[$i])){
 				$this->error = $q;
 				$noresult = true;
 			} elseif ($f[0] == "err:"){
@@ -105,8 +105,8 @@ class search{
 				}
 			} else {
 				
-				if (eregi("hits",$res[$i])) $this->hit= $f[4];
-				if (eregi("run time",$res[$i]))$this->runtime= $f[3];
+				if (preg_match("/hits/i",$res[$i])) $this->hit= $f[4];
+				if (preg_match("/run time/i",$res[$i]))$this->runtime= $f[3];
 	
 			}
 		}

@@ -16,7 +16,7 @@
  *
  ***************************************************************************/
  
- if (eregi("errorFormatter.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/errorFormatter.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

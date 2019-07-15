@@ -8,7 +8,7 @@
 	reviewer             : Beni Rio Hermanto (benirio@kmrg.itb.ac.id)
 
  ***************************************************************************/
-if (eregi("configure.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/configure.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

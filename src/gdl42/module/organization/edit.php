@@ -9,7 +9,7 @@
 
  ***************************************************************************/
 
-if (eregi("edit.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/edit.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

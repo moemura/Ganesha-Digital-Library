@@ -16,7 +16,7 @@
  *   (at your option) any later version.
  *
  ***************************************************************************/
- if (eregi("responseAction.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/responseAction.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

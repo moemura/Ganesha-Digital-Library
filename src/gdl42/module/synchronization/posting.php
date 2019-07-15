@@ -1,5 +1,5 @@
 <?php
-if (eregi("posting.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/posting.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 include_once "buffer_file.php";

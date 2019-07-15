@@ -1,5 +1,5 @@
 <?php
-if (eregi("import.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/import.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 
@@ -357,7 +357,7 @@ class import{
 				$content	=	_EXPORTFAILED;		
 			}
 			
-			if (eregi(_EXPORTSUCCESS,$content)){
+			if (preg_match('/'._EXPORTSUCCESS.'/i',$content)){
 				$str_info 	= $frm["starting_date"]."--$end_date";
 				$fp 		= fopen("$filename.txt","w");
 				fputs($fp,$str_info);
@@ -394,8 +394,8 @@ class import{
 		global $frm,$_FILES,$gdl_sys;
 		
 		$content="<p>";
-		if (eregi("gzip",$_FILES["archived_file"]["type"])) {
-			if (eregi("metadata-",$_FILES["archived_file"]["name"])) {
+		if (preg_match("/gzip/i",$_FILES["archived_file"]["type"])) {
+			if (preg_match("/metadata-/i",$_FILES["archived_file"]["name"])) {
 				if ($_FILES["archived_file"]["size"] < $gdl_sys['sync_maxsize_gzfile']) {
 					if (@is_uploaded_file($_FILES["archived_file"]["tmp_name"])) {
 					  if (copy($_FILES["archived_file"]["tmp_name"],"./files/import/".$_FILES["archived_file"]["name"])) {

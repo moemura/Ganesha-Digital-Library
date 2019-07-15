@@ -7,7 +7,7 @@
     email                : hayun@kmrg.itb.ac.id
 
  ***************************************************************************/
-if (eregi("db.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/db.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 
@@ -15,7 +15,7 @@ class database {
 	var $print_script;
 	var $prefix="";
 	
-	function database($gdl_db_conf=""){
+	function database($gdl_db_conf=array()){
 		global $gdl_err,$gdl_content;
 		
 		include ("./config/db.php");

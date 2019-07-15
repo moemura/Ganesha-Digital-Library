@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("dc_person.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/dc_person.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

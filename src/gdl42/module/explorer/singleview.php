@@ -9,7 +9,7 @@
 
  ***************************************************************************/
 
-if (eregi("singleview.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/singleview.php/i",$_SERVER['PHP_SELF'])) die();
 
 $_SESSION['DINAMIC_TITLE'] = "EXPLORER";
 if (isset($_SESSION["node1"]))

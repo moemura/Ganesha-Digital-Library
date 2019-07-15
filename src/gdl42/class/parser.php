@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("parser.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/parser.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 
@@ -90,7 +90,9 @@ class parser {
 		$parser = xml_parser_create();
 		xml_parser_set_option($parser,XML_OPTION_CASE_FOLDING,1);
 		xml_parser_set_option($parser,XML_OPTION_SKIP_WHITE,1);
-		xml_parse_into_struct($parser,$xmldata,&$values,&$tags);
+		$vl = &$values;
+		$tg = &$tags;
+		xml_parse_into_struct($parser,$xmldata,$vl,$tg);
 		xml_parser_free($parser);
 	
 		foreach ($tags as $key=>$val) {

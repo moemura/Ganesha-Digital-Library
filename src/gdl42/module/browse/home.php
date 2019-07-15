@@ -8,7 +8,7 @@
 	reviewer             : Beni Rio Hermanto (benirio@kmrg.itb.ac.id)
 	
  ***************************************************************************/
-if (eregi("home.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/home.php/i",$_SERVER['PHP_SELF'])) die();
 
 require_once ("./module/browse/function.php");
 require_once("./config/type.php");

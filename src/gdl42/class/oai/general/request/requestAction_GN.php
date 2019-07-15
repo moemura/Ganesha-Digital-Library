@@ -17,7 +17,7 @@
  *
  ***************************************************************************/
  
- if (eregi("requestAction_GN.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/requestAction_GN.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 
@@ -34,7 +34,7 @@ class requestAction_GN extends requestAction {
 		$response 			= $this->get_response_from_hub();
 		$response_data		= $response['response_hub'];
 		
-		if(eregi("TIMEOUT",$response_data)){
+		if(preg_match("/TIMEOUT/i",$response_data)){
 			$result = $this->error_handle($response_data);
 		}else{
 			if (!empty($response_data[xmldata])){
@@ -55,7 +55,7 @@ class requestAction_GN extends requestAction {
 		$response 			= $this->get_response_from_hub($id);
 		$response_data		= $response['response_hub'];
 		
-		if(eregi("TIMEOUT",$response_data)){
+		if(preg_match("/TIMEOUT/i",$response_data)){
 			$result['error']	= $response_data;
 		}else{
 			if (!empty($response_data[xmldata])){
@@ -77,7 +77,7 @@ class requestAction_GN extends requestAction {
 		$response 			= $this->get_response_from_hub();
 		$response_data		= $response['response_hub'];
 		
-		if(eregi("TIMEOUT",$response_data)){
+		if(preg_match("/TIMEOUT/i",$response_data)){
 			$result['error']	= $response_data;
 		}else{
 			if (!empty($response_data['xmldata'])){
@@ -101,7 +101,7 @@ class requestAction_GN extends requestAction {
 		$response 		= $this->get_response_from_hub();
 		$response_data	= $response['response_hub'];
 
-		if(eregi("TIMEOUT",$response_data)){
+		if(preg_match("/TIMEOUT/i",$response_data)){
 			$result['error']	= $response_data;
 		}else{
 			if (!empty($response_data[xmldata])){
@@ -125,13 +125,13 @@ class requestAction_GN extends requestAction {
 		$response_data		= $response['response_hub'];
 
 		$this->box_statistic("outbox");
-		if(eregi("TIMEOUT",$response_data)){
+		if(preg_match("/TIMEOUT/i",$response_data)){
 			$result['error']	= $response_data;
 		}else{
 			if (!empty($response_data[xmldata])){
 				
 				// get identifiers
-				if(eregi("<header>",$response_data['xmldata'])){
+				if(preg_match("/<header>/i",$response_data['xmldata'])){
 					$xmldata		= $this->ra_metadata->readXML($response_data['xmldata']);
 					$result['size']	= 0;
 					$result['count']= 0;
@@ -210,7 +210,7 @@ class requestAction_GN extends requestAction {
 		$response 			= $this->get_response_from_hub();
 		$response_data	= $response['response_hub'];
 		
-		if(eregi("TIMEOUT",$response_data)){
+		if(preg_match("/TIMEOUT/i",$response_data)){
 			$result['error']	= $response_data;
 		}else{
 			if (!empty($response_data[xmldata])){
@@ -250,7 +250,7 @@ class requestAction_GN extends requestAction {
 		$response 			= $this->get_response_from_hub();
 		$response_data		= $response['response_hub'];
 		
-		if(eregi("TIMEOUT",$response_data)){
+		if(preg_match("/TIMEOUT/i",$response_data)){
 			$result['error']	= $response_data;
 		}else{
 			if (!empty($response_data[xmldata])){
@@ -300,7 +300,7 @@ class requestAction_GN extends requestAction {
 		$response 			= $this->get_response_from_hub();
 		$response_data		= $response['response_hub'];
 				
-		if(eregi("TIMEOUT",$response_data)){
+		if(preg_match("/TIMEOUT/i",$response_data)){
 			$result['error']	= $response_data;
 		}else{
 			if (!empty($response_data[xmldata])){

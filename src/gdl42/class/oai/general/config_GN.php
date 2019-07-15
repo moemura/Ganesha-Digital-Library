@@ -17,7 +17,7 @@
  *
  ***************************************************************************/
  
- if (eregi("config_GN.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/config_GN.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

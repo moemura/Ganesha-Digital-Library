@@ -1,5 +1,5 @@
 <?php
-if (eregi("publisher.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/publisher.php/i",$_SERVER['PHP_SELF'])) die();
 
 
 include("./module/migration/conf.php");

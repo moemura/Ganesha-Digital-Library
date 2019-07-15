@@ -8,7 +8,7 @@
 
  ***************************************************************************/
 
-if (eregi("function.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 
 function display_publisher($searchkey) {
 	global $gdl_content,$gdl_publisher2,$gdl_sys;

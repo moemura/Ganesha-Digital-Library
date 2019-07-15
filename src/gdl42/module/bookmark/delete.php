@@ -10,7 +10,7 @@
  ***************************************************************************/
 
 
-if (eregi("delete.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/delete.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

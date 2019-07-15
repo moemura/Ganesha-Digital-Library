@@ -9,7 +9,7 @@
  ***************************************************************************/
 
 
-if (eregi("multiview.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/multiview.php/i",$_SERVER['PHP_SELF'])) die();
 
 $_SESSION['DINAMIC_TITLE'] = "EXPLORER";
 // get node to display

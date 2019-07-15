@@ -17,7 +17,7 @@
  *
  ***************************************************************************/
  
- if (eregi("config_oai.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/config_oai.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

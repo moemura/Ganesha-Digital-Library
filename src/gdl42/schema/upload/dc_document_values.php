@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("dc_document_values.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/dc_document_values.php/i",$_SERVER['PHP_SELF'])) die();
 
 include ("./config/publisher.php");
 

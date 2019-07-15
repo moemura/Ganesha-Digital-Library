@@ -9,7 +9,7 @@
 
  ***************************************************************************/
 
-if (eregi("function.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 
 function organization_not_exist() {
 	global $gdl_folder;

@@ -1,5 +1,5 @@
 <?php
-if (eregi("indonesian.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/indonesian.php/",$_SERVER['PHP_SELF'])) {
     die();
 }
 

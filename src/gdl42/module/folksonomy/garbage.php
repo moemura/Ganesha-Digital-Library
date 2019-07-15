@@ -1,5 +1,5 @@
 <?php
-if (eregi("garbage.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/garbage.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

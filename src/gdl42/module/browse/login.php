@@ -8,7 +8,7 @@
 	reviewer             : Beni Rio Hermanto (benirio@kmrg.itb.ac.id)
 	
  ***************************************************************************/
-if (eregi("login.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/login.php/i",$_SERVER['PHP_SELF'])) die();
 
 function form_login(){
 	global $gdl_form, $gdl_content;

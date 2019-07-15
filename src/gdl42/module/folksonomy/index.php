@@ -1,5 +1,5 @@
 <?php
-if (eregi("index.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/index.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 $_SESSION['DINAMIC_TITLE'] = _FOLKSONOMY;

@@ -16,7 +16,7 @@
  *
  ***************************************************************************/
  
-if (eregi("oai.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/oai.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 
@@ -160,7 +160,7 @@ class oai{
 					
 				$post_desc	= "<p><font size=1>$data_koneksi</font></p>";
 				
-			}else if(!eregi("Repository",$title)){
+			}else if(!preg_match("/Repository/i",$title)){
 			
 				$count_dummy	= (int)$data['dummy_count'];
 

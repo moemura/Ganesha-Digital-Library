@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("user.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/user.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

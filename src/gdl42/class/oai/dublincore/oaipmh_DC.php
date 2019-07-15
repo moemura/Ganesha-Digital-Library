@@ -17,7 +17,7 @@
  *
  ***************************************************************************/
  
- if (eregi("oaipmh_DC.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/oaipmh_DC.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

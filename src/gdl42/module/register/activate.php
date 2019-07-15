@@ -1,5 +1,5 @@
 <?php
-if (eregi("activate.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/activate.php/i",$_SERVER['PHP_SELF'])) die();
 
 
 function form_activate(){	

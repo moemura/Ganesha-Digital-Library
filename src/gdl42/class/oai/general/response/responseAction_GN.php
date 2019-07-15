@@ -17,7 +17,7 @@
  *
  ***************************************************************************/
  
- if (eregi("responseAction_GN.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/responseAction_GN.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

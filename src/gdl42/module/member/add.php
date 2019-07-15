@@ -9,7 +9,7 @@
 
  ***************************************************************************/
 
-if (eregi("add.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/add.php/i",$_SERVER['PHP_SELF'])) die();
 require_once "./module/register/function.php";
 require_once("./module/member/function.php");
 $page = $_GET['page'];

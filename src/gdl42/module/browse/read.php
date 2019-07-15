@@ -8,7 +8,7 @@
 	
  ***************************************************************************/
  
-if (eregi("read.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/read.php/i",$_SERVER['PHP_SELF'])) die();
 
 $id = $_GET['id'];
 include ("./module/browse/function.php");

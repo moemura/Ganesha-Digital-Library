@@ -1,5 +1,5 @@
 <?php
-if (eregi("step3.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/step3.php/i",$_SERVER['PHP_SELF'])) die();
 
 require_once ("./module/upload/function.php");
 $frm = $_POST['frm'];

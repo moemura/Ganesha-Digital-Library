@@ -1,5 +1,5 @@
 <?php
-if (eregi("step2.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/step2.php/i",$_SERVER['PHP_SELF'])) die();
 
 $schema = $_GET['s'];
 

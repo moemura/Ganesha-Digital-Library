@@ -8,7 +8,7 @@
 	reviewer             : Beni Rio Hermanto (benirio@kmrg.itb.ac.id)
 
  ***************************************************************************/
-if (eregi("function.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 
 function display_member($q){
 	global $gdl_content,$gdl_account,$gdl_sys;

@@ -9,7 +9,7 @@
 
  ***************************************************************************/
 
-if (eregi("function.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 
 function edit_server_form() {
 	global $gdl_form,$gdl_publisher,$frm;

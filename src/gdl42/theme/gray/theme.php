@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("theme.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/theme.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

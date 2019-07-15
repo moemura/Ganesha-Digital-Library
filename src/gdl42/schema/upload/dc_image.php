@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("dc_image.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/dc_image.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

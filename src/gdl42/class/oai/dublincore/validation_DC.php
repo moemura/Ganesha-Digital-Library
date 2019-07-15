@@ -17,7 +17,7 @@
  *
  ***************************************************************************/
  
- if (eregi("validation_DC.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/validation_DC.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

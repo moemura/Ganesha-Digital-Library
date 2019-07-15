@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("content.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/content.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

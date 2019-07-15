@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("folder.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/folder.php/i",$_SERVER['PHP_SELF'])) die();
 
 function generate_form ($property=""){
 	global $gdl_folder,$gdl_session,$gdl_form,$gdl_sys;

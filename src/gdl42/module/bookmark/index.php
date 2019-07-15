@@ -8,7 +8,7 @@
 	
  ***************************************************************************/
  
-if (eregi("index.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/index.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 
@@ -23,16 +23,16 @@ $arr_id = $_POST['id'];
 // delete bookmark
 if ((!empty($act)) and (!empty($arr_id))) {
 	$submit=$_POST["submit"];
-	if (eregi(_DELETEBOOKMARK,$submit) || eregi(_DELETEREQUEST,$submit))
+	if (preg_match('/'._DELETEBOOKMARK.'/i',$submit) || preg_match('/'._DELETEREQUEST.'/i',$submit))
 	{	
 		while (list($key,$val) = each($arr_id)){
 			$gdl_db->delete("bookmark","bookmark_id=$key");
 		}
-	} elseif (eregi(_USERREQUESTMOVE,$submit)) {
+	} elseif (preg_match('/'._USERREQUESTMOVE.'/i',$submit)) {
 		while (list($key,$val) = each($arr_id)) {
 				$gdl_db->update("bookmark","time_stamp='".$date."',request=1","bookmark_id=$key");
 		}
-	} elseif (eregi(_BOOKMARKMOVE,$submit)) {
+	} elseif (preg_match('/'._BOOKMARKMOVE.'/i',$submit)) {
 		while (list($key,$val) = each($arr_id)) {
 				$gdl_db->update("bookmark","time_stamp='".$date."',request=null","bookmark_id=$key");
 		}		

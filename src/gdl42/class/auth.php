@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("auth.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/auth.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

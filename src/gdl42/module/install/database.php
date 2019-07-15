@@ -10,7 +10,7 @@
  ***************************************************************************/
  
 
-if (eregi("database.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/database.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

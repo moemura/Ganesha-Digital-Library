@@ -1,5 +1,5 @@
 <?php
-if (eregi("harvest.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/harvest.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

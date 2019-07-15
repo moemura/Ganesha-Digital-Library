@@ -9,7 +9,7 @@
 	
  ***************************************************************************/
 
-if (eregi("contact.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/contact.php/i",$_SERVER['PHP_SELF'])) die();
 
 $style = "span.title {\n"
 		."width: 100px;\n"

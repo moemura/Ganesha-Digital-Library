@@ -9,7 +9,7 @@
 	
  ***************************************************************************/
 
-if (eregi("credit.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/credit.php/i",$_SERVER['PHP_SELF'])) die();
 
 $main = "<p>
 GDL or Ganesha Digital Library is a web-based application for a simple digital library. It is easy to use. You can manage your electronic document, images, photos, audio, and video using GDL. Metadata is stored in the database using XML format. Digital collections are stored in a file system format. <br/>(source: http://odur.let.rug.nl/fahmi/#softwares)</p>";

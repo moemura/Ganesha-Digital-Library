@@ -10,7 +10,7 @@
 
  ***************************************************************************/
  
-if (eregi("fileperms.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/fileperms.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

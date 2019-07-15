@@ -1,5 +1,5 @@
 <?php
-if (eregi("relation.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/relation.php/i",$_SERVER['PHP_SELF'])) die();
 
 include("./module/migration/conf.php");
 

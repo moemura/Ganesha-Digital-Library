@@ -1,5 +1,5 @@
 <?php
-if (eregi("file.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/file.php/i",$_SERVER['PHP_SELF'])) die();
 
 require_once ("./module/browse/function.php");
 require_once ("./module/browse/lang/".$gdl_content->language.".php");

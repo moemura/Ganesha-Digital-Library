@@ -7,7 +7,7 @@
 	reviewer             : Beni Rio Hermanto (benirio@kmrg.itb.ac.id)
 
  ***************************************************************************/
-if (eregi("delete.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/delete.php/i",$_SERVER['PHP_SELF'])) die();
 
 $db_name = $_GET['db_name'];
 $del=$_GET["del"];

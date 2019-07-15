@@ -16,7 +16,7 @@
  *   (at your option) any later version.
  *
  ***************************************************************************/
- if (eregi("requestFormatter.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/requestFormatter.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

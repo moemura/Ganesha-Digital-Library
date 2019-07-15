@@ -6,7 +6,7 @@
 	
  ***************************************************************************/
 
-if (eregi("conf.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/conf.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

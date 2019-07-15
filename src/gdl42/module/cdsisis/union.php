@@ -8,7 +8,7 @@
 	reviewer             : Beni Rio Hermanto (benirio@kmrg.itb.ac.id)
 
  ***************************************************************************/
-if (eregi("union.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/union.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

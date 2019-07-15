@@ -169,7 +169,7 @@ class isisdb {
 ";
 		
 		foreach ($frm as $idxFrm => $valFrm) {
-		   if (eregi("ROW",$idxFrm))
+		   if (preg_match("/ROW/i",$idxFrm))
 				$strcfg.="\$frm[\"".$idxFrm."\"]=\"".$valFrm."\";
 ";
 		}

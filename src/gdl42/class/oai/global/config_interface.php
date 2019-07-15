@@ -16,7 +16,7 @@
  *
  ***************************************************************************/
  
- if (eregi("config_interface.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/config_interface.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

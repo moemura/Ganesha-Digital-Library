@@ -1,5 +1,5 @@
 <?php
-if (eregi("import.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/import.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

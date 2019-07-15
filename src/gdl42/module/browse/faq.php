@@ -8,7 +8,7 @@
 	reviewer             : Beni Rio Hermanto (benirio@kmrg.itb.ac.id)
 	
  ***************************************************************************/
-if (eregi("faq.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/faq.php/i",$_SERVER['PHP_SELF'])) die();
 
 $main = "<p>Author: 
 			<ul>

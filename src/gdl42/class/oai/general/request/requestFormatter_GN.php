@@ -17,7 +17,7 @@
  *
  ***************************************************************************/
  
- if (eregi("requestFormatter_GN.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/requestFormatter_GN.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

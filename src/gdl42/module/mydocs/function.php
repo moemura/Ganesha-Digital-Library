@@ -9,7 +9,7 @@
 	reviewer             : Beni Rio Hermanto (benirio@kmrg.itb.ac.id)
 
  ***************************************************************************/
- if (eregi("function.php",$_SERVER['PHP_SELF'])) die();
+ if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 
 function mydocs_exist() {
 	global $gdl_folder,$gdl_session;

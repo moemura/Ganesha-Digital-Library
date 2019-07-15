@@ -1,5 +1,5 @@
 <?php
-if (eregi("download.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/download.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

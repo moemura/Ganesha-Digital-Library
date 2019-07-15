@@ -8,7 +8,7 @@
 
  ***************************************************************************/
 
-if (eregi("detail.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/detail.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

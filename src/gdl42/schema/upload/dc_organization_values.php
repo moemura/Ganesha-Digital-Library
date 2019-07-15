@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("dc_organization_values.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/dc_organization_values.php/i",$_SERVER['PHP_SELF'])) die();
 
 include ("./config/publisher.php");
 

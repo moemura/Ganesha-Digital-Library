@@ -9,7 +9,7 @@
 
  ***************************************************************************/
 
-if (eregi("delete.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/delete.php/i",$_SERVER['PHP_SELF'])) die();
 
 $parent = $_GET['p'];
 $node = $_GET['node'];

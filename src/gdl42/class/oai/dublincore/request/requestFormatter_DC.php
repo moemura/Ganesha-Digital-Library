@@ -17,7 +17,7 @@
  *
  ***************************************************************************/
  
- if (eregi("requestFormatter_DC.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/requestFormatter_DC.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

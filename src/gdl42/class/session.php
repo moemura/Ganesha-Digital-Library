@@ -10,7 +10,7 @@
 
  ***************************************************************************/
  
-if (eregi("session.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/session.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

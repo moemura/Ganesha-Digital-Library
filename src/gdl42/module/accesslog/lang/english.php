@@ -9,7 +9,7 @@
 	
  ***************************************************************************/
 
-if (eregi("english.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/english.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

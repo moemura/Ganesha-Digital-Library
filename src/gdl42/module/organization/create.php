@@ -8,7 +8,7 @@
 
  ***************************************************************************/
 
-if (eregi("add.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/add.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

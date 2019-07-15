@@ -1,5 +1,5 @@
 <?php
-if (eregi("function.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 
 function form_register($action){	
 	global $gdl_form, $gdl_content, $frm,$gdl_mod,$gdl_op,$gdl_captcha;

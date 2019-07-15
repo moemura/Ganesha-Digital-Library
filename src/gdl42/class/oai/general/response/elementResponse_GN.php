@@ -17,7 +17,7 @@
  *
  ***************************************************************************/
  
- if (eregi("elementResponse_GN.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/elementResponse_GN.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

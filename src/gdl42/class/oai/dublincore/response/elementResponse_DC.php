@@ -17,7 +17,7 @@
  *
  ***************************************************************************/
  
- if (eregi("elementResponse_DC.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/elementResponse_DC.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

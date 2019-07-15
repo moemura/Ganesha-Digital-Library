@@ -8,7 +8,7 @@
 
  ***************************************************************************/
 
-if (eregi("files.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/files.php/i",$_SERVER['PHP_SELF'])) die();
 
 include("./module/migration/conf.php");
 include("./module/migration/function.php");

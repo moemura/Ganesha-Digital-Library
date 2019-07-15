@@ -10,7 +10,7 @@
  ***************************************************************************/
 
 
-if (eregi("function.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 
 function display_request($searchkey="") {
 	global $gdl_content,$gdl_sys,$gdl_db,$gdl_metadata;

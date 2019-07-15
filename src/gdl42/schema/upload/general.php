@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("general.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/general.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

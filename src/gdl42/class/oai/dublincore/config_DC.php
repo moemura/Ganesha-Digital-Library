@@ -17,7 +17,7 @@
  *
  ***************************************************************************/
  
- if (eregi("config_DC.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/config_DC.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

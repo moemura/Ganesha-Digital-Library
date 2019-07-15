@@ -1,5 +1,5 @@
 <?php
-if (eregi("stdout.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/stdout.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("dc_general_values.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/dc_general_values.php/i",$_SERVER['PHP_SELF'])) die();
 
 if (!isset($frm['LANGUAGE'])) {
 	if ($gdl_content->language=="indonesian"){

@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("indexing.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/indexing.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

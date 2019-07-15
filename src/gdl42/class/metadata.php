@@ -7,7 +7,7 @@
     email                : hayun@kmrg.itb.ac.id
 
  ***************************************************************************/
-if (eregi("metadata.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/metadata.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

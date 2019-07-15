@@ -10,7 +10,7 @@
  ***************************************************************************/
 
 
-if (eregi("delete.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/delete.php/i",$_SERVER['PHP_SELF'])) die();
 
 $PUBLISHER_ID = str_replace('%20',' ',$_GET['id']);
 $PUBLISHER_ID = str_replace('\\','',$PUBLISHER_ID);

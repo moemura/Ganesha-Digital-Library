@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("function.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 
 function gdl_content_box($content,$title=""){
 	if ($title<>"") $form .= "<p class=\"title\">$title</p>\n\n";

@@ -9,7 +9,7 @@
 
  ***************************************************************************/
 
-if (eregi("delete.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/delete.php/i",$_SERVER['PHP_SELF'])) die();
 
 $id=$_GET["id"];
 $del=$_GET["del"];

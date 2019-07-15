@@ -1,5 +1,5 @@
 <?php
-if (eregi("export.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/export.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("update.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/update.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

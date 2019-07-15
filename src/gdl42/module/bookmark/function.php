@@ -9,7 +9,7 @@
 	
  ***************************************************************************/
 
-if (eregi("function.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 
 function display_bookmark() {
 	global $gdl_db,$gdl_metadata,$gdl_content,$gdl_session;

@@ -16,7 +16,7 @@
  *
  ***************************************************************************/
  
-  if (eregi("requestAction.php",$_SERVER['PHP_SELF'])) {
+  if (preg_match("/requestAction.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 
@@ -160,7 +160,7 @@ class requestAction{
 
 		$request	= $this->ra_requestFormatter->request_to_hub($this->ra_verb,$id_repository);
 		
-		if(!eregi("error",$request)){
+		if(!preg_match("/error/i",$request)){
 			$fp			= $this->ra_synchronization->sync_sockopen();
 			
 			if($fp == 0){
@@ -184,7 +184,7 @@ class requestAction{
 		$response 			= $this->get_response_from_hub($id);
 		$response_data		= $response['response_hub'];
 
-		if(eregi("TIMEOUT",$response_data)){
+		if(preg_match("/TIMEOUT/i",$response_data)){
 			$result['error']	= $response_data;
 		}else{
 			if (!empty($response_data[xmldata])){
@@ -205,7 +205,7 @@ class requestAction{
 		$this->ra_verb		= "ListIdentifiers";
 		$response 			= $this->get_response_from_hub();
 		$response_data		= $response['response_hub'];
-		if(eregi("TIMEOUT",$response_data)){
+		if(preg_match("/TIMEOUT/i",$response_data)){
 			$result = $this->error_handle($response_data);
 		}else{
 			if (!empty($response_data[xmldata])){
@@ -227,7 +227,7 @@ class requestAction{
 		$response 			= $this->get_response_from_hub($id);
 		$response_data		= $response['response_hub'];
 		
-		if(eregi("TIMEOUT",$response_data)){
+		if(preg_match("/TIMEOUT/i",$response_data)){
 			$result['error']	= $response_data;
 		}else{
 			if (!empty($response_data[xmldata])){
@@ -248,7 +248,7 @@ class requestAction{
 		$response 			= $this->get_response_from_hub($id);
 		$response_data		= $response['response_hub'];
 		
-		if(eregi("TIMEOUT",$response_data)){
+		if(preg_match("/TIMEOUT/i",$response_data)){
 			$result['error']	= $response_data;
 		}else{
 			if (!empty($response_data[xmldata])){

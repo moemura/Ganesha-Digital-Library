@@ -1,5 +1,5 @@
 <?php
-if (eregi("myprofile.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/myprofile.php/i",$_SERVER['PHP_SELF'])) {
 	die();
 }
 

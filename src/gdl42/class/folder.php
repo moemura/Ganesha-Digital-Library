@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("folder.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/folder.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

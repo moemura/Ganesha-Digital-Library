@@ -8,7 +8,7 @@
 
  ***************************************************************************/
 
-if (eregi("build.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/build.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

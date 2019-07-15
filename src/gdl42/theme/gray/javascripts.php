@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("javascripts.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/javascripts.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

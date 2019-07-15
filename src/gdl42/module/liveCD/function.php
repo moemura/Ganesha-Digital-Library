@@ -5,7 +5,7 @@
 	reviewer             : Beni Rio Hermanto (benirio@kmrg.itb.ac.id)
 	
  ***************************************************************************/
- if (eregi("function.php",$_SERVER['PHP_SELF'])) {
+ if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 
@@ -703,7 +703,7 @@ function list_of_uploaded_file($url) {
 	$pool_file	= array();
 	$dirhandle=opendir("./files/export/");
 	while (($file = readdir($dirhandle)) !== false) {
-		if (eregi(".gz",$file) && eregi("liveCD-",$file)){
+		if (preg_match("/.gz/i",$file) && preg_match("/liveCD-/i",$file)){
 			$dir_file[$file] = "./files/export/$file";
 		}
 	}

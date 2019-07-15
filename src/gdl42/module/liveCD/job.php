@@ -7,7 +7,7 @@
 	
  ***************************************************************************/
 
-if (eregi("job.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/job.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

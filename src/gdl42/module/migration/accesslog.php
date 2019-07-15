@@ -8,7 +8,7 @@
 
  ***************************************************************************/
 
-if (eregi("access.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/access.php/i",$_SERVER['PHP_SELF'])) die();
 include("./module/migration/conf.php");
 $title = _MIGRATION. " "._ACCESSLOG2;
 

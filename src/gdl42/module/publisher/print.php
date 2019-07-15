@@ -9,7 +9,7 @@
 
  ***************************************************************************/
 
-if (eregi("print.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/print.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

@@ -9,7 +9,7 @@
 
  ***************************************************************************/
 
-if (eregi("property.php",$_SERVER['PHP_SELF'])) die();
+if (preg_match("/property.php/i",$_SERVER['PHP_SELF'])) die();
 
 $parent = $_GET['p'];
 $node = $_GET['node'];

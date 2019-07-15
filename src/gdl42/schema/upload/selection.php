@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("selection.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/selection.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 $content = "<p class=\"box\"><b>"._DOCUMENTMANAGEMENT."</b></p>\n";

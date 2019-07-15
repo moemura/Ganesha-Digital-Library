@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("repeater.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/repeater.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 

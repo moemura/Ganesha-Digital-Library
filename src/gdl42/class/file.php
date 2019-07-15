@@ -1,6 +1,6 @@
 <?php
 
-if (eregi("file.php",$_SERVER['PHP_SELF'])) {
+if (preg_match("/file.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 
