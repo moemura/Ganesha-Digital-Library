@@ -43,7 +43,7 @@ class file_relation{
 				} else {
 					$fpart = $frm['RELATION_HASFILENAME'];
 				}
-				$fpart = ereg_replace(" ","",strtolower($fpart));
+				$fpart = preg_replace("/ /","",strtolower($fpart));
 				
 				$frm['RELATION_HASPART'] = "$identifier-$i-$fpart";
 				$frm['RELATION_HASPATH'] = "$homedir/".$frm['RELATION_HASPART'];
@@ -110,7 +110,7 @@ class file_relation{
 		$file_del = @mysql_result($dbres,0,"path");
 		
 		if ($gdl_publisher['id']<>$publisher){
-			$file_del= ereg_replace($file_del,"/files/","/files/$publisher/");
+			$file_del= preg_replace('/'.$file_del.'/',"/files/","/files/$publisher/");
 		}
 		if (file_exists($file_del))	unlink ("$file_del");
 

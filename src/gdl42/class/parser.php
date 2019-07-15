@@ -136,9 +136,9 @@ class parser {
 			
 			if ($frm['RELATION_COUNT']==0){
 				// clean up empty XML
-				$str_meta = ereg_replace("#[[:alpha:]]+#","",$str_meta);
-				$str_meta = ereg_replace("#[[:alpha:]]+_[[:alpha:]]+#","",$str_meta);
-				$str_meta = ereg_replace("#[[:alpha:]]+_[[:alpha:]]+_[[:alpha:]]+#","",$str_meta);
+				$str_meta = preg_replace("/#[[:alpha:]]+#/","",$str_meta);
+				$str_meta = preg_replace("/#[[:alpha:]]+_[[:alpha:]]+#/","",$str_meta);
+				$str_meta = preg_replace("/#[[:alpha:]]+_[[:alpha:]]+_[[:alpha:]]+#/","",$str_meta);
 			}
 			
 			return $str_meta;

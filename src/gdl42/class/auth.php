@@ -47,7 +47,7 @@ class authentication{
 					$arr_module = explode("}",$gdl_session->authority);
 					foreach ($arr_module as $value) {
 						if (strchr($value,"{".$mod)){
-							$action = ereg_replace("{".$mod."->", "", $value);
+							$action = preg_replace("/{".$mod."->/", "", $value);
 							// cek apakah mempunyai semua operasi modul
 							if (($action == "*")or($action == " *")){
 								return true;
@@ -112,13 +112,13 @@ class authentication{
 					$arr_module = explode("}",$gdl_session->authority);
 					foreach ($arr_module as $value) {
 						if (strchr($value,"{".$mod)){
-							$action = ereg_replace("{".$mod."->", "", $value);
+							$action = preg_replace("/{".$mod."->/", "", $value);
 							if (($action == "*")or($action == " *")){
 								$action = "";
 								$d = dir("./module/$mod");
 								while (false !== ($entry = $d->read())) {
 									if (strchr($entry,".php")){
-										$action .= ereg_replace(".php", "", $entry).",";
+										$action .= preg_replace("/.php/", "", $entry).",";
 									}
 								}
 								$d->close();

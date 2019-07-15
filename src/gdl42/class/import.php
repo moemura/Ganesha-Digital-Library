@@ -537,7 +537,7 @@ class import{
 			//echo "FOLDER_INFO--> $index ===> $value <br>\n";
 		
 		$new_hierarchy	= $gdl_folder->get_hierarchy($folder_info['parent']);
-		$xmldata 	= eregi_replace("<hierarchy>*</hierarchy>","<hierarchy>$new_hierarchy</hierarchy>",$xmldata);
+		$xmldata 	= preg_replace("/<hierarchy>*</hierarchy>/i","<hierarchy>$new_hierarchy</hierarchy>",$xmldata);
 	//echo "IMPORT_METADATA ";
 		switch($status){
 			case "new":

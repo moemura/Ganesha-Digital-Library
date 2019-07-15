@@ -197,9 +197,9 @@ class search{
 			
 			// generate item
 			for ($i = $field; $i >=1; $i--) {
-				$option = ereg_replace(">$i"," selected=\"selected\">$i",$sel_option);
+				$option = preg_replace("/>$i/"," selected=\"selected\">$i",$sel_option);
 				for ($j = $field; $j >= 0; $j--) {
-					$option = ereg_replace(">$j",">",$option);
+					$option = preg_replace("/>$j/",">",$option);
 				}
 				
 				$form 	.= "<tr class=\"bg1\">";
@@ -265,12 +265,12 @@ class search{
 		$term = str_replace("\$","",$term);
 		$term = str_replace("*","",$term);
 		$term = str_replace("=","",$term);
-		$term = eregi_replace(" or "," ",$term);
-		$term = eregi_replace(" and "," ",$term);
-		$term = eregi_replace(" not "," ",$term);
-		$term = eregi_replace("title"," ",$term);
-		$term = eregi_replace("keywd"," ",$term);
-		$term = eregi_replace("dbname"," ",$term);
+		$term = preg_replace("/ or /i"," ",$term);
+		$term = preg_replace("/ and /i"," ",$term);
+		$term = preg_replace("/ not /i"," ",$term);
+		$term = preg_replace("/title/i"," ",$term);
+		$term = preg_replace("/keywd/i"," ",$term);
+		$term = preg_replace("/dbname/i"," ",$term);
 	
 		// strip tag number
 		$term = preg_replace("/\/\d+\w+/"," ",$term);
@@ -282,7 +282,7 @@ class search{
 		for ($i=0;$i<sizeof($term);$i++){
 			if (!empty($term[$i])){
 				// string base
-				$string = eregi_replace("$term[$i]","$red1\\0$red2",$string);
+				$string = preg_replace("/$term[$i]/i","$red1\\0$red2",$string);
 			}
 		}
 		return $string;

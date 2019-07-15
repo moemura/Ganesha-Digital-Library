@@ -77,7 +77,7 @@ if (isset($del)){
 				} else {
 					$fpart = $frm['RELATION_HASFILENAME'];
 				}
-				$fpart = ereg_replace(" ","",strtolower($fpart));
+				$fpart = preg_replace("/ /","",strtolower($fpart));
 				
 				$frm['RELATION_HASPART'] = "$id-$i-$fpart";
 				$frm['RELATION_HASPATH'] = "$homedir/".$frm['RELATION_HASPART'];
@@ -132,7 +132,7 @@ if (isset($del)){
 					} else {
 						$fpart = $frm['RELATION_HASFILENAME'];
 					}
-					$fpart = ereg_replace(" ","",strtolower($fpart));
+					$fpart = preg_replace("/ /","",strtolower($fpart));
 					
 					$frm['RELATION_HASPART'] = "$id-$i-$fpart";
 					$frm['RELATION_HASPATH'] = "$homedir/".$frm['RELATION_HASPART'];

@@ -378,7 +378,7 @@ class requestFormatter_GN extends requestFormatter {
 		$c	= count($bad_token);
 		
 		for($i=0;$i<$c;$i++){
-			$identifier = eregi_replace($bad_token[$i],"",$identifier);
+			$identifier = preg_replace('/'.$bad_token[$i].'/i',"",$identifier);
 		}
 		
 		return $identifier;

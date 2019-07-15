@@ -39,10 +39,10 @@ class form{
 		if (isset($newfield['text']) and $newfield['type']<>"title"){
 		
 			// khusus untuk schema metadata yg mempunyai name $frm[TITLE] dan sejenisnya
-			$required = ereg_replace("\[", "", $this->required);
-			$required = trim(ereg_replace("\]", "", $required));
-			$fields_required = ereg_replace("\[", "", $newfield['name']);
-			$fields_required = trim(ereg_replace("\]", "", $fields_required));
+			$required = preg_replace("/\[/", "", $this->required);
+			$required = trim(preg_replace("/\]/", "", $required));
+			$fields_required = preg_replace("/\[/", "", $newfield['name']);
+			$fields_required = trim(preg_replace("/\]/", "", $fields_required));
 			
 			if (!($fields_required=="" or $required=="") and $newfield['value']==""){
 				if (ereg($fields_required,$required)){
@@ -274,8 +274,8 @@ class form{
 				if($val<>""){
 					if (is_array($data)){
 						// khusus untuk schema metadata yg mempunyai name $frm[TITLE] dan sejenisnya
-						$arr_key = ereg_replace("frm\[", "", $val);
-						$arr_key = trim(ereg_replace("\]", "", $arr_key));
+						$arr_key = preg_replace("/frm\[/", "", $val);
+						$arr_key = trim(preg_replace("/\]/", "", $arr_key));
 						$temp = trim($values[$arr_key]);
 					}else{
 						$temp = trim($values[$val]);

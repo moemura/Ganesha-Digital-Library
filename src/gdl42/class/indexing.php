@@ -24,7 +24,7 @@ class indexing{
 			$count++;
 			
 			$id = "$row[identifier]";
-			$id = ereg_replace("\/","_slash_",$id);
+			$id = preg_replace("/\//","_slash_",$id);
 			
 			$data = $row[xml_data];
 			$data = $this->indexing_cleanupxml($data);

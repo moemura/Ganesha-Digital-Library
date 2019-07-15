@@ -245,7 +245,7 @@ class metadata extends parser {
 		global $gdl_publisher,$gdl_db;
 		// format identifier : publisherid-author-num
 		$author = str_replace(" ","",trim($author));
-		$author = ereg_replace("[^<>[:alnum:]]","", $author);
+		$author = preg_replace("/[^<>[:alnum:]]/","", $author);
 		$author = substr($author,0,10);
 		// count total metadata
 		$dbres = $gdl_db->select("metadata","count(identifier) as total");
@@ -269,9 +269,9 @@ class metadata extends parser {
 			if ($xmlrela <> "") $xmldata = str_replace("<relation>#RELATION_EXTERNAL_ENTITIES#</relation>",$xmlrela,$xmldata);
 			
 			// clean up empty XML
-			$str_meta = ereg_replace("#[[:alpha:]]+#","",$str_meta);
-			$str_meta = ereg_replace("#[[:alpha:]]+_[[:alpha:]]+#","",$str_meta);
-			$str_meta = ereg_replace("#[[:alpha:]]+_[[:alpha:]]+_[[:alpha:]]+#","",$str_meta);
+			$str_meta = preg_replace("/#[[:alpha:]]+#/","",$str_meta);
+			$str_meta = preg_replace("/#[[:alpha:]]+_[[:alpha:]]+#/","",$str_meta);
+			$str_meta = preg_replace("/#[[:alpha:]]+_[[:alpha:]]+_[[:alpha:]]+#/","",$str_meta);
 			
 			$gdl_db->update("metadata","xml_data='$xmldata'","identifier='$id'");
 		}
