@@ -372,13 +372,13 @@ class search{
 		}
 
 		$result = $gdl_db->select("index_record r","count(r.identifier) as jumlah", $sql_where);
-		if ($row = @mysql_fetch_row($result)) {
+		if ($row = @mysqli_fetch_row($result)) {
 			$start	   = $start - 1;
 			$num_row   = $row[0];
 			$page_size = $gdl_sys['perpage_browse'];
 			$result = $gdl_db->select("index_record r","r.identifier",$sql_where,"","","$start, $page_size",$groupby="");
 			$pool = array();
-			while($row = @mysql_fetch_row($result)) {
+			while($row = @mysqli_fetch_row($result)) {
 				array_push($pool, $row[0]);
 			}
 

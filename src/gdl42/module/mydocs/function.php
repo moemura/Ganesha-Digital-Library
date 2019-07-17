@@ -26,7 +26,7 @@ function mydocs_not_exist() {
 }
 
 function create_mydocs() {
-	global $gdl_folder,$gdl_session;
+	global $gdl_folder,$gdl_session, $gdl_db;
 	
 	$member_node=$gdl_folder->check_folder("Member",0);
 	if (preg_match("/err/",$member_node)){
@@ -37,7 +37,7 @@ function create_mydocs() {
 			return $content;
 		}
 			
-		$member_node=mysql_insert_id();
+		$member_node=mysqli_insert_id($gdl_db->con);
 	} 
 	$folder["name"]=$gdl_session->user_id;
 	$folder["parent"]=$member_node;

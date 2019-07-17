@@ -38,10 +38,10 @@ class folder{
 			$dbres = $gdl_db->select("folder","folder_id,name,count","parent=$node","name","asc");
 		
 		
-		while ($rows = @mysql_fetch_row($dbres)){
+		while ($rows = @mysqli_fetch_row($dbres)){
 			$dbres2 = $gdl_db->select("publisher","DC_PUBLISHER,DC_PUBLISHER_HOSTNAME","DC_PUBLISHER_ID='".$rows[1]."'");
-			if (@mysql_num_rows($dbres2) > 0) {
-				$rows2=@mysql_fetch_array($dbres2);
+			if (@mysqli_num_rows($dbres2) > 0) {
+				$rows2=@mysqli_fetch_array($dbres2);
 				$host="/ <a href='http://".$rows2["DC_PUBLISHER_HOSTNAME"]."'>".$rows2["DC_PUBLISHER"]."</a>";	
 			}
 			
@@ -71,7 +71,7 @@ class folder{
 		}
 		// cari folder dalam node tersebut
 		$dbres = $gdl_db->select("folder","folder_id,name,count","parent=$node","name","asc");
-		while ($rows = @mysql_fetch_row($dbres)){
+		while ($rows = @mysqli_fetch_row($dbres)){
 			$result[$rows[0]]['name']=$rows[1];
 			$result[$rows[0]]['count']=$rows[2];
 		}
@@ -85,7 +85,7 @@ class folder{
 		require_once ("./class/db.php");
 		$db = new database();
 		$dbres = $db->select("folder","folder_id","parent=$node");
-		while ($rows = @mysql_fetch_row($dbres)){
+		while ($rows = @mysqli_fetch_row($dbres)){
 			$count = $this->content_count($rows[0]);
 			$db->update("folder","count=$count","folder_id=$rows[0]");
 		}
@@ -96,7 +96,10 @@ class folder{
 		if ($node==0){ $name = "Top";
 		}else{
 			$dbres = $gdl_db->select("folder","name","folder_id=$node");
-			if (@mysql_num_rows($dbres) > 0) $name = @mysql_result($dbres,0,"name");
+			if (@mysqli_num_rows($dbres) > 0) {
+				$row = @mysqli_fetch_assoc($dbres);
+				$name = $row["name"];
+			}
 		}
 		return ":. $name .:";
 	}
@@ -107,9 +110,10 @@ class folder{
 		//echo "Node : $node";
 		
 		$dbres = $gdl_db->select("folder","parent,name,path","folder_id=$node");
-		$frm['parent'] = mysql_result($dbres,0,"parent");
-		$frm['name'] = mysql_result($dbres,0,"name");
-		$frm['path'] = mysql_result($dbres,0,"path");
+		$row = mysqli_fetch_assoc($dbres);
+		$frm['parent'] = $row["parent"];
+		$frm['name'] = $row["name"];
+		$frm['path'] = $row["path"];
 		$this->set_path($frm['parent']);
 		return $frm;
 	}
@@ -118,8 +122,9 @@ class folder{
 		global $gdl_db,$gdl_metadata;
 		
 		$dbres = $gdl_db->select("folder","path,parent","folder_id=$values[node]");
-		$old_path = @mysql_result($dbres,0,"path");
-		$old_parent = @mysql_result($dbres,0,"parent");
+		$row = @mysqli_fetch_assoc($dbres);
+		$old_path = $row["path"];
+		$old_parent = $row["parent"];
 		$new_path = $this->get_path($values['parent']);
 		$date = date("Y-m-d H:i:s");
 		// update database
@@ -129,14 +134,14 @@ class folder{
 		$len = strlen($old_path) + 1;
 		$filter = "(left(path, $len) = '$old_path/') OR (path LIKE '$old_path')";
 		$dbres = $gdl_db->select("folder","folder_id,parent",$filter);
-		while ($rows = @mysql_fetch_row($dbres)){
+		while ($rows = @mysqli_fetch_row($dbres)){
 			$new_path = $this->get_path($rows[1]);
 			$gdl_db->update("folder","path='$new_path'","folder_id=$rows[0]");
 			
 		}
 		// update metadata path
 		$dbres = $gdl_db->select("metadata","identifier,folder,prefix",$filter);
-		while ($rows = @mysql_fetch_row($dbres)){
+		while ($rows = @mysqli_fetch_row($dbres)){
 			$new_path = $this->get_path($rows[1]);
 			if (preg_match("/general/",$rows[2])) {
 				$frm=$gdl_metadata->read($rows[0]);
@@ -150,13 +155,15 @@ class folder{
 		$folder = $old_parent;
 		while ($folder <> 0){
 			$dbres = $gdl_db->select("folder","parent","folder_id=$folder");
-			$folder =  @mysql_result($dbres,0,"parent");
+			$row = @mysqli_fetch_assoc($dbres);
+			$folder =  $row["parent"];
 			$this->refresh($folder);
 		}
 		$folder =$values['parent'];
 		while ($folder <> 0){
 			$dbres = $gdl_db->select("folder","parent","folder_id=$folder");
-			$folder =  @mysql_result($dbres,0,"parent");
+			$row = @mysqli_fetch_assoc($dbres);
+			$folder =  $row["parent"];
 			$this->refresh($folder);
 		}
 		return true;
@@ -176,16 +183,18 @@ class folder{
 		if ($hyperlink==""){
 			while ($node <> 0){
 				$dbres = $gdl_db->select("folder","parent,name","folder_id=$node");
-				$path = " $gdl_sys[folder_separator] ".@mysql_result($dbres,0,"name").$path;
-				$node =  @mysql_result($dbres,0,"parent");
+				$row = @mysqli_fetch_assoc($dbres);
+				$path = " $gdl_sys[folder_separator] ".$row["name"].$path;
+				$node =  $row["parent"];
 			}
 			$path = "Top".$path;
 		}else{
 			while ($node <> 0){
 				$dbres = $gdl_db->select("folder","parent,name","folder_id=$node");
-				if (@mysql_num_rows($dbres) > 0){
-					$path = " $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=browse&amp;"."node=$node\">".@mysql_result($dbres,0,"name")."</a>".$path;	
-					$node =  @mysql_result($dbres,0,"parent");
+				if (@mysqli_num_rows($dbres) > 0){
+					$row = @mysqli_fetch_assoc($dbres);
+					$path = " $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=browse&amp;"."node=$node\">".$row["name"]."</a>".$path;	
+					$node =  $row["parent"];
 				}
 			}
 			$path = "<a href=\"./gdl.php?mod=browse&amp;"."node=$node\">Top</a>$path";
@@ -200,7 +209,8 @@ class folder{
 			while ($node <> 0){
 				$dbres = $gdl_db->select("folder","parent","folder_id=$node");
 				$path = "/$node".$path;
-				$node =  @mysql_result($dbres,0,"parent");
+				$row = @mysqli_fetch_assoc($dbres);
+				$node =  $row["parent"];
 			}
 			$path = "0".$path;
 		}
@@ -217,9 +227,10 @@ class folder{
 		if(!is_array($node))
 			while ($node <> 0){
 				$dbres = $db->select("folder","parent,name","folder_id=$node");
-				if (@mysql_num_rows($dbres) > 0){				
-					$path = " $gdl_sys[folder_separator] <a href=\"$url"."node=$node\">".@mysql_result($dbres,0,"name")."</a>".$path;	
-					$node =  mysql_result($dbres,0,"parent");
+				if (@mysqli_num_rows($dbres) > 0){
+					$row = @mysqli_fetch_assoc($dbres);
+					$path = " $gdl_sys[folder_separator] <a href=\"$url"."node=$node\">".$row["name"]."</a>".$path;	
+					$node =  $row["parent"];
 				}
 			}
 		$path = "<a href=\"$url"."node=$node\">Top</a>$path";
@@ -240,9 +251,10 @@ class folder{
 			
 		while ($node <> 0){
 			$dbres = $db->select("folder","parent,name","folder_id=$node");
-			if (@mysql_num_rows($dbres) > 0){				
-				$path = " $gdl_sys[folder_separator] <a href=\"$url"."$node\">".@mysql_result($dbres,0,"name")."</a>".$path;	
-				$node =  mysql_result($dbres,0,"parent");
+			if (@mysqli_num_rows($dbres) > 0){
+				$row = @mysqli_fetch_assoc($dbres);				
+				$path = " $gdl_sys[folder_separator] <a href=\"$url"."$node\">".$row["name"]."</a>".$path;
+				$node =  $row["parent"];
 			}
 		}
 		$path = "<a href=\"$url"."$node\">Top</a>$path";
@@ -259,7 +271,7 @@ class folder{
 		
 		$frm[0] = "Top";
 		$dbres = $gdl_db->select("folder","folder_id","","parent","asc");
-		while ($rows = mysql_fetch_row($dbres)){
+		while ($rows = mysqli_fetch_row($dbres)){
 			$frm[$rows[0]]=$this->get_path_name($rows[0]);
 		}
 		$frm = array_unique($frm);
@@ -276,18 +288,19 @@ class folder{
 		// jika punya child maka tidak bisa dihapus
 		$filter = "(left(path, $len) = '$path/') OR (path LIKE '$path')";
 		$dbres = $gdl_db->select("folder","folder_id", $filter);
-		if (@mysql_num_rows($dbres)>0) return false;
+		if (@mysqli_num_rows($dbres)>0) return false;
 		
 		// delete metadata hrs dilakukan menggunakan objek metadata
 		$dbmeta = $gdl_db->select("metadata","identifier","folder=$node");
-		while ($rows = @mysql_fetch_row($dbmeta)){
+		while ($rows = @mysqli_fetch_row($dbmeta)){
 			$gdl_metadata->delete($rows[0]);
 		}
 		// refresh content count
 		$folder = $node;
 		while ($folder <> 0){
 			$dbres = $gdl_db->select("folder","parent","folder_id=$folder");
-			$folder =  @mysql_result($dbres,0,"parent");
+			$row = @mysqli_fetch_assoc($dbres);
+			$folder =  $row["parent"];
 			$this->refresh($folder);
 		}
 		
@@ -302,7 +315,8 @@ class folder{
 		$len = strlen($path) + 1;
 		$filter = "(left(path, $len) = '$path/') OR (path LIKE '$path')";
 		$dbres = $gdl_db->select("folder","count(folder_id) as total",$filter);
-		$count = @mysql_result($dbres,0,"total");
+		$row = @mysqli_fetch_assoc($dbres);
+		$count = $row["total"];
 		return $count;
 	}
 	
@@ -312,7 +326,8 @@ class folder{
 		$len = strlen($path) + 1;
 /*
 		$dbres = $gdl_db->select("metadata","count(identifier) as total","folder=$node and xml_data != 'deleted'");
-		$count = @mysql_result($dbres,0,"total");
+		$row = @mysqli_fetch_assoc($dbres);
+		$count = $row["total"];
 		if ($count == 0) {
 			$len=$len+1;
 			$path.="/";
@@ -321,7 +336,8 @@ class folder{
 		$filter = "((left(path, $len) = '$path/') OR (path LIKE '$path'))";
 //		$dbres = $gdl_db->select("metadata","count(identifier) as total","left(path,$len)='$path' AND xml_data !='deleted'");
 		$dbres = $gdl_db->select("metadata","count(identifier) as total",$filter." AND xml_data !='deleted'");
-		$count = @mysql_result($dbres,0,"total");
+		$row = @mysqli_fetch_assoc($dbres);
+		$count = $row["total"];
 		return $count;
 	}
 
@@ -330,8 +346,9 @@ class folder{
 		$dbres = $gdl_db->select("folder","folder_id","name='".$folder_name."' AND parent='".$parent_id."'");
 		
 		if ($dbres){
-			if (mysql_num_rows($dbres)>0) {
-				$folder_node = mysql_result($dbres,0,"folder_id");
+			if (mysqli_num_rows($dbres)>0) {
+				$row = mysqli_fetch_assoc($dbres);
+				$folder_node = $row["folder_id"];
 				return $folder_node;
 			} else {
 				return "err";
@@ -344,7 +361,7 @@ class folder{
 		global $gdl_db;
 		$dbres = $gdl_db->select("folder","folder_id","folder_id='".$folder_id."'");
 		if ($dbres) {
-			if (mysql_num_rows($dbres)>0) {
+			if (mysqli_num_rows($dbres)>0) {
 				return $folder_id;
 			} else
 				return "err";
@@ -368,6 +385,4 @@ class folder{
 		return $name;
 	}
 }
-
-
 ?>

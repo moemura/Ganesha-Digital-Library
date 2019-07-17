@@ -8,8 +8,8 @@ function relation_form($count,$identifier){
 	global $gdl_form, $gdl_db;
 	
 	$dbres = $gdl_db->select("relation","relation_id,name,no,size,note","identifier='$identifier'");
-	$numrow = mysql_num_rows($dbres);
-	while ($rows = mysql_fetch_row($dbres)){
+	$numrow = mysqli_num_rows($dbres);
+	while ($rows = mysqli_fetch_row($dbres)){
 		$file[$rows[2]]['id']=$rows[0];
 		$file[$rows[2]]['name']=$rows[1];
 		$file[$rows[2]]['size']=$rows[3];

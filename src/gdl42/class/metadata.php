@@ -20,7 +20,7 @@ class metadata extends parser {
 	var $count;
 	
 	function metadata(){
-		$this->identifier = $_SESSION['gdl_identifier'];
+		$this->identifier = isset($_SESSION['gdl_identifier']) ? $_SESSION['gdl_identifier'] : null;
 	}
 	
 	function get_list($node="",$type="",$limit="",$count=""){
@@ -52,13 +52,14 @@ class metadata extends parser {
 		// hitung total metadata pada node tsb
 		if ($count==true){
 			$dbres = $gdl_db->select("metadata","count(identifier) as total","$where");
-			$this->total = @mysql_result($dbres ,0,"total");
+			$row = @mysqli_fetch_assoc($dbres);
+			$this->total = $row["total"];
 		}
 
 		// list metadata per page
 
 		$dbres = $gdl_db->select("metadata","identifier,owner,folder,xml_data,prefix","$where","date_modified","desc",$limit);
-		while ($rows = @mysql_fetch_row($dbres)){
+		while ($rows = @mysqli_fetch_row($dbres)){
 			$frm=$this->read_xml($rows[3]);
 
 			$prefix = $rows[4];
@@ -76,7 +77,7 @@ class metadata extends parser {
 				$result[$rows[0]]['RELATION_COUNT']= $frm['RELATION_COUNT'];
 			}
 		}
-		$this->count = @mysql_num_rows($dbres);
+		$this->count = @mysqli_num_rows($dbres);
 		// empty identifier to session
 		$_SESSION['gdl_identifier'] = "";			
 		return $result;
@@ -89,11 +90,12 @@ class metadata extends parser {
 		$db = new database();
 		
 		$dbres = $db->select("metadata","identifier,folder,xml_data,prefix,repository","identifier='$id' and xml_data is not null");
-		$gdl_folder->set_path(@mysql_result($dbres,0,"folder"));
-		$xmldata 	= @mysql_result($dbres,0,"xml_data");
-		$prefix 	= @mysql_result($dbres,0,"prefix");
-		$identifier	= @mysql_result($dbres,0,"identifier");
-		$repository	= @mysql_result($dbres,0,"repository");
+		$row = @mysqli_fetch_assoc($dbres);
+		$gdl_folder->set_path($row["folder"]);
+		$xmldata 	= $row["xml_data"];
+		$prefix 	= $row["prefix"];
+		$identifier	= $row["identifier"];
+		$repository	= $row["repository"];
 		
 		if (!empty($xmldata)){
 			if(empty($option)){
@@ -123,15 +125,16 @@ class metadata extends parser {
 	function get_property ($id){
 		global $gdl_folder,$gdl_db;
 		$dbres = $gdl_db->select("metadata","folder,owner,xml_data","identifier='$id'");
-		$arr=$this->read_xml(@mysql_result($dbres,0,"xml_data"));
+		$row = @mysqli_fetch_assoc($dbres);
+		$arr=$this->read_xml($row["xml_data"]);
 		$frm['title'] = $this->get_value($arr,"TITLE");
 		$frm['author'] = $this->get_value($arr,"AUTHOR");
 		$frm['creator'] = $this->get_value($arr,"CREATOR");
 		$frm['publisher'] = $this->get_value($arr,"PUBLISHER");
 		$frm['description'] = $this->get_value($arr,"DESCRIPTION");
 		$frm['date_modified'] = $this->get_value($arr,"DATE_MODIFIED");
-		$frm['folder'] = @mysql_result($dbres,0,"folder");
-		$frm['owner'] = @mysql_result($dbres,0,"owner");
+		$frm['folder'] = $row["folder"];
+		$frm['owner'] = $row["owner"];
 		$gdl_folder->set_path($frm['folder']);
 		return $frm;
 	}
@@ -140,9 +143,10 @@ class metadata extends parser {
 		global $gdl_db,$gdl_folder;
 		// get old folder for update content count
 		$dbres = $gdl_db->select("metadata","folder,prefix,xml_data","identifier='$values[id]'");
-		$old_folder = @mysql_result($dbres,0,"folder");
-		$prefix = @mysql_result($dbres,0,"prefix");
-		$xmldata = @mysql_result($dbres,0,"xml_data");
+		$row = @mysqli_fetch_assoc($dbres);
+		$old_folder = $row["folder"];
+		$prefix = $row["prefix"];
+		$xmldata = $row["xml_data"];
 		// update property
 		$date = date("Y-m-d H:i:s");
 		$path = $gdl_folder->get_path($values['folder']);
@@ -152,13 +156,15 @@ class metadata extends parser {
 		$folder = $old_folder;
 		while ($folder <> 0){
 			$dbres = $gdl_db->select("folder","parent","folder_id=$folder");
-			$folder =  @mysql_result($dbres,0,"parent");
+			$row = @mysqli_fetch_assoc($dbres);
+			$folder =  $row["parent"];
 			$gdl_folder->refresh($folder);
 		}
 		$folder = $values['folder'];
 		while ($folder <> 0){
 			$dbres = $gdl_db->select("folder","parent","folder_id=$folder");
-			$folder =  @mysql_result($dbres,0,"parent");
+			$row = @mysqli_fetch_assoc($dbres);
+			$folder =  $row["parent"];
 			$gdl_folder->refresh($folder);
 		}
 
@@ -191,7 +197,8 @@ class metadata extends parser {
 		global $gdl_db,$gdl_file,$gdl_session,$gdl_folder;
 		// get old folder for update content count
 		$dbres = $gdl_db->select("metadata","folder","identifier='$id'");
-		$folder = @mysql_result($dbres,0,"folder");
+		$row = @mysqli_fetch_assoc($dbres);
+		$folder = $row["folder"];
 		// metode in tidak mendelete tetapi mengupdate untuk kepentingan
 		// sinkronisasi metadata yg sudah di delete
 		$date = date("Y-m-d H:i:s");
@@ -249,7 +256,8 @@ class metadata extends parser {
 		$author = substr($author,0,10);
 		// count total metadata
 		$dbres = $gdl_db->select("metadata","count(identifier) as total");
-		$num = @mysql_result($dbres,0,"total");
+		$row = @mysqli_fetch_assoc($dbres);
+		$num = $row["total"];
 		$num = $num + 1;
 		// default
 		if ($author == "") $author= "guest";
@@ -280,9 +288,10 @@ class metadata extends parser {
 	function get_publisher($id){
 		global $gdl_db;
 		$dbres = $gdl_db->select("metadata","xml_data,repository","identifier='$id'");
-		$frm=$this->read_xml(@mysql_result($dbres,0,"xml_data"));
+		$row = @mysqli_fetch_assoc($dbres);
+		$frm=$this->read_xml($row["xml_data"]);
 		$publisher = $frm['PUBLISHER'];
-		if(empty($publisher)) $publisher = @mysql_result($dbres,0,"repository");
+		if(empty($publisher)) $publisher = $row["repository"];
 		return $publisher;
 	}
 	
@@ -291,10 +300,12 @@ class metadata extends parser {
 		$publisher = $this->get_publisher($id);
 		if ($gdl_publisher['id']==$publisher){
 			$dbres = $gdl_db->select("metadata m,user u","u.name","m.owner=u.user_id and m.identifier='$id'");
-			$editor = @mysql_result($dbres,0,"name");
+			$row = @mysqli_fetch_assoc($dbres);
+			$editor = $row["name"];
 		}else{
 			$dbres = $gdl_db->select("metadata","owner","identifier='$id'");
-			$owner = @mysql_result($dbres,0,"owner");
+			$row = @mysqli_fetch_assoc($dbres);
+			$owner = $row["owner"];
 			if (substr($owner,0,1) != '#' && substr($owner,-1,1) != '#')
 				$editor = $owner."@".strtolower($publisher);
 			else
@@ -552,7 +563,7 @@ function metadata_dump($server,$publisherid,$startdate) {
 		
 		$dbres=$gdl_db->select("metadata","identifier,date_modified,type,xml_data","date_modified > '".$startdate."'".$where);
 		
-		while ($rows = @mysql_fetch_array($dbres)){
+		while ($rows = @mysqli_fetch_array($dbres)){
 		$dump .= "
 <record>
 <header>
@@ -594,8 +605,8 @@ function convert_metadata_general_to_oai_dc($dataXML){
 		$id_publisher	= $dataXML['PUBLISHER'][0];
 		if(!empty($id_publisher)){
 			$dbres = $gdl_db->select("publisher","DC_PUBLISHER","DC_PUBLISHER_ID like '$id_publisher'");
-			if(@mysql_num_rows($dbres) == 1){
-				$row = mysql_fetch_row($dbres);
+			if(@mysqli_num_rows($dbres) == 1){
+				$row = mysqli_fetch_row($dbres);
 				$publisher = $row[0];
 			}
 		}

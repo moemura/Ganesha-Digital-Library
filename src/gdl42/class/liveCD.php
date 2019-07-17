@@ -87,7 +87,7 @@ class liveCD{
 		else 
 			$dbres	= $this->lv_db->select("folder f,metadata m","f.folder_id,m.identifier","f.parent = $node","","","0,1");
 		
-		$num	= @mysql_num_rows($dbres);
+		$num	= @mysqli_num_rows($dbres);
 		$result	= null;
 		
 		if($num > 0){
@@ -159,7 +159,8 @@ class liveCD{
 /*	
 			if($this->lv_parentNode > 0){
 				$dbres 		= $this->lv_db->select("folder","path","folder_id = ".$this->lv_parentNode);
-				$arr_path	= explode("/",@mysql_result($dbres,0,"path"));
+				$row = @mysqli_fetch_assoc($dbres);
+				$arr_path	= explode("/",$row["path"]);
 				array_push($arr_path,$this->lv_parentNode);
 			}else
 				$arr_path = array("0");
@@ -288,12 +289,12 @@ class liveCD{
 					$dbres 		= $this->lv_db->select("folder","folder_id,parent,path","path like '".$this->lv_parentNode."/%' or path = 0","","","$cursor,$limit");
 				//$this->lv_db->print_script=false;
 					
-				$num_row	= @mysql_num_rows($dbres);
+				$num_row	= @mysqli_num_rows($dbres);
 				$failed		= ($num_row > 0)?false:true;
 	
 						
 				if(!$failed){
-					while(($row = mysql_fetch_row($dbres)) && !$failed){
+					while(($row = mysqli_fetch_row($dbres)) && !$failed){
 						$arr_Folder	= explode("/","$row[2]/$row[0]");
 						$failed		= !$this->createDataDirectory($arr_Folder,$arr_page,$dir_tmp);
 					}
@@ -321,14 +322,14 @@ class liveCD{
 		else 
 			$dbres 		= $this->lv_db->select("metadata","identifier","path like '".$this->lv_parentNode."/%'","","","$cursor,$limit");
 		
-		$num_record = @mysql_num_rows($dbres);
+		$num_record = @mysqli_num_rows($dbres);
 		if($num_record == 0){
 			$dbres 		= $this->lv_db->select("metadata","identifier","path like '%/".$this->lv_parentNode."'","","","$cursor,$limit");
-			$num_record = @mysql_num_rows($dbres);
+			$num_record = @mysqli_num_rows($dbres);
 		}
 		
 		if($num_record > 0){
-			while (($row = @mysql_fetch_row($dbres)) && !$failed){
+			while (($row = @mysqli_fetch_row($dbres)) && !$failed){
 				$identifier = trim($row[0]);
 				
 				if(strlen($identifier) > 0){
@@ -361,18 +362,18 @@ class liveCD{
 			else 
 				$dbres	= $this->lv_db->select("metadata","folder, count(path) as total","path like '%/".$this->lv_parentNode."/%'","folder","asc","","folder");
 			
-				$num_rows = (int)@mysql_num_rows($dbres);
+				$num_rows = (int)@mysqli_num_rows($dbres);
 				
 				if($num_rows == 0){
 					$dbres		= $this->lv_db->select("metadata","folder, count(path) as total","path like '%/".$this->lv_parentNode."'","folder","asc","","folder");
-					$num_rows	= (int)@mysql_num_rows($dbres);
+					$num_rows	= (int)@mysqli_num_rows($dbres);
 				}
 			
 				if($num_rows == 0)
 					$failed = true;
 				else{
 					$arr_Paging = array();
-					while($row = @mysql_fetch_row($dbres)){
+					while($row = @mysqli_fetch_row($dbres)){
 						$cell = array("FOLDER"=>$row[0],"COUNT"=>$row[1]);
 						array_push($arr_Paging,$cell);
 					}
@@ -425,7 +426,8 @@ class liveCD{
 		else 
 			$dbres 		= $this->lv_db->select("folder","count(folder_id) as total","path like '".$this->lv_parentNode."/%'");
 		
-		$num_record	= (int)@mysql_result($dbres,0,"total");
+		$row = @mysqli_fetch_assoc($dbres);
+		$num_record	= (int)$row["total"];
 		$max_token	= ceil($num_record/$limit);
 		
 		$result['NUM_RECORD']	= $num_record;
@@ -444,11 +446,13 @@ class liveCD{
 		else 
 			$dbres 		= $this->lv_db->select("metadata","count(identifier) as total","path like '".$this->lv_parentNode."/%'");
 		
-		$num_record	= (int)@mysql_result($dbres,0,"total");
+		$row = @mysqli_fetch_assoc($dbres);
+		$num_record	= (int)$row["total"];
 		
 		if($num_record == 0){
 			$dbres 		= $this->lv_db->select("metadata","count(identifier) as total","path like '%/".$this->lv_parentNode."'");
-			$num_record	= (int)@mysql_result($dbres,0,"total");
+			$row = @mysqli_fetch_assoc($dbres);
+			$num_record	= (int)$row["total"];
 		}
 		$max_token	= ceil($num_record/$limit);
 		
@@ -577,7 +581,8 @@ class liveCD{
 				$state = array("faq","credit","contact");
 				
 				//$dbres = $this->lv_db->select("folder","parent","folder_id=".$this->lv_parentNode);
-				//$parent= @mysql_result($dbres,0,"parent");
+				//$row = @mysqli_fetch_assoc($dbres);
+				//$parent= $row["parent"];
 						
 				$page_request 	= $arr_page[0].$this->lv_parentNode."&state=offline";
 				$page_save		= "index.html";
@@ -601,7 +606,8 @@ class liveCD{
 					for($x=0;$x<$c_node;$x++){
 						$curr_node	= $pool_node[$x];
 						$dbres = $this->lv_db->select("folder","path","folder_id=$curr_node");
-						$curr_path 		= mysql_result($dbres,0,"path");
+						$row = mysqli_fetch_assoc($dbres);
+						$curr_path 		= $row["path"];
 						$arr_curr_path	= explode("/",$curr_path);
 						
 						//echo "CURR_NODE : $curr_node \n";
@@ -735,7 +741,7 @@ class liveCD{
 			if(!file_exists($dir_tmp))
 				mkdir($dir_tmp,0777);
 			
-			while($row = @mysql_fetch_row($dbres)){
+			while($row = @mysqli_fetch_row($dbres)){
 				
 				$rel_id	= $row[0];
 				$name	= $row[1];
@@ -786,13 +792,13 @@ class liveCD{
 	function getListFolder($parent){
 		$dbres	= $this->lv_db->select("folder","folder_id,name,count","parent = $parent","name","asc");
 		if($dbres){
-			while($row = mysql_fetch_row($dbres)){
+			while($row = mysqli_fetch_row($dbres)){
 				$result[$row[0]]['ID']		= $row[0];
 				$result[$row[0]]['NAME']	= $row[1];
 				$result[$row[0]]['COUNT']	= $row[2];
 				
 				$rs_db	= $this->lv_db->select("folder","folder_id","parent=$row[0]");
-				$num	= @mysql_num_rows($rs_db);
+				$num	= @mysqli_num_rows($rs_db);
 				$result[$row[0]]['STATE']	= ($num == 0)?"last":"node";
 			}
 		}
@@ -810,13 +816,15 @@ class liveCD{
 		if($dbres){
 			$arr_name	= array();
 			$arr_name[0]="Top";
-			$arr_path	= explode("/",mysql_result($dbres,0,"path")."/$parent");
+			$row = mysqli_fetch_assoc($dbres);
+			$arr_path	= explode("/",$row["path"]."/$parent");
 			array_unique($arr_path);
 			$len		= count($arr_path);
 
 			for($i=1;$i<$len;$i++){
 				$dbres 	= $this->lv_db->select("folder","name","folder_id = $arr_path[$i]");
-				$name	= @mysql_result($dbres,0,"name");
+				$row = @mysqli_fetch_assoc($dbres);
+				$name	= $row["name"];
 				
 				if(!empty($name))
 					$arr_name[$arr_path[$i]]	= $name;
@@ -868,7 +876,7 @@ class liveCD{
 			//$this->lv_db->print_script = false;
 			//echo "TOKEN :: $token <br/>";
 			
-			while (($row = @mysql_fetch_row($dbres)) && !$failed) {
+			while (($row = @mysqli_fetch_row($dbres)) && !$failed) {
 				$keyword	= ucfirst(strtolower($row[0]));
 				//echo "KEYWORD : $keyword <br/>\n";
 				$failed 	= !$this->createDataFolksonomy($keyword,$dir_tmp);

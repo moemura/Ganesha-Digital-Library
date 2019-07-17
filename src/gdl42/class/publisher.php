@@ -62,7 +62,7 @@ class publisher {
 									",DC_PUBLISHER_CKO".									
 									",DC_PUBLISHER_HUBSERVER".
 									",DC_PUBLISHER_DATEMODIFIED","$where","DC_PUBLISHER_DATEMODIFIED","desc",$limit);
-		while ($rows = @mysql_fetch_row($dbres)){
+		while ($rows = @mysqli_fetch_row($dbres)){
 			$result[_PUBLISHERSERIALNUMBER]= $rows ['0'];
 			$result[_PUBLISHERNETWORK]= $rows ['1'];
 			$result[_PUBLISHERAPP]= $rows['2'];
@@ -96,7 +96,7 @@ class publisher {
 			$where="DC_PUBLISHER_ID like '%$search%' or DC_PUBLISHER like '%$search%'";
 	
 		$dbres = $gdl_db->select("publisher","DC_PUBLISHER_ID, DC_PUBLISHER, DC_PUBLISHER_CITY, DC_PUBLISHER_NETWORK, DC_PUBLISHER_HUBSERVER","$where","DC_PUBLISHER_DATEMODIFIED","desc",$limit);
-		while ($rows = @mysql_fetch_row($dbres)){
+		while ($rows = @mysqli_fetch_row($dbres)){
 			$result[$rows[0]]['ID']= $rows ['0'];
 			$result[$rows[0]]['NAME']= $rows ['1'];
 			$result[$rows[0]]['CITY']= $rows['2'];

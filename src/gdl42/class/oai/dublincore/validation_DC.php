@@ -133,7 +133,7 @@ class validation_DC extends  validation_oai {
 													$stop = 1;
 												}else{
 													$dbres = $this->oai_db->select("metadata","identifier","identifier like '$identifier'");
-													if(@mysql_num_rows($dbres) != 1)
+													if(@mysqli_num_rows($dbres) != 1)
 														$stop = 1;
 												}
 											}else

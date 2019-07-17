@@ -56,10 +56,14 @@ class session{
 		
 		// simpan atribut user
 		$dbres = $db->select("user u,group g","u.name as user_name,u.group_id,g.name as group_name,g.authority","u.group_id=g.group_id and u.user_id='".$this->user_id."'");
-		$this->user_name=@mysql_result($dbres,0,"user_name");
-		$this->group_id=@mysql_result($dbres,0,"group_id");
-		$this->group_name=@mysql_result($dbres,0,"group_name");
-		$this->authority=@mysql_result($dbres,0,"authority");
+		if($dbres != null)
+		{
+			$row = @mysqli_fetch_assoc($dbres);
+			$this->user_name = $row["user_name"];
+			$this->group_id = $row["group_id"];
+			$this->group_name = $row["group_name"];
+			$this->authority = $row["authority"];
+		}
 		
 		// identifikasi user online
 		// sekaligus memberi status apakan user merefresh halaman
@@ -68,10 +72,14 @@ class session{
 		$url = $_SERVER['REQUEST_URI'];
 		$this->refresh = false;
 		
-		if (@mysql_num_rows($dbres)==0){
+		if (@mysqli_num_rows($dbres)==0){
 			$db->insert("online","session_id,time_stamp,url","'".session_id()."',".time().",'$url'");
 		}else{
-			if ($url == mysql_result($dbres,0,"url")) $this->refresh = true;
+			if ($dbres != null) {
+				$row = mysqli_fetch_assoc($dbres);
+				$url = $row["url"];
+				$this->refresh = true;
+			}
 			$db->update("online","time_stamp=".time().",url='$url'","session_id='".session_id()."'");
 		}
 		
@@ -145,21 +153,22 @@ class session{
 		//$passwd= "old_password".('$password');
 		
 		$dbres = $db->select("user u,group g","u.name as user_name,u.active, u.group_id,g.name as group_name,g.authority","u.group_id=g.group_id and u.user_id='$userid' and u.password=old_password('$password')");
-		if (@mysql_num_rows($dbres)==0){
+		if (@mysqli_num_rows($dbres)==0){
 			return false;
-		} else {			
-			if (mysql_result($dbres,0,"active") == 0) {
-				$this->activate=mysql_result($dbres,0,"active");
+		} else {
+			$row = mysqli_fetch_assoc($dbres);
+			if ($row["active"] == 0) {
+				$this->activate=$row["active"];
 				return false;
 			} else {// simpan ke session
 				$_SESSION['gdl_user'] = $userid;
 				
 				// simpan atribut user
 				$this->user_id=$userid;
-				$this->user_name=mysql_result($dbres,0,"user_name");
-				$this->group_id=mysql_result($dbres,0,"group_id");
-				$this->group_name=mysql_result($dbres,0,"group_name");
-				$this->authority=mysql_result($dbres,0,"authority");
+				$this->user_name=$row["user_name"];
+				$this->group_id=$row["group_id"];
+				$this->group_name=$row["group_name"];
+				$this->authority=$row["authority"];
 	
 				// update user id session
 				$db->update("session","user_id='$userid'","session_id='".session_id()."'");
@@ -217,10 +226,12 @@ class session{
 		$db = new database();
 
 		$dbres = $db->select("online","count(user_id) as total","user_id='guest'");
-		$online['guest'] = @mysql_result($dbres,0,"total");
+		$row = @mysqli_fetch_assoc($dbres);
+		$online['guest'] = $row["total"];
 		
 		$dbres = $db->select("online","count(user_id) as total","user_id<>'guest'");
-		$online['member'] = @mysql_result($dbres,0,"total");
+		$row = @mysqli_fetch_assoc($dbres);
+		$online['member'] = $row["total"];
 
 		return $online;
 	}
@@ -327,7 +338,8 @@ class session{
 			if(empty($_COOKIE['user_signature'])){
 
 				$dbres		= $gdl_db->select("user","password","user_id like '$remoteUser'");
-				$password	= @mysql_result($dbres,0,"password");
+				$row = @mysqli_fetch_assoc($dbres);
+				$password	= $row["password"];
 				//echo "REM_U : [$session_remote][$remoteUser][$remoteName] [$password]<br/>";
 				if(!empty($password)){
 					$userSignature	= $this->give_user_signature($remoteUser,$password);
@@ -384,15 +396,16 @@ class session{
 		if(!empty($signature)){
 			
 			$dbres			= $gdl_db->select("user u,group g","u.password as password,u.group_id as group_id,g.name as name,g.authority as authority","u.user_id like '$user_id' and u.group_id = g.group_id");
-			$password		= @mysql_result($dbres,0,"password");
+			$row 			= @mysqli_fetch_assoc($dbres);
+			$password		= $row["password"];
 
 			$b_signature	= $this->give_user_signature($user_id,$password);
 
 			if($signature == $b_signature){
 				$valid	= 1;
-				$result['group_id']		= @mysql_result($dbres,0,"group_id");
-				$result['group_name']	= @mysql_result($dbres,0,"name");
-				$result['authority']	= @mysql_result($dbres,0,"authority");
+				$result['group_id']		= $row["group_id"];
+				$result['group_name']	= $row["name"];
+				$result['authority']	= $row["authority"];
 			}
 		}
 		
@@ -400,8 +413,9 @@ class session{
 			$result['group_id']		= "Remote";
 			$dbres = $gdl_db->select("group","name,authority","group_id = 'Remote'");
 
-			$result['group_name']	= @mysql_result($dbres,0,"name");
-			$result['authority']	= @mysql_result($dbres,0,"authority");
+			$row = @mysqli_fetch_assoc($dbres);
+			$result['group_name']	= $row["name"];
+			$result['authority']	= $row["authority"];
 			
 			$result['group_name']	= empty($result['group_name'])?"Remote User":$result['group_name'];
 			$result['authority']	= empty($result['authority'])?"{browse->*}{bookmark->*}{search->*}{register->*}{partnership->*}":$result['authority'];

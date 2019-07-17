@@ -14,25 +14,26 @@ if (preg_match("/db.php/i",$_SERVER['PHP_SELF'])) {
 class database { 
 	var $print_script;
 	var $prefix="";
+	var $con;
 	
 	function database($gdl_db_conf=array()){
 		global $gdl_err,$gdl_content;
 		
 		include ("./config/db.php");
-		@mysql_connect($gdl_db_conf['host'], $gdl_db_conf['uname'], $gdl_db_conf['password']);
-		@mysql_select_db($gdl_db_conf['name']) or $gdl_content->set_error("Unable to select database","Error Connection");
+		$con = @mysqli_connect($gdl_db_conf['host'], $gdl_db_conf['uname'], $gdl_db_conf['password'], $gdl_db_conf['name']);
+		//@mysqli_select_db($gdl_db_conf['name']) or $gdl_content->set_error("Unable to select database","Error Connection");
 		$this->prefix=$gdl_db_conf['prefix'];
 	}
 	
 	function test_connection() {
 		include ("./config/db.php");
-		if (!@mysql_connect($gdl_db_conf['host'], $gdl_db_conf['uname'], $gdl_db_conf['password']))
+		if (!@mysqli_connect($gdl_db_conf['host'], $gdl_db_conf['uname'], $gdl_db_conf['password']))
 			return "err";
 	}
 	
 	function create_db($db_name) {
 		$str_sql="create database `".$db_name."`;";
-		$db_result=@mysql_query($str_sql);
+		$db_result=@mysqli_query($con, $str_sql);
 		
 		return $db_result;
 	}
@@ -82,10 +83,10 @@ class database {
 		if (!empty($limit)) $str_sql.=" limit $limit";
 		if (!empty($groupby)) $str_sql.=" group by $groupby"; 
 
-		$db_result = @mysql_query($str_sql);
+		$db_result = @mysqli_query($con, $str_sql);
 		if($this->print_script){ 
 			echo $str_sql;
-			echo mysql_error();
+			echo mysqli_error($con);
 		}
 		return $db_result;
 	}
@@ -94,10 +95,10 @@ class database {
 		$str_sql="insert into ".$this->tables($table);  
 		if (!empty($fields)) $str_sql .=" ($fields)";
 		if (!empty($values)) $str_sql .=" values($values)";
-		$db_result = @mysql_query($str_sql);
+		$db_result = @mysqli_query($con, $str_sql);
 		//echo $str_sql."<br>";
-		//if (mysql_error())
-		// echo mysql_error()."<br/><b>$str_sql</b><br/>";
+		//if (mysqli_error($con))
+		// echo mysqli_error($con)."<br/><b>$str_sql</b><br/>";
 		
 		return $db_result;
 	}  
@@ -105,19 +106,18 @@ class database {
 	function update($table,$newvals,$where="") {  
 		$str_sql="update ".$this->tables($table)." set $newvals";  
 		if (!empty($where)) $str_sql.=" where $where";
-		$db_result = @mysql_query($str_sql); 
+		$db_result = @mysqli_query($con, $str_sql); 
 /*		echo $str_sql."<br>";
-		echo mysql_error();*/
+		echo mysqli_error($con);*/
 		return $db_result; 
 	}  
 		  
 	function delete($table,$where="") {
 		$str_sql="delete from ".$this->tables($table);  
 		if (!empty($where)) $str_sql.=" where $where "; 
-		$db_result = @mysql_query($str_sql);
+		$db_result = @mysqli_query($con, $str_sql);
 		return $db_result;
 	}  
 
 }
-
 ?>

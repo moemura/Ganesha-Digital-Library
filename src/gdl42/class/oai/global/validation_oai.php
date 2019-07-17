@@ -250,7 +250,7 @@ class validation_oai{
 			}else{
 				//echo "Val[$value]";
 				$dbres	= $this->oai_db->select("folder","folder_id","parent = $value");
-				if(@mysql_num_rows($dbres) == 0) $match = 0;
+				if(@mysqli_num_rows($dbres) == 0) $match = 0;
 			}
 		}
 

@@ -68,7 +68,7 @@ function getPath_from_givenNode($node,$arr_path){
 		$dbres 		= $gdl_db->select("folder","folder_id,path,count","path like '$node/%'");
 	//$gdl_db->print_script = false;
 	
-	$num_rows = @mysql_num_rows($dbres);
+	$num_rows = @mysqli_num_rows($dbres);
 	if($num_rows == 0){
 		$dbres 		= $gdl_db->select("folder","folder_id,path,count","((folder_id = $node) or (parent = $node))");
 	}
@@ -77,7 +77,7 @@ function getPath_from_givenNode($node,$arr_path){
 	if(!is_array($arr_path))
 		$arr_path = array();
 		
-	while($row = @mysql_fetch_row($dbres)){
+	while($row = @mysqli_fetch_row($dbres)){
 		//echo "PATH-ROW : $row[0] $row[1] \n";
 		if($row[2] > 0){
 			if(!in_array("$row[1]/$row[0]",$arr_path))
@@ -247,7 +247,7 @@ function get_listNode($filter,$start,$limit){
 	
 	$dbres = $gdl_db->select("folder","folder_id,name",$filter,"","","$start,$limit");
 	
-	while ($row = @mysql_fetch_row($dbres)) {
+	while ($row = @mysqli_fetch_row($dbres)) {
 		$result[$row[0]]['NODE']	= $row[0];
 		$result[$row[0]]['NAME']	= $row[1];
 	}
@@ -263,7 +263,8 @@ function getTotalNode($filter){
 	}
 	
 	$dbres = $gdl_db->select("folder","count(folder_id) as total",$filter);
-	return (int)@mysql_result($dbres,0,"total");
+	$row = @mysqli_fetch_assoc($dbres);
+	return (int)$row["total"];
 }
 
 function handle_build_liveCD($url,$url2){

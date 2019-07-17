@@ -79,7 +79,7 @@ function edit_form($frm="",$option="") {
 		$dbres = $gdl_db->select("Set","spec,name,description","nomor = $repo_id");
 		if($dbres){
 			$idx=0;
-			while($row = mysql_fetch_row($dbres)){
+			while($row = mysqli_fetch_row($dbres)){
 				array_push($array_set,$row[0]);
 				$array_set_name[$row[0]] = $row[1];
 				$array_set_desc[$row[0]] = $row[2];

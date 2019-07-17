@@ -141,7 +141,8 @@ function display_metadata($frm){
 		
 		// comment, bookmark adn print
 		$dbres = $gdl_db->select("comment","count(comment_id) as total","identifier='$identifier'");
-		$content .= "<p class=\"hideprint\"><a href=\"./gdl.php?mod=browse&amp;op=comment&amp;id=$identifier\"> "._GIVECOMMENT." ?</a>#<a href=\"./gdl.php?mod=browse&amp;op=comment&amp;page=read&amp;id=$identifier\">(".@mysql_result($dbres,0,"total").")</a>";
+		$row = @mysqli_fetch_assoc($dbres);
+		$content .= "<p class=\"hideprint\"><a href=\"./gdl.php?mod=browse&amp;op=comment&amp;id=$identifier\"> "._GIVECOMMENT." ?</a>#<a href=\"./gdl.php?mod=browse&amp;op=comment&amp;page=read&amp;id=$identifier\">(".$row["total"].")</a>";
 		$content .= " | <a href=\"./gdl.php?mod=bookmark&amp;id=$identifier\"> "._BOOKMARK."</a></p>";
 
 		return $content;
@@ -292,8 +293,8 @@ function display_contact_repository($frm){
 	$repo_name	= trim($gdl_metadata->get_value($frm,"PUBLISHER"));
 	if(!empty($repo_name) && ($repo_name != "N/A")){
 		$dbres = $gdl_db ->select("repository","host_url,admin_email","repository_name like '$repo_name'");
-		if(mysql_num_rows($dbres) > 0){
-			$row 	= mysql_fetch_row($dbres);
+		if(mysqli_num_rows($dbres) > 0){
+			$row 	= mysqli_fetch_row($dbres);
 			$host	= "http://".$row[0];
 			$admin	= $row[1];
 			

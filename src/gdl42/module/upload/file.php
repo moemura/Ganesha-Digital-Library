@@ -10,7 +10,8 @@ if (isset($del)){
 
 	// delete part of file relation
 	$dbres = $gdl_db->select("relation","identifier","relation_id=$del");
-	$id = @mysql_result($dbres,0,"identifier");
+	$row = @mysqli_fetch_assoc($dbres);
+	$id = $row["identifier"];
 	if ($gdl_file->delete_relation($del,$id)){
 		header("Location:./gdl.php?mod=browse&op=read&id=$id");
 	}else{
@@ -97,7 +98,7 @@ if (isset($del)){
 				$rel_value .= "'".$frm['RELATION_HASFILENAME'] ."','".$frm['RELATION_HASPART']."','".$frm['RELATION_HASPATH']."',";
 				$rel_value .= "'".$frm['RELATION_HASFORMAT'] ."','".$frm['RELATION_HASSIZE']."','".$frm['RELATION_HASURI']."','".$frm['RELATION_HASNOTE']."'";
 				$gdl_db->insert("relation",$rel_field,$rel_value);
-				$id=mysql_insert_id();
+				$id=mysqli_insert_id($gdl_db->con);
 				$frm['RELATION_HASURI'] = "/download.php?id=".$id;
 				$gdl_db->update("relation","uri='".$frm['RELATION_HASURI']."'","relation_id=$id");
 				$xmlrela .= $gdl_metadata->generate_xml($frm);
@@ -106,15 +107,16 @@ if (isset($del)){
 				// update file relation
 				$file_name = $_FILES['fname']['name'][$i];
 				$dbres = $gdl_db->select("relation","*","relation_id=$relation[$i]");
-				$frm['RELATION_NO'] = @mysql_result($dbres,0,"no");
+				$row = @mysqli_fetch_assoc($dbres);
+				$frm['RELATION_NO'] = $row["no"];
 				$frm['RELATION_DATEMODIFIED'] = date("Y-m-d H:i:s");
-				$frm['RELATION_HASFILENAME'] = @mysql_result($dbres,0,"name");
-				$frm['RELATION_HASFORMAT'] = @mysql_result($dbres,0,"format");
-				$frm['RELATION_HASSIZE'] = @mysql_result($dbres,0,"size");
-				$frm['RELATION_HASNOTE'] = @mysql_result($dbres,0,"note");
-				$frm['RELATION_HASPART'] = @mysql_result($dbres,0,"part");
-				$frm['RELATION_HASPATH'] = @mysql_result($dbres,0,"path");
-				$frm['RELATION_HASURI'] = @mysql_result($dbres,0,"uri");
+				$frm['RELATION_HASFILENAME'] = $row["name"];
+				$frm['RELATION_HASFORMAT'] = $row["format"];
+				$frm['RELATION_HASSIZE'] = $row["size"];
+				$frm['RELATION_HASNOTE'] = $row["note"];
+				$frm['RELATION_HASPART'] = $row["part"];
+				$frm['RELATION_HASPATH'] = $row["path"];
+				$frm['RELATION_HASURI'] = $row["uri"];
 				
 				if (!empty($file_name)){
 					// update files// delete old file

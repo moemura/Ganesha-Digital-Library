@@ -19,7 +19,7 @@ class indexing{
 
 		$dbres = $db->select("metadata","identifier,prefix,xml_data","xml_data is not null AND xml_data<>'deleted'");
 			
-		while ($row = mysql_fetch_array($dbres)){
+		while ($row = mysqli_fetch_array($dbres)){
 			$dump_id .= "$row[identifier] ";
 			$count++;
 			
@@ -276,7 +276,7 @@ class indexing{
 		}
 
 		$identifiers = array();
-		while($row = @mysql_fetch_row($records)) {
+		while($row = @mysqli_fetch_row($records)) {
 			if (!empty($row[1])) {
 				$xml = $gdl_metadata->readXML($row[1]);
 				array_push($identifiers, $row[0]);
@@ -315,10 +315,10 @@ class indexing{
 				else
 					$table = $gdl_db->prefix."_index_record";
 						
-				$check = @mysql_query("SHOW TABLES LIKE '".$table."'");
+				$check = @mysqli_query($gdl_db->con, "SHOW TABLES LIKE '".$table."'");
 				
-				if(mysql_num_rows($check) == 0) {
-					@mysql_query("CREATE TABLE `".$table."` (
+				if(mysqli_num_rows($check) == 0) {
+					@mysqli_query($gdl_db->con, "CREATE TABLE `".$table."` (
 								  `identifier` varchar(100) NOT NULL,
 								  `title` varchar(512) default NULL,
 								  `alternative` varchar(512) default NULL,

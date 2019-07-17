@@ -11,7 +11,7 @@
 
 $frm = $gdl_account->get_identity ($_GET['a']);
 $group_level = $gdl_db->select("group", "group_id,name","group_id <> 'public'");
-while ($rowlevel = @mysql_fetch_array ($group_level)) {
+while ($rowlevel = @mysqli_fetch_array ($group_level)) {
 	$grouplevel[$rowlevel['group_id']] = $rowlevel['name'];
 }
 $userstatus ['1'] = _ACTIVE;

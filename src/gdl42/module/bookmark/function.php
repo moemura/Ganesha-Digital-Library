@@ -22,12 +22,12 @@ $dbres = $gdl_db->select("bookmark","bookmark_id,identifier","user_id='$user' an
 
 // jika tidak ada bookmark
 $main .= "<p class=box>"._MYBOOKMARK."</p>";
-if (mysql_num_rows($dbres)==0) {
+if (mysqli_num_rows($dbres)==0) {
 	$main .= "<p>"._BOOKMARKISEMPTY."</p>\n";
 }else{
 	$main .= "<form method=\"post\" action=\"./gdl.php?mod=bookmark\">\n";
 	$main .= "<p><input name=\"act\" type=\"hidden\" value=\"mark\"/></p>\n";
-	while ($rows = mysql_fetch_row($dbres)){
+	while ($rows = mysqli_fetch_row($dbres)){
 		$frm[$rows[0]] = $gdl_metadata->read($rows[1]);
 	}
 	
@@ -70,14 +70,14 @@ $dbres = $gdl_db->select("bookmark","bookmark_id,identifier,time_stamp,response"
 
 // jika tidak ada bookmark
 $main .= "<p class=box>"._USERREQUEST."</p>";
-if (mysql_num_rows($dbres)==0) {
+if (mysqli_num_rows($dbres)==0) {
 	$main .= "<p>"._USERREQUESTISEMPTY."</p>\n";
 }else{
 	
 	$main .= "<form method=\"post\" action=\"./gdl.php?mod=bookmark\">\n";
 	$main .= "<p><input name=\"act\" type=\"hidden\" value=\"mark\"/></p>\n";
 	
-	while ($rows = mysql_fetch_row($dbres)){
+	while ($rows = mysqli_fetch_row($dbres)){
 		$frm[$rows[0]]["metadata"] = $gdl_metadata->read($rows[1]);
 		$frm[$rows[0]]["time_stamp"]=$rows[2];
 		$frm[$rows[0]]["response"]=$rows[3];
@@ -133,7 +133,7 @@ function comment_form($bookmark_id) {
 	{
 		$content.="<p>"._CANNOTFOUNDBOOKMARKDATA."</p>";
 	} else {
-		$row=mysql_fetch_array($dbres);
+		$row=mysqli_fetch_array($dbres);
 		$property=$gdl_metadata->get_property($row["identifier"]);
 		$strcontent.=_FROM." : ".$row["user_id"]."<br>";
 		$strcontent.=_DATESENT." : ".$row["time_stamp"]."<br>";

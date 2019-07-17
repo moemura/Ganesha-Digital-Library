@@ -22,9 +22,10 @@ function download_redirect(){
 	global $file_id,$gdl_db,$gdl_metadata,$gdl_publisher,$gdl_session,$gdl_publisher2;
 	
 	$dbres = $gdl_db->select("relation","part,path,identifier,uri","relation_id=$file_id");
-	$file_target=@mysql_result($dbres,0,"path");
-	$file_part=@mysql_result($dbres,0,"part");
-	$publisher = $gdl_metadata->get_publisher(@mysql_result($dbres,0,"identifier"));
+	$row = @mysqli_fetch_assoc($dbres);
+	$file_target= $row["path"];
+	$file_part= $row["part"];
+	$publisher = $gdl_metadata->get_publisher($row["identifier"]);
 	
    if ($gdl_publisher['id']==$publisher){
 	if (file_exists($file_target)){
@@ -71,10 +72,10 @@ function download_redirect(){
 				$pub_property=$gdl_publisher2->get_property($publisher);					
 			}
 			
-			if (preg_match("/files\//",@mysql_result($dbres,0,"path")))
-				$file_target="http://".$pub_property[_PUBLISHERHOSTNAME]."/".@mysql_result($dbres,0,"path");
+			if (preg_match("/files\//",$row["path"]))
+				$file_target="http://".$pub_property[_PUBLISHERHOSTNAME]."/".$row["path"];
 			else
-				$file_target="http://".$pub_property[_PUBLISHERHOSTNAME]."/files/".@mysql_result($dbres,0,"path");			
+				$file_target="http://".$pub_property[_PUBLISHERHOSTNAME]."/files/".$row["path"];
 		}
 			
 		echo  "<html>\n"
@@ -105,8 +106,9 @@ function access_denied(){
 	global $file_id, $gdl_db;
 	
 	$dbres = $gdl_db->select("relation","name,note","relation_id=$file_id");
-	$file_name=@mysql_result($dbres,0,"name");
-	$file_note=@mysql_result($dbres,0,"note");
+	$row = @mysqli_fetch_assoc($dbres);
+	$file_name= $row["name"];
+	$file_note= $row["note"];
 	
 	echo  "<html>\n"
 		."<head>\n"

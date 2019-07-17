@@ -19,7 +19,7 @@ if (!empty($id)){
 		// confirmation
 		$dbres=$gdl_db->select("comment","*","comment_id='".$id."'");
 		if ($dbres) {
-			$row=mysql_fetch_array($dbres);	
+			$row=mysqli_fetch_array($dbres);	
 			$main = "<p class=\"box\"><b>"._CONFIRMATION."</b></p>\n";
 			$main .= "<b>Identifier</b> : <a href=\"./gdl.php?mod=browse&amp;op=read&amp;id=".$row["identifier"]."\">".$row["identifier"]."</a><br/>";
 			$main .= "<b>"._DATE."</b>: ".$row["date"]."<br/>";

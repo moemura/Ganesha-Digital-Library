@@ -62,7 +62,7 @@ class file_relation{
 				$rel_value .= "'".$frm['RELATION_HASFILENAME'] ."','".$frm['RELATION_HASPART']."','".$frm['RELATION_HASPATH']."',";
 				$rel_value .= "'".$frm['RELATION_HASFORMAT'] ."','".$frm['RELATION_HASSIZE']."','".$frm['RELATION_HASURI']."','".$frm['RELATION_HASNOTE']."'";
 				$db->insert("relation",$rel_field,$rel_value);
-				$id=mysql_insert_id();
+				$id=mysqli_insert_id($gdl_db->con);
 				$frm['RELATION_HASURI'] = "/download.php?id=".$id;
 				$db->update("relation","uri='".$frm['RELATION_HASURI']."'","relation_id=$id");
 				$xmlrela .= $gdl_metadata->generate_xml($frm);
@@ -83,7 +83,7 @@ class file_relation{
 		// get publisher
 		$publisher = $gdl_metadata->get_publisher($identifier);
 		$dbres = $db->select("relation","path","identifier='$identifier'");
-		while ($rows = mysql_fetch_row($dbres)){
+		while ($rows = mysqli_fetch_row($dbres)){
 			$file_del = $rows[0];
 			if ($gdl_publisher['id']<>$publisher){
 				$file_del= str_replace("files/","files/$publisher/",$file_del);
@@ -107,7 +107,8 @@ class file_relation{
 		// get publisher
 		$publisher = $gdl_metadata->get_publisher($identifier);
 		$dbres = $db->select("relation","path","relation_id=$rel_id");
-		$file_del = @mysql_result($dbres,0,"path");
+		$row = @mysqli_fetch_assoc($dbres);
+		$file_del = $row["path"];
 		
 		if ($gdl_publisher['id']<>$publisher){
 			$file_del= preg_replace('/'.$file_del.'/',"/files/","/files/$publisher/");
@@ -120,7 +121,7 @@ class file_relation{
 		// arrange relation file number
 		$dbres = $db->select("relation","*","identifier='$identifier'","relation_id","asc");
 		$i = 0;
-		while ($rows = mysql_fetch_row($dbres)){
+		while ($rows = mysqli_fetch_row($dbres)){
 			
 			$i = $i + 1;
 			$frm['RELATION_NO'] = $i;
@@ -151,7 +152,8 @@ class file_relation{
 		require_once ("./class/db.php");
 		$db = new database();
 		$dbres = $db->select("relation","count(relation_id) as total","identifier='$identifier'");
-		return @mysql_result($dbres,0,"total");
+		$row = @mysqli_fetch_assoc($dbres);
+		return $row["total"];
 	}
 	
 	function get_relation($identifier){
@@ -161,7 +163,7 @@ class file_relation{
 		require_once ("./class/db.php");
 		$db = new database();
 		$dbres = $db->select("relation","*","identifier='$identifier'");
-		while ($rows = mysql_fetch_row($dbres)){
+		while ($rows = mysqli_fetch_row($dbres)){
 				if ($gdl_session->user_id=="guest"){
 					if ($gdl_sys['public_download']==true){
 						$file[$rows[4]]['id']=$rows[0];

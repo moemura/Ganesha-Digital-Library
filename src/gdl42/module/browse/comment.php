@@ -14,7 +14,8 @@ if (preg_match("/comment.php/i",$_SERVER['PHP_SELF'])) {
 $id = $_GET['id'];
 $page = $_GET['page'];
 $dbres = $gdl_db->select("comment","count(comment_id) as total","identifier='$id'");
-$count = @mysql_result($dbres,0,"total");
+$row = @mysqli_fetch_assoc($dbres);
+$count = $row["total"];
 $title = $gdl_metadata->read($id);
 
 function upload_form(){
@@ -95,7 +96,7 @@ function read_comment(){
 	
 	// generate item
 	$dbres = $gdl_db->select("comment","*","identifier='$id'","comment_id","desc");
-	while ($rows = mysql_fetch_row($dbres)){
+	while ($rows = mysqli_fetch_row($dbres)){
 		$main = "<b>$rows[6]</b>";
 		$main .= "<br/>\n";
 		$main .= "<span class=\"note\">$rows[1]";

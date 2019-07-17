@@ -81,14 +81,15 @@ class oai{
 		$result	= "";
 		$dbres 	= $this->oai_db->select($box,"datemodified","","datemodified","desc","0,1");
 		if ($dbres){
-			if (@mysql_num_rows($dbres)>0){
-				$result['datemodified'] = @mysql_result($dbres,0,"DATEMODIFIED");
+			if (@mysqli_num_rows($dbres)>0){
+				$row = @mysqli_fetch_assoc($dbres);
+				$result['datemodified'] = $row["DATEMODIFIED"];
 			} else {
 				$result['datemodified'] = 0;
 			}
 		} else {
 			$result['datemodified'] = 0;
-			$result['error']		= "Date modified query error : ".mysql_error();
+			$result['error']		= "Date modified query error : ".mysqli_error($gdl_db->con);
 		}
 		return $result;
 	}

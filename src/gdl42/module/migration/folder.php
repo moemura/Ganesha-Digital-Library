@@ -14,19 +14,20 @@ if (file_exists("./files/misc/folder.lck")){
 		$url = "./gdl.php?mod=migration&amp;op=folder&amp;page=go";
 		$gdl_content->set_meta("<META HTTP-EQUIV=Refresh CONTENT=\"2; URL=$url\">");
 		$main = "<p>"._TRYCONNECT;
-		@mysql_connect($db_source['host'], $db_source['uname'], $db_source['password']);
-		@mysql_select_db($db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
+		$con = @mysqli_connect($db_source['host'], $db_source['uname'], $db_source['password'], $db_source['name']);
+		//@mysqli_select_db($db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
 		$str_sql = "select count(node) as total from folder";
-		$dbsource = @mysql_query($str_sql);
+		$dbsource = @mysqli_query($con, $str_sql);
+		$row = @mysqli_fetch_assoc($dbsource);
 		$main .= "</p>\n";
-		$main .= "<p>Total : ".@mysql_result($dbsource ,0,"total")." "._FOLDER."</p>\n ";
+		$main .= "<p>Total : ".$row["total"]." "._FOLDER."</p>\n ";
 		$main .= "<p><b>"._PLEASEWAIT."</b></p>\n";
 	} else {
 		
-		@mysql_connect($db_source['host'], $db_source['uname'], $db_source['password']);
-		@mysql_select_db($db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
+		$con = @mysqli_connect($db_source['host'], $db_source['uname'], $db_source['password'], $db_source['name']);
+		//@mysqli_select_db($db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
 		$str_sql = "select f.node,f.name,f.datemodified,t.parent,t.path from folder f, folder_tree t where f.node=t.node";
-		$dbsource = @mysql_query($str_sql);
+		$dbsource = @mysqli_query($con, $str_sql);
 		
 		if ($dbsource) {
 		require_once ("./class/db.php");
@@ -34,7 +35,7 @@ if (file_exists("./files/misc/folder.lck")){
 		
 		$db->delete("folder");
 		$num = 1;
-		while ($rows = mysql_fetch_row($dbsource)){
+		while ($rows = mysqli_fetch_row($dbsource)){
 			$len =strlen($rows[4])-1;
 			$path = substr($rows[4], 0, $len);
 			$str_sql = $rows[0].",".$rows[3].",'$path','".$rows[1]."','".$rows[2]."'";

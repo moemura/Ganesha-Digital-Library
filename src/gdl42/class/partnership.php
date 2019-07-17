@@ -30,12 +30,14 @@ class partnership{
 		global $gdl_db,$gdl_stdout,$gdl_metadata,$gdl_sync,$gdl_session,$gdl_publisher;
 				
 		$dbres	= $gdl_db->select("publisher","DC_PUBLISHER_ID","IDPUBLISHER = $id_record");
-		$pub_id	= @mysql_result($dbres,0,"DC_PUBLISHER_ID");
+		$row = @mysqli_fetch_assoc($dbres);
+		$pub_id	= $row["DC_PUBLISHER_ID"];
 		$remote	= 0;
 		if(!empty($pub_id)){
 			$dbres		= $gdl_db->select("repository","host_url,oai_script","id_publisher like '$pub_id'");
-			$hub_server	= @mysql_result($dbres,0,"host_url");
-			$script		= @mysql_result($dbres,0,"oai_script");
+			$row = @mysqli_fetch_assoc($dbres);
+			$hub_server	= $row["host_url"];
+			$script		= $row["oai_script"];
 			
 //			echo "[$hub_server][$script][$pub_id]";
 			if(!empty($hub_server) && !empty($script)){

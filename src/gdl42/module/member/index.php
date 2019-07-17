@@ -51,7 +51,7 @@ if (preg_match("/{member->*}/",$gdl_session->authority) || $gdl_session->authori
 
 		$frm = $gdl_account->get_identity ($gdl_session->user_id);
 		$group_level = $gdl_db->select("group", "group_id","group_id <> 'public'");
-		while ($rowlevel = @mysql_fetch_array ($group_level)) {
+		while ($rowlevel = @mysqli_fetch_array ($group_level)) {
 			$grouplevel[$rowlevel['group_id']] = $rowlevel['group_id'];
 		}
 		$userstatus ['1'] = _ACTIVE;

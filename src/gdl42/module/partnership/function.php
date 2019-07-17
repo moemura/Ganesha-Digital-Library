@@ -140,7 +140,8 @@ function getTotalPublisher(){
 
 	
 	$dbres		=  $gdl_db->select("publisher p,repository r","count(p.dc_publisher_id) as total",$filtering_publisher);
-	$total		=  (int)@mysql_result($dbres,0,"total");
+	$row 		= @mysqli_fetch_assoc($dbres);
+	$total		=  (int)$row["total"];
 	
 	return 	$total;
 }
@@ -151,9 +152,9 @@ function getDataPublisher($cursor,$limit){
 	$result = array();
 	//$gdl_db->print_script = true;
 	$dbres	= $gdl_db->select("publisher p,repository r","*",$filtering_publisher,"","","$cursor,$limit");
-	//echo "ERROR ".mysql_error();
+	//echo "ERROR ".mysqli_error($gdl_db->con);
 	$i=0;
-	while($row = @mysql_fetch_array($dbres)){
+	while($row = @mysqli_fetch_array($dbres)){
 		/*$i++;
 		if($i == 1)
 			foreach($row as $index => $value)

@@ -100,8 +100,8 @@ class requestFormatter_GN extends requestFormatter {
 		
 		$dbres		= $this->rf_db->select("repository","host_url,oai_script","nomor = $identify");
 		
-		if(@mysql_num_rows($dbres) == 1){
-				$row 	= mysql_fetch_row($dbres);
+		if(@mysqli_num_rows($dbres) == 1){
+				$row 	= mysqli_fetch_row($dbres);
 				$hub 	= trim($row[0]);
 				$script	= trim($row[1]);
 				if(!empty($hub) && !empty($script)){
@@ -168,8 +168,8 @@ class requestFormatter_GN extends requestFormatter {
 
 		$dbres		= $this->rf_db->select("repository","host_url,oai_script","nomor=$identify");
 
-		if(@mysql_num_rows($dbres) == 1){
-				$row 	= @mysql_fetch_row($dbres);
+		if(@mysqli_num_rows($dbres) == 1){
+				$row 	= @mysqli_fetch_row($dbres);
 				$hub 	= trim($row[0]);
 				$script	= trim($row[1]);
 				if(!empty($hub) && !empty($script)){
@@ -347,8 +347,8 @@ class requestFormatter_GN extends requestFormatter {
 										 );
 	//$this->rf_db->print_script = false;
 		$count	= 0;
-		if (@mysql_num_rows($dbres) > 0){
-			while ($row = @mysql_fetch_array($dbres)){
+		if (@mysqli_num_rows($dbres) > 0){
+			while ($row = @mysqli_fetch_array($dbres)){
 				// generate elements
 				//echo "HEAD : ".$row['identifier']."<br/>\n";
 				
@@ -426,14 +426,15 @@ class requestFormatter_GN extends requestFormatter {
 		
 		$dbres = $this->rf_db->select("queue","no,path,status,temp_folder","dc_publisher_id = '$curr_publisher' and status <> 'success' and status <> 'failed'","","","0,1");
 
-		if(@mysql_num_rows($dbres) != 1) {
+		if(@mysqli_num_rows($dbres) != 1) {
 				$result['error']="No available posting file ";
 				return $result;
 		};
 		
-		$path				= trim(@mysql_result($dbres,0,"path"));
-		$status 			= trim(@mysql_result($dbres,0,"status"));
-		$temp_folder		= trim(@mysql_result($dbres,0,"temp_folder"));
+		$row = @mysqli_fetch_assoc($dbres);
+		$path				= trim($row["path"]);
+		$status 			= trim($row["status"]);
+		$temp_folder		= trim($row["temp_folder"]);
 		
 		if(empty($path) || empty($status) ) return null;
 		if(($status == "fragmented") && empty($temp_folder)) return null;
@@ -602,9 +603,10 @@ class requestFormatter_GN extends requestFormatter {
 		
 		$dbres = $this->rf_db->select("repository m,publisher p","m.id_publisher as curr_publisher","m.nomor = $id and m.id_publisher = p.dc_publisher_id");
 		
-		if(@mysql_num_rows($dbres)  != 1) return null;
+		if(@mysqli_num_rows($dbres)  != 1) return null;
 		
-		$curr_publisher = @mysql_result($dbres,0,"curr_publisher");
+		$row = @mysqli_fetch_assoc($dbres);
+		$curr_publisher = $row["curr_publisher"];
 		
 		return $curr_publisher;
 	}

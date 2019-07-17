@@ -61,7 +61,7 @@ $gdl_form->add_field(array(
 $org_node=$gdl_folder->check_folder("Organization",0);
 if (!preg_match("/err/",$org_node)) {
 	$dbres=$gdl_db->select("folder","name","parent=".$org_node);
-	while ($row=mysql_fetch_array($dbres)) {
+	while ($row=mysqli_fetch_array($dbres)) {
 		$orgname[$row["name"]]=$row["name"];
 	}
 }

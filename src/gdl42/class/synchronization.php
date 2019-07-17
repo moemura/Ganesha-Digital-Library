@@ -138,13 +138,15 @@
 				$gdl_db->insert("repository","$column","$value");
 			}
 			
-			$err_mysql = mysql_error();
+			$err_mysql = mysqli_error($gdl_db->con);
 			if(empty($err_mysql)) return 1;
 			else return 0;			
 		}
 		
 		function save_configuration($frm,$option) {
 
+			global $gdl_db;
+			
 			if($option == 1){ // Make default connection operation
 
 				$repo_id	= trim($frm["sync_repository_id"]);
@@ -161,7 +163,7 @@
 					$result 	= $this->save_to_repository($frm);
 					
 					if($result){
-						$frm["sync_repository_id"]	= mysql_insert_id();
+						$frm["sync_repository_id"]	= mysqli_insert_id($gdl_db->con);
 						$result = $this->save_to_file($frm);
 					}
 				}
@@ -245,8 +247,8 @@
 			
 			if(!empty($id)){
 				$dbres = $gdl_db->select("repository","proxy_address,port_proxy,host_url,port_host,use_proxy","nomor = $id");
-				if(mysql_num_rows($dbres) == 1){
-					$row = mysql_fetch_row($dbres);
+				if(mysqli_num_rows($dbres) == 1){
+					$row = mysqli_fetch_row($dbres);
 					$proxy_server 	= $row[0];
 					$proxy_port		= $row[1];
 					$hub_server		= $row[2];
@@ -282,13 +284,13 @@
 			
 			$dbres = $gdl_db->select("publisher","DC_PUBLISHER_ID,DC_PUBLISHER,DC_PUBLISHER_HOSTNAME","","","","$start,$limit");
 			if($dbres){
-				while($row = mysql_fetch_array($dbres)){
+				while($row = mysqli_fetch_array($dbres)){
 					$id			= $row['DC_PUBLISHER_ID'];
 					$repo_name	= $row['DC_PUBLISHER'];
 					$base		= $row['DC_PUBLISHER_HOSTNAME'];
 					
 					$dbres_2 	= $gdl_db->select("repository","ID_PUBLISHER","ID_PUBLISHER LIKE '$id'");
-					if(mysql_num_rows($dbres_2) > 0){
+					if(mysqli_num_rows($dbres_2) > 0){
 						$gdl_db->update("repository","repository_name='$repo_name',host_url='$base',modified=current_timestamp()","where id_publisher like '$id'");
 					}else{
 						$gdl_db->insert("repository","repository_name,host_url,id_publisher,modified","'$repo_name','$base','$id',current_timestamp()");
@@ -299,7 +301,8 @@
 			
 			$dbres_3 = $gdl_db->select("publisher","count(IDPUBLISHER) as total");
 			if($dbres_3){
-				$total = @mysql_result($dbres_3,0,"total");
+				$row = @mysqli_fetch_assoc($dbres_3);
+				$total = $row["total"];
 				if($total > ($start+$limit)){
 					$token++;
 					$url = "index.php?mod=synchronization&amp;op=option&amp;action=repo&amp;token=$token";
@@ -314,7 +317,7 @@
 			global $gdl_db;
 			
 			$dbres = $gdl_db->select("repository","NOMOR,ID_PUBLISHER,REPOSITORY_NAME,HOST_URL,OAI_SCRIPT,OPTION_PREFIX","REPOSITORY_NAME LIKE '$searchkey%'","REPOSITORY_NAME,ID_PUBLISHER","asc,asc","$start,$limit");
-			while ($rows = @mysql_fetch_row($dbres)){
+			while ($rows = @mysqli_fetch_row($dbres)){
 				$result[$rows[0]]['REC']	= $rows ['0'];
 				if(empty($rows['1']))
 					$rows[1] ="N/A";
@@ -334,7 +337,7 @@
 			if(!empty($id)){
 				$gdl_db->delete("repository","nomor = $id");
 				
-				if(mysql_affected_rows() > 0){
+				if(mysqli_affected_rows($gdl_db->con) > 0){
 					$id_curr	= (int)$gdl_sync['sync_repository_id'];
 					if($id == $id_curr){
 						// You have deleted your default connection
@@ -349,7 +352,8 @@
 						if(!$failed){
 							// find id your default hub in repository
 							$dbres 	= $gdl_db->select("repository","nomor","host_url like '$default_hub'");
-							$id_hub	= (int)@mysql_result($dbres,0,"nomor");
+							$row = @mysqli_fetch_assoc($dbres);
+							$id_hub	= (int)$row["nomor"];
 							
 							//echo "Step-0[$default_hub][$id_hub]<br>";
 							if($id_hub <= 0) $failed = true;
@@ -395,7 +399,7 @@
 			$dbres = $gdl_db->select("repository","*","nomor = $id");
 			if(!$dbres) return "";
 			
-			$row = mysql_fetch_array($dbres);
+			$row = mysqli_fetch_array($dbres);
 			
 			$frm['sync_repository_name'] 		= $row['repository_name'];
 			$frm['sync_repository_id'] 			= $row['nomor'];
@@ -434,8 +438,8 @@
 			global $gdl_db;
 			
 			$dbres = $gdl_db->select("repository","count(*) as total","repository_name like '$searckey%'");
-			
-			$total = (int)@mysql_result($dbres,0,"total");
+			$row = mysqli_fetch_assoc($dbres);
+			$total = (int)$row["total"];
 			
 			return $total;
 		}
@@ -454,7 +458,7 @@
 			for($i=0;$i<$count;$i++){
 				$dbres = $gdl_db->select("queue","no","path like '$job[$i]' and dc_publisher_id like '$publisher' ");
 				
-				if(@mysql_num_rows($dbres) == 0)
+				if(@mysqli_num_rows($dbres) == 0)
 					$gdl_db->insert("queue","path,datemodified,DC_PUBLISHER_ID","'$job[$i]',current_timestamp(),'$publisher'");
 			}
 			
@@ -471,7 +475,7 @@
 				
 			$dbres = $gdl_db->select("queue","no,path,status","path like '$folder%' and status not like 'success'  and dc_publisher_id = '$publisher' ","path","asc",$fetch);
 			if($dbres){
-				while($rows = @mysql_fetch_row($dbres)){
+				while($rows = @mysqli_fetch_row($dbres)){
 					$result[$rows[0]]['NO']			= $rows ['0'];
 					$result[$rows[0]]['PATH']		= $rows ['1'];
 					$result[$rows[0]]['STATUS']		= $rows ['2'];
@@ -489,7 +493,8 @@
 			
 			$dbres = $gdl_db->select("queue","count(path) as total","status not like 'success'  and dc_publisher_id = '$publisher' ");
 			if($dbres){
-				return @mysql_result($dbres,0,"total");
+				$row = @mysqli_fetch_assoc($dbres);
+				return $row["total"];
 			}
 			return 0;
 		}
@@ -503,7 +508,8 @@
 			
 			$dbres = $gdl_db->select("queue","count(path) as total","(status like 'success'  or status like 'failed') and dc_publisher_id = '$publisher' ");
 			if($dbres){
-				return @mysql_result($dbres,0,"total");
+				$row = @mysqli_fetch_assoc($dbres);
+				return $row["total"];
 			}
 			return 0;
 		}
@@ -518,7 +524,7 @@
 				
 				$dbres = $gdl_db->select("queue","no,path,status","(status like 'success'  or status like 'failed') and dc_publisher_id = '$publisher' ","path","asc");
 				if($dbres){
-					while($rows = @mysql_fetch_row($dbres)){
+					while($rows = @mysqli_fetch_row($dbres)){
 						$result[$rows[0]]['NO']					= $rows ['0'];
 						$result[$rows[0]]['PATH']				= $rows ['1'];
 						$result[$rows[0]]['STATUS']		= $rows ['2'];
@@ -534,7 +540,8 @@
 			
 			// get temp folder
 			$dbres 			= $gdl_db->select("queue","temp_folder","no = '$record'");
-			$temp_folder	= @mysql_result($dbres,0,"temp_folder");
+			$row = @mysqli_fetch_assoc($dbres);
+			$temp_folder	= $row["temp_folder"];
 			if($dbres){
 				$option = $gdl_harvest->harvest_formatRequest;
 				if($option == "general"){
@@ -555,14 +562,15 @@
 			global $gdl_stdout,$gdl_db;
 			
 			$dbres	= $gdl_db->select("inbox","count(identifier) as total");
-			$total	= (int)@mysql_result($dbres,0,"total");
+			$row 	= @mysqli_fetch_assoc($dbres);
+			$total	= (int)$row["total"];
 			
 			$header = "<b>Clean Inbox</b>";
 			if($total <= 0)
 				$message = "<b>Inbox is empty</b>";
 			else{
 				$gdl_db->delete("inbox");
-				if(mysql_affected_rows() > 0)
+				if(mysqli_affected_rows($gdl_db->con) > 0)
 					$message = "<b>Successfully clean inbox</b>";
 				else
 					$message = "<b>Cleaning  inbox failed</b>";
@@ -575,7 +583,8 @@
 			global $gdl_stdout,$gdl_db;
 			
 			$dbres	= $gdl_db->select("outbox","count(identifier) as total");
-			$total	= (int)@mysql_result($dbres,0,"total");
+			$row 	= @mysqli_fetch_assoc($dbres);
+			$total	= (int)$row["total"];
 			
 			if(!empty($status)){
 				$status_deleted = " with status is <i>$status</i>";
@@ -587,7 +596,7 @@
 				$message = "<b>Outbox is empty</b>";
 			else{
 				$gdl_db->delete("outbox","folder = '$status' ");
-				if(mysql_affected_rows() > 0)
+				if(mysqli_affected_rows($gdl_db->con) > 0)
 					$message = "<b>Successfully clean outbox $status_deleted</b>";
 				else
 					$message = "<b>Cleaning  outbox failed  $status_deleted</b>";
@@ -603,7 +612,7 @@
 			$dbres = $gdl_db->select("outbox","folder, count(folder) as total","","","","","status");
 			
 			if($dbres){
-				while($rows = @mysql_fetch_row($dbres)){
+				while($rows = @mysqli_fetch_row($dbres)){
 					$result[$rows[0]]['STATUS']	= $rows ['0'];
 					$result[$rows[0]]['COUNT']		= $rows ['1'];
 				}
@@ -624,7 +633,7 @@
 			$dbres	= $gdl_db->select("metadata","identifier","identifier like '$publisher-%' and status IS NULL and identifier NOT LIKE '%<%'","","","$cursor,$limit");
 			
 			$header = "<b>Extract identifier from metadata</b>";
-			if(mysql_num_rows($dbres) == 0) {
+			if(mysqli_num_rows($dbres) == 0) {
 				if($token  > 0)
 					$message = "<b>Successfully extract identifier from metadata that correspondent with your publisher </b>";
 				else
@@ -632,7 +641,7 @@
 					
 				$result	= $gdl_stdout->print_message($header,$message);
 			}else{
-				while($row = mysql_fetch_row($dbres)){
+				while($row = mysqli_fetch_row($dbres)){
 						$field = "type,identifier,status,folder,datemodified";
 						$value = "'metadata','$row[0]','new','outbox',now()";
 						$gdl_db->insert("outbox",$field,$value);

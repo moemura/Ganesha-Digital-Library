@@ -38,10 +38,10 @@ function display_request($searchkey="") {
 //	}
 	
 	$dbres=$gdl_db->select("bookmark","bookmark_id,time_stamp,user_id,identifier,response","request is not null and user_id like '%$searchkey%' and response != ''","time_stamp","desc");
-	$total=mysql_num_rows($dbres);	
+	$total=mysqli_num_rows($dbres);	
 	
 	$dbres=$gdl_db->select("bookmark","bookmark_id,time_stamp,user_id,identifier,response","request is not null and user_id like '%$searchkey%' and response != ''","time_stamp","desc","$limitfinal");
-	$count=mysql_num_rows($dbres);
+	$count=mysqli_num_rows($dbres);
 	
 			$grid=new repeater();
 			
@@ -58,7 +58,7 @@ function display_request($searchkey="") {
 			$url = "./gdl.php?mod=request&amp;";
 			$j=$limit+1;
 			
-			while ($row=mysql_fetch_array($dbres)) {
+			while ($row=mysqli_fetch_array($dbres)) {
 				$property=$gdl_metadata->get_property($row["identifier"]);
 				$field[1]=$j;
 				$field[2]="<a href='./gdl.php?mod=browse&amp;op=read&amp;id=".$row["identifier"]."'>".$row["identifier"]." / ".$property["title"]."</a>";
@@ -167,7 +167,7 @@ function comment_form($bookmark_id) {
 	{
 		$content.="<p>"._CANNOTFOUNDREQUESTDATA."</p>";
 	} else {
-		$row=mysql_fetch_array($dbres);
+		$row=mysqli_fetch_array($dbres);
 		$property=$gdl_metadata->get_property($row["identifier"]);
 		$strcontent.=_FROM." : ".$row["user_id"]."<br>";
 		$strcontent.=_SENT." : ".$row["time_stamp"]."<br>";

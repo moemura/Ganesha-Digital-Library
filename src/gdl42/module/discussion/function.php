@@ -39,8 +39,8 @@ function display_discussion($searchkey) {
 	$dbres=$gdl_db->select("metadata m,comment c","c.*","m.identifier=c.identifier$where","c.date","asc");
 	$dbres2=$gdl_db->select("metadata m,comment c","c.*","m.identifier=c.identifier$where","c.date","asc","$limitfinal");
 	if ($dbres && $dbres2) {
-		$total=@mysql_num_rows($dbres);		
-		$count=@mysql_num_rows($dbres2);		
+		$total=@mysqli_num_rows($dbres);		
+		$count=@mysqli_num_rows($dbres2);		
 		
 		$grid=new repeater();
 				
@@ -59,7 +59,7 @@ function display_discussion($searchkey) {
 		$url = "./gdl.php?mod=discussion&amp;";
 		$j=$limit+1;
 				
-		while ($row=mysql_fetch_array($dbres2)) {
+		while ($row=mysqli_fetch_array($dbres2)) {
 			$field[1]=$j;
 			$field[2]=$row["date"];
 			$field[3]="<a href=\"./gdl.php?mod=browse&amp;op=read&amp;id=".$row["identifier"]."\">".$row["identifier"]."</a>";

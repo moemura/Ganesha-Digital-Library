@@ -76,8 +76,8 @@ class requestFormatter_DC extends requestFormatter {
 		
 		$dbres		= $this->rf_db->select("repository","host_url,oai_script","nomor = $identify");
 		
-		if(@mysql_num_rows($dbres) == 1){
-				$row 	= mysql_fetch_row($dbres);
+		if(@mysqli_num_rows($dbres) == 1){
+				$row 	= mysqli_fetch_row($dbres);
 				$hub 	= trim($row[0]);
 				$script	= trim($row[1]);
 				if(!empty($hub) && !empty($script)){
@@ -144,8 +144,8 @@ class requestFormatter_DC extends requestFormatter {
 		
 		$dbres		= $this->rf_db->select("repository","host_url,oai_script","nomor=$identify");
 		
-		if(@mysql_num_rows($dbres) == 1){
-				$row 	= @mysql_fetch_row($dbres);
+		if(@mysqli_num_rows($dbres) == 1){
+				$row 	= @mysqli_fetch_row($dbres);
 				$hub 	= trim($row[0]);
 				$script	= trim($row[1]);
 				if(!empty($hub) && !empty($script)){

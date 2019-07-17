@@ -20,7 +20,7 @@ class user {
 		$db = new database();
 		
 		$dbres = $db->select("user","active","user_id='$userid' AND validation='$account'");
-		if (@mysql_num_rows($dbres)==0){
+		if (@mysqli_num_rows($dbres)==0){
 			return false;
 		}
 		else
@@ -60,7 +60,7 @@ class user {
 		global $gdl_db;
 		
 		$dbres = $gdl_db->select("user","user_id","user_id='$email'");
-		if (@mysql_num_rows($dbres)==0){
+		if (@mysqli_num_rows($dbres)==0){
 			return true;
 		} else {
 			return false;
@@ -125,16 +125,17 @@ class user {
 		// hitung total member 
 		if ($count==true){
 			$dbres = $gdl_db->select("user","count(user_id) as total","$where");
-			$this->total = @mysql_result($dbres ,0,"total");
+			$row = @mysqli_fetch_assoc($dbres);
+			$this->total = $row["total"];
 		}
 		// list member per page
 		$dbres = $gdl_db->select("user","user_id, name","$where","date_modified","desc",$limit);
-		while ($rows = @mysql_fetch_row($dbres)){
+		while ($rows = @mysqli_fetch_row($dbres)){
 			$result[$rows[0]]['EMAIL']= $rows ['0'];
 			$result[$rows[0]]['FULLNAME']= $rows['1'];
 		}
 		
-		$this->count = @mysql_num_rows($dbres);
+		$this->count = @mysqli_num_rows($dbres);
 		// empty identifier to session
 		//$_SESSION['gdl_identifier'] = "";			
 		return $result;
@@ -144,10 +145,11 @@ class user {
 	function get_property ($id){
 		global $gdl_db;
 		$dbres = $gdl_db->select("user","user_id,active,group_id,name", "user_id='$id'");
-		$frm['USERID'] =@mysql_result($dbres,0,"user_id");
-		$frm['FULLNAME'] = @mysql_result($dbres,0,"name");
-		$frm['ACTIVE'] = @mysql_result($dbres,0,"active");
-		$frm['GROUP'] = @mysql_result($dbres,0,"group_id");		
+		$row = @mysqli_fetch_assoc($dbres);
+		$frm['USERID'] = $row["user_id"];
+		$frm['FULLNAME'] = $row["name"];
+		$frm['ACTIVE'] = $row["active"];
+		$frm['GROUP'] = $row["group_id"];
 		return $frm;
 	}
 
@@ -168,7 +170,7 @@ class user {
 					active='$newprofile[ACTIVE]', date_modified='$date'",
 		
 					"user_id='$a'");
-		if (mysql_affected_rows () >0) {
+		if (mysqli_affected_rows($gdl_db->con) >0) {
 			return true;
 		} else 	{
 			return false;
@@ -187,7 +189,7 @@ class user {
 					date_modified='$date'",
 		
 					"user_id='$a'");
-		if (mysql_affected_rows () >0) {
+		if (mysqli_affected_rows($gdl_db->con) >0) {
 			return true;
 		} else 	{
 			return false;
@@ -198,7 +200,7 @@ class user {
 		global $gdl_db;
 		$dbres = $gdl_db->select("user", "*", "user_id='$a'");
 		
-		while ($row = @mysql_fetch_array ($dbres)){
+		while ($row = @mysqli_fetch_array ($dbres)){
 			$frm['EMAIL'] = $row['user_id'];
 			$frm['FULLNAME'] = $row['name'];
 			$frm['PASSWORDORIGINAL'] = $row['password'];

@@ -20,17 +20,18 @@ class import{
 
 		$dbres=$gdl_db->select("publisher","DC_PUBLISHER_DATEMODIFIED","DC_PUBLISHER_ID='".$id."'");
 
-		if (@mysql_num_rows($dbres)>0){
-				$mydatemod = mysql_result($dbres,0,"DC_PUBLISHER_DATEMODIFIED");
-				if ($datemod > $mydatemod){
-					// update
-					$message	= $this->publisher_edit($id,$xml);
-					$status		= "updated";
-				} else {
-					// uptodate
-					$status = "*";
-				}
+		if (@mysqli_num_rows($dbres)>0){
+			$row = mysqli_fetch_assoc($dbres);
+			$mydatemod = $row["DC_PUBLISHER_DATEMODIFIED"];
+			if ($datemod > $mydatemod){
+				// update
+				$message	= $this->publisher_edit($id,$xml);
+				$status		= "updated";
 			} else {
+				// uptodate
+				$status = "*";
+			}
+		} else {
 				// add
 				$this->publisher_add($xml);
 				$status = "new";
@@ -130,7 +131,7 @@ class import{
 		}
 
 		$dbres 		= $gdl_db->update("repository","repository_name='$repository',host_url='$host',oai_script='$script',protocol_version = '$version',admin_email='$admin'","nomor ='$id'");
-		$results['error']		 = mysql_error();
+		$results['error']		 = mysqli_error($gdl_db->con);
 		return $results;
 	}
 	
@@ -154,9 +155,9 @@ class import{
 				$desc= $oai_desc[$i];
 				
 				$gdl_db->insert("Set","nomor,spec,name,description,modified","'$id','$set','$name','$desc',current_timestamp()");
-				$mysql_err = mysql_error();
-				if(!empty($mysql_err)){
-					$error .= "Failed insert [$set] : ".mysql_error()."<br/>";
+				$db_err = mysqli_error($gdl_db->con);
+				if(!empty($db_err)){
+					$error .= "Failed insert [$set] : ".mysqli_error($gdl_db->con)."<br/>";
 				}
 			}
 		}
@@ -468,7 +469,7 @@ class import{
 		if ($dbres){
 			return "";
 		} else {
-			$message = "hub_publisher_add($id): Error ".mysql_error();
+			$message = "hub_publisher_add($id): Error ".mysqli_error($gdl_db->con);
 			return $message;
 		}
 	}
@@ -504,7 +505,7 @@ class import{
 		if ($dbres){
 			return "";
 		} else {
-			$message = "hub_publisher_edit($id): ".mysql_error();
+			$message = "hub_publisher_edit($id): ".mysqli_error($gdl_db->con);
 			return $message;
 		}
 	}
@@ -560,7 +561,8 @@ class import{
 							$selective .= " email = '$email' subject='$title' and comment = '$desc'";
 							
 							$dbres	= $gdl_db->select("comment","identifier",$selective);
-							$cek_identifier = @mysql_result($dbres,0,"identifier");
+							$row = @mysqli_fetch_assoc($dbres);
+							$cek_identifier = $row["identifier"];
 							
 							if(empty($cek_identifier))
 								$gdl_db->insert("comment",$field,$value);
@@ -590,7 +592,7 @@ class import{
 			default:			
 		}
 	
-		if (preg_match("/Duplicate/",mysql_error())) {
+		if (preg_match("/Duplicate/",mysqli_error($gdl_db->con))) {
 			$this->import_metadata($identifier,$xmldata,"update",$box,$optPrefix);
 		}
 		
@@ -611,13 +613,14 @@ class import{
 				
 			$dbres = $gdl_db->select("folder","folder_id,path","name like '$providerId'");
 			//if($dbres){
-			if(@mysql_num_rows($dbres) == 0){
+			if(@mysqli_num_rows($dbres) == 0){
 				$gdl_db->insert("folder","parent,path,name,date_modified","0,'0','$providerId',now()");
-				$id = mysql_insert_id();
+				$id = mysqli_insert_id($gdl_db->con);
 				$folder_info[tree] 		= '0/'.$id."/";
 			}else{
-				$id 					= @mysql_result($dbres,0,"folder_id");
-				$id_path 				= @mysql_result($dbres,0,"path");
+				$row = @mysqli_fetch_assoc($dbres);
+				$id 					= $row["folder_id"];
+				$id_path 				= $row["path"];
 				$folder_info[tree] 		= $id_path."/";
 			}
 			//}
@@ -627,11 +630,12 @@ class import{
 			$setSpec	= trim($setSpec);
 			if(!empty($setSpec)){
 				$dbres = $gdl_db->select("folder","folder_id","name like '$setSpec'");
-				if(mysql_num_rows($dbres) == 0){
+				if(mysqli_num_rows($dbres) == 0){
 					$gdl_db->insert("folder","parent,path,name,date_modified","$folder_info[parent],'$folder_info[tree]','$setSpec',now()");
-					$id_set = mysql_insert_id();
+					$id_set = mysqli_insert_id($gdl_db->con);
 				}else{
-					$id_set = @mysql_result($dbres,0,"folder_id");
+					$row = @mysqli_fetch_assoc($dbres);
+					$id_set = $row["folder_id"];
 				}
 				
 				$folder_info[tree] 		.= $id_set."/";
@@ -675,7 +679,7 @@ class import{
 				$frmfolder['name']=$val;
 				$frmfolder['parent']=$parent_id;
 				$gdl_folder->add($frmfolder);
-				$folder_node=mysql_insert_id();
+				$folder_node=mysqli_insert_id($gdl_db->con);
 				$folder_tree .= "$folder_node/";
 			} else
 				$folder_tree .="$folder_node/";
@@ -695,7 +699,7 @@ class import{
 		$dbres	= $gdl_db->select("publisher","DC_PUBLISHER_ID,DC_PUBLISHER_NETWORK");
 		
 		if ($dbres){
-			while ($row = mysql_fetch_array($dbres)){
+			while ($row = mysqli_fetch_array($dbres)){
 				$id = $row[DC_PUBLISHER_ID];
 				$tmp_providerNetwork[$id] = $row[DC_PUBLISHER_NETWORK];
 			}
@@ -709,11 +713,12 @@ class import{
 		global $gdl_db;
 		$dbres=$gdl_db->select($box." box,metadata md","box.datemodified as datemodified,box.folder as folder,md.status as status,md.prefix as prefix","md.identifier='".$identifier."' and box.identifier=md.identifier");
 		if ($dbres){
-			if (mysql_num_rows($dbres)>0){
-				$mydate = mysql_result($dbres,0,"datemodified");
-				$folder = mysql_result($dbres,0,"folder");
-				$status = mysql_result($dbres,0,"status");
-				$prefix = mysql_result($dbres,0,"prefix");
+			if (mysqli_num_rows($dbres)>0){
+				$row = @mysqli_fetch_assoc($dbres);
+				$mydate = $row["datemodified"];
+				$folder = $row["folder"];
+				$status = $row["status"];
+				$prefix = $row["prefix"];
 				
 				if($prefix == $optPrefix){
 					if ($status == "deleted"){
@@ -849,9 +854,10 @@ class import{
 			
 			$datestamp 	= $this->pre_processingCompareDate($datestamp);
 			if ($dbcheck){
-				if (mysql_num_rows($dbcheck)>0){ 
-					$mydate 	= mysql_result($dbcheck,"DATEMODIFIED",0);
-					$mystatus	= mysql_result($dbcheck,"STATUS",1);
+				if (mysqli_num_rows($dbcheck)>0){
+					$row = mysqli_fetch_assoc($dbcheck);
+					$mydate 	= $row["DATEMODIFIED"];
+					$mystatus	= $row["STATUS"];
 
 					if($mystatus == "failed") continue;
 
@@ -960,7 +966,7 @@ class import{
 			if(!empty($no_relation) && ($no_relation != "0")){
 				$gdl_db->insert("relation","identifier,date_modified,no,name,part,path,format,size,uri,note","'".$xml["IDENTIFIER"][0]."','".$xml["RELATION.DATEMODIFIED"][$counter]."','$no_relation','".$xml["RELATION.HASFILENAME"][$counter]."','".$xml["RELATION.HASPART"][$counter]."','".$xml["RELATION.HASPATH"][$counter]."','".$xml["RELATION.HASFORMAT"][$counter]."','".$xml["RELATION.HASSIZE"][$counter]."','".$xml["RELATION.HASURI"][$counter]."','".$xml["RELATION.HASNOTE"][$counter]."'");
 
-				if(preg_match("/Duplicate/",mysql_error()))
+				if(preg_match("/Duplicate/",mysqli_error($gdl_db->con)))
 					$gdl_db->update("relation",",date_modified='".$xml["RELATION.DATEMODIFIED"][$counter]."',name='".$xml["RELATION.HASFILENAME"][$counter]."',part='".$xml["RELATION.HASPART"][$counter]."',path='".$xml["RELATION.HASPATH"][$counter]."',format='".$xml["RELATION.HASFORMAT"][$counter]."',size='".$xml["RELATION.HASSIZE"][$counter]."',uri='".$xml["RELATION.HASURI"][$counter]."',note='".$xml["RELATION.HASNOTE"][$counter]."'","identifier='$identifier' AND no='$no_relation'");
 
 			}
@@ -983,7 +989,8 @@ class import{
 		
 		// cek the number previous relation
 		$dbres 		= $gdl_db->select("relation","count(identifier) as total","identifier = '$identifier'");
-		$num_prev	= (int)@mysql_result($dbres,0,"total");
+		$row = @mysqli_fetch_assoc($dbres);
+		$num_prev	= (int)$row["total"];
 		
 		if($num_prev == 0){//echo " U_r[1] ";
 			if($counter_newRelation > 0)
@@ -1020,10 +1027,10 @@ class import{
 		global $gdl_db;
 		
 		$dbres = $gdl_db->select("garbagetoken","Token","Token LIKE '$word'");
-		if(@mysql_fetch_row($dbres) == FALSE){
+		if(@mysqli_fetch_row($dbres) == FALSE){
 				$w_cek	= strtolower($word);
 				$dbres 	= $gdl_db->select("folksonomy","Token,Frekuensi","Token LIKE '$w_cek'");
-				if($rows = @mysql_fetch_row($dbres)){
+				if($rows = @mysqli_fetch_row($dbres)){
 					$num	= $rows['1']+1;
 					$dbres = $gdl_db->update("folksonomy","Frekuensi=$num","Token LIKE '$word'");
 				}else{

@@ -52,8 +52,9 @@ class elementResponse{
 		$dbres	= $this->er_db->select("folder","PATH","folder_id = '$node'");
 		
 		if ($dbres){
-			if (@mysql_num_rows($dbres)>0) {
-				$path = @mysql_result($dbres,0,"PATH")."$node/";
+			if (@mysqli_num_rows($dbres)>0) {
+				$row = @mysqli_fetch_assoc($dbres);
+				$path = $row["PATH"]."$node/";
 				return $path;
 			} else {
 				return 0;
@@ -68,7 +69,10 @@ class elementResponse{
 		$dbres	= $this->er_db->select("metadata ","COUNT(IDENTIFIER) as TOTAL","$selective_query");
 									
 		if ($dbres){
-			if (@mysql_num_rows($dbres)>0) $total = @mysql_result($dbres,0,"TOTAL");
+			if (@mysqli_num_rows($dbres)>0) {
+				$row = @mysqli_fetch_assoc($dbres);
+				$total = $row["TOTAL"];
+			}
 			return $total;
 		} else {
 			return 0;
@@ -148,8 +152,8 @@ class elementResponse{
 		$dbres		= $this->get_resultSetIdentifiersFromDatabase($cursor,$limit,$selective);
    
 		if ($dbres){
-			if (@mysql_num_rows($dbres)>0){
-				while($row = @mysql_fetch_array($dbres))
+			if (@mysqli_num_rows($dbres)>0){
+				while($row = @mysqli_fetch_array($dbres))
 					$header .= $this->element_header($row[STATUS],$row[IDENTIFIER],$row[DATEMODIFIED],$row[TYPE]);
 
 				// get resumption token
@@ -157,7 +161,7 @@ class elementResponse{
 				if($metadataPrefix == "oai_dc"){
 					$next_cursor		= $this->get_nextCursor($token,$limit,$total);
 					$dbres				= $this->get_resultSetRecordFromDatabase($next_cursor,$limit,$selective);
-					$c_next_record		= @mysql_num_rows($dbres);
+					$c_next_record		= @mysqli_num_rows($dbres);
 					$resumption_token 	= $this->element_resumptiontoken($token, $limit,$total,"oai_dc",$c_next_record,$request_query);
 				}else
 					$resumption_token 	= $this->element_resumptiontoken($token,$limit,$total);
@@ -168,7 +172,7 @@ class elementResponse{
 				$element = $this->error_element("noRecordsMatch","Record not found");
 			}
 		} else {
-			$element = $this->error_element("dbError",mysql_error());
+			$element = $this->error_element("dbError",mysqli_error($gdl_db->con));
 		}
 		return $element;
 	}
@@ -277,7 +281,7 @@ class elementResponse{
 		$server			= $this->er_publisher['hostname'];
 		
 		if($resstr){
-			$rowres 	= @mysql_fetch_array ($resstr);	
+			$rowres 	= @mysqli_fetch_array ($resstr);	
 			$lastdate 	= substr ($rowres['DATEMODIFIED'], 0, 10);
 			$lasttime 	= substr ($rowres['DATEMODIFIED'], 11, 8);
 			$time_stamp	= $lastdate."T".$lasttime."Z";
@@ -286,7 +290,7 @@ class elementResponse{
 		$dbres = $this->er_db->select("repository","oai_script","id_publisher like '$id_repository'");
 		
 		if($dbres){
-			$row = @mysql_fetch_row($dbres);
+			$row = @mysqli_fetch_row($dbres);
 			$script = $row[0];
 		}
 		
@@ -334,7 +338,7 @@ class elementResponse{
 			
 			$dbres = $this->er_db->select("metadata","prefix","identifier like '$identifier'");
 			
-			$row = @mysql_fetch_row($dbres);
+			$row = @mysqli_fetch_row($dbres);
 			
 			$xml = ($row[0] == "general")?
 						$this->build_element_metadataFormat("","general","ITB"):

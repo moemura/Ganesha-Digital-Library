@@ -48,7 +48,7 @@ function get_list($table,$limit,$filter="") {
 		}else
 			$dbres = $gdl_db->select($table,"GARBAGE_ID as ID, TOKEN","","","",$limit);
 			
-		while ($rows = @mysql_fetch_row($dbres)){				
+		while ($rows = @mysqli_fetch_row($dbres)){				
 			if($table == "folksonomy"){
 				$result[$rows[0]]['TOKEN']		= $rows ['0'];
 				$result[$rows[0]]['FREKUENSI']	= $rows['1'];
@@ -65,7 +65,7 @@ function getTotalStopWord(){
 	global $gdl_db;
 	
 	$dbres = $gdl_db->select("garbagetoken","COUNT(Token) as TOTAL");
-	if($rows = @mysql_fetch_row($dbres)){
+	if($rows = @mysqli_fetch_row($dbres)){
 		return $rows['0'];
 	}else return 0;
 }
@@ -78,10 +78,10 @@ function addNewStopword($token){
 	if(strlen($token)>0)
 		$dbres = $gdl_db->insert("garbagetoken","Token","'$token'");
 	
-	$error = @mysql_error();
+	$error = @mysqli_error($gdl_db->con);
 	if(!empty($error))
 		return -1;
-	if(mysql_affected_rows() > 0){
+	if(mysqli_affected_rows($gdl_db->con) > 0){
 		return 1;
 	}else return 0;
 }
@@ -112,7 +112,7 @@ function update_folksonomy(){
 	
 	$rMetadata = $gdl_db->select("metadata","xml_data",$date_filter,"","","$start,$limit");
 	$prev_keyword = "";
-	while ($rows = @mysql_fetch_row($rMetadata)){
+	while ($rows = @mysqli_fetch_row($rMetadata)){
 		$rData = $gdl_metadata->readXML($rows['0']);
 		if(is_array($rData)){
 			$keyword = $gdl_metadata->get_value($rData,"SUBJECT.KEYWORDS","SUBJECT",0);
@@ -147,7 +147,7 @@ function clean_stopwordToken(){
 	$start 	= $token*$limit;
 	
 	$rToken = $gdl_db->select("garbagetoken","Token","","","","$start,$limit");
-	while ($rows = @mysql_fetch_row($rToken)){
+	while ($rows = @mysqli_fetch_row($rToken)){
 			$gdl_db->delete("folksonomy","Token LIKE '$rows[0]'");
 	}
 	$stop = $start+1;
@@ -242,7 +242,7 @@ function getTotalMetadata($date_filter){
 	global $gdl_db;
 	$dbres = $gdl_db->select("metadata","COUNT(IDENTIFIER) as TOTAL",$date_filter);
 	
-	if($rows = @mysql_fetch_row($dbres)){
+	if($rows = @mysqli_fetch_row($dbres)){
 		return $rows['0'];
 	}else return 0;
 }
@@ -251,7 +251,7 @@ function getTotalFolksonomy($filter){
 	global $gdl_db;
 	$dbres = $gdl_db->select("folksonomy","COUNT(TOKEN) as TOTAL","TOKEN LIKE '$filter%'");
 	
-	if($rows = @mysql_fetch_row($dbres)){
+	if($rows = @mysqli_fetch_row($dbres)){
 		return $rows['0'];
 	}else return 0;
 }
@@ -306,9 +306,9 @@ function box_folksonomy(){
 		$query = "SELECT count(Token), sum(Frekuensi), max(Frekuensi) "
 					."FROM ".$tables." WHERE Token like '".$i."%'"
 					." AND Frekuensi >='".$min_hz."' order by Frekuensi desc limit 0,".$limit;
-		$dbres	= @mysql_query($query);
+		$dbres	= @mysqli_query($gdl_db->con, $query);
 		
-		if($rows = @mysql_fetch_row($dbres)){
+		if($rows = @mysqli_fetch_row($dbres)){
 			$count_record		= $rows['0'];
 			$count_frekuensi	= $rows['1'];
 			$max_hz				= $rows['2'];
@@ -332,11 +332,11 @@ function box_folksonomy(){
 							."AND Frekuensi >= '".$min_hz."' ORDER BY Frekuensi DESC, Token limit 0,".$limit;
 				
 							
-				$dbres	= mysql_query($query);
+				$dbres	= mysqli_query($gdl_db->con, $query);
 				
 				$pool_abjad = null;
-				if(@mysql_num_rows($dbres) > 0){
-					while($rows = @mysql_fetch_row($dbres)){
+				if(@mysqli_num_rows($dbres) > 0){
+					while($rows = @mysqli_fetch_row($dbres)){
 						$pool_abjad[$rows['0']] = $rows['1'];
 					}
 					ksort($pool_abjad);
@@ -406,14 +406,16 @@ function get_range_date(){
 	
 	$dbres = $gdl_db->select("metadata","min(date_modified) as start_date");
 	if($dbres){
-		$date = @mysql_result($dbres,0,"start_date");
+		$row = @mysqli_fetch_assoc($dbres);
+		$date = $row["start_date"];
 		if($date != "0000-00-00 00:00:00"){
 			$start_date = substr($date,0,10)."T".substr($date,11,8)."Z";
 		}
 	}
 	$dbres = $gdl_db->select("metadata","max(date_modified) as end_date");
 	if($dbres){
-		$date = @mysql_result($dbres,0,"end_date");
+		$row = @mysqli_fetch_assoc($dbres);
+		$date = $row["end_date"];
 		if($date != "0000-00-00 00:00:00"){
 			$end_date = substr($date,0,10)."T".substr($date,11,8)."Z";
 		}
@@ -426,5 +428,4 @@ function get_range_date(){
 }
 
 }
-
 ?>

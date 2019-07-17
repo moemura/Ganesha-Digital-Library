@@ -31,7 +31,7 @@ class elementResponse_GN extends elementResponse {
 		
 		$dbres 	= $this->er_db->select("metadata","STATUS, IDENTIFIER, DATE_MODIFIED as DATEMODIFIED, TYPE, XML_DATA","identifier LIKE '$identifier'");
 		
-		$row	= @mysql_fetch_array($dbres);
+		$row	= @mysqli_fetch_array($dbres);
 		if($row != FALSE){
 			$header   	= $this->element_header($row['STATUS'],$row['IDENTIFIER'],$row['DATEMODIFIED'],$row['TYPE']);
 			$metadata	= $this->element_metadata($row['XML_DATA']);
@@ -94,10 +94,11 @@ class elementResponse_GN extends elementResponse {
 		$dbres	= $this->er_db->select("publisher","DC_PUBLISHER_SERIALNO, DC_PUBLISHER_NETWORK","DC_PUBLISHER_ID='$providerId'");
 		
 		if ($dbres){
-			if (@mysql_num_rows($dbres)>0){
+			if (@mysqli_num_rows($dbres)>0){
 				
-				$SerialNumber 		= trim(@mysql_result($dbres,0,"DC_PUBLISHER_SERIALNO"));
-				$providerNetwork 	= @mysql_result($dbres,0,"DC_PUBLISHER_NETWORK");
+				$row = @mysqli_fetch_assoc($dbres);
+				$SerialNumber 		= trim($row["DC_PUBLISHER_SERIALNO"]);
+				$providerNetwork 	= $row["DC_PUBLISHER_NETWORK"];
 				$mdString 			= "$SerialNumber-$epochTime";
 				$validSerialNumber  = md5($mdString);
 				
@@ -132,7 +133,7 @@ class elementResponse_GN extends elementResponse {
 		} else {
 			
 			$error_code		= "systemError";
-			$error_msg		= @mysql_error();
+			$error_msg		= @mysqli_error($gdl_db->con);
 			$element 		= $this->error_element($error_code,$error_msg);
 
 		}
@@ -152,9 +153,9 @@ class elementResponse_GN extends elementResponse {
 		$selective	= "DC_PUBLISHER_HUBSERVER <> '$HTTP_SESSION_VARS[sess_providerId]'";
 		$dbres		= $this->er_db->select("publisher","*",$selective,"","","$cursor,$limit");
 		if ($dbres){
-			if (@mysql_num_rows($dbres)>0){
+			if (@mysqli_num_rows($dbres)>0){
 	
-				while ($row = @mysql_fetch_array($dbres)){
+				while ($row = @mysqli_fetch_array($dbres)){
 					
 					$pubid = $row['DC_PUBLISHER_ID'];
 					
@@ -373,8 +374,8 @@ class elementResponse_GN extends elementResponse {
 									"$cursor,$limit");
 									
 		if ($dbres){
-			if (@mysql_num_rows($dbres)>0){
-				while($row = @mysql_fetch_array($dbres)){ 
+			if (@mysqli_num_rows($dbres)>0){
+				while($row = @mysqli_fetch_array($dbres)){ 
 					$header   = $this->element_header($row[STATUS],$row[IDENTIFIER],$row[DATEMODIFIED],$row[TYPE]);
 					
 					if ($row[STATUS] != "deleted"){
@@ -395,7 +396,7 @@ class elementResponse_GN extends elementResponse {
 				$element = $this->error_element("noRecordsMatch","Record not found");
 			}
 		} else {
-			$element = $this->error_element("dbError",mysql_error());
+			$element = $this->error_element("dbError",mysqli_error($gdl_db->con));
 		}
 		
 		return $element;
@@ -422,8 +423,9 @@ class elementResponse_GN extends elementResponse {
 		$dbres	= $this->er_db->select("publisher","COUNT(*) as TOTAL",$selective);
 		
 		if ($dbres){
-			if (@mysql_num_rows($dbres)>0){
-				$total = @mysql_result($dbres,0,"TOTAL");
+			if (@mysqli_num_rows($dbres)>0){
+				$row = @mysqli_fetch_assoc($dbres);
+				$total = $row["TOTAL"];
 			} else {
 				$total = 0;
 			}

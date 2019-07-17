@@ -44,7 +44,7 @@ function list_of_organization() {
 	$header[2]=_ORGANIZATIONNAME;
 	$header[3]=_ACTION;
 	$no=1;
-	while ($row=mysql_fetch_array($dbres)) {
+	while ($row=mysqli_fetch_array($dbres)) {
 		$field[1]=$no;
 		$field[2]=$row["name"];
 		$field[3]="<a href='./gdl.php?mod=organization&amp;op=edit&amp;id=".$row["folder_id"]."'>"._EDIT."</a> - <a href='./gdl.php?mod=organization&amp;op=delete&amp;del=confirm&amp;id=".$row["folder_id"]."'>"._DELETE."</a>";

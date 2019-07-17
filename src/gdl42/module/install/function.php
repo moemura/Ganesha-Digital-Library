@@ -282,7 +282,7 @@ function create_table() {
 
 	} 
 	
-	$result=@mysql_select_db($gdl_db_conf["name"]);
+	$result=@mysqli_select_db($gdl_db_conf["name"]);
 	if ($result) {
 			$content.="<p>"._SELECTDBSUCCESS." <b>".$gdl_db_conf["name"]."</b></p>";			
 		}
@@ -518,13 +518,13 @@ function create_table() {
 	$content.="<p>";
 	$success=true;
 	foreach ($tablename as $idxtbl => $valtbl) {
-		$result=@mysql_query($valtbl);
+		$result=@mysqli_query($gdl_db->con, $valtbl);
 		if ($result)
 			$content.=_CREATETABLESUCCESS." <b>".$idxtbl."</b><br/>";
 		else
 			{
 				$content.=_CREATETABLEFAILED." <b>".$idxtbl."</b><br/>";
-				$content.="<b>".mysql_error()."</b><br/>";
+				$content.="<b>".mysqli_error($gdl_db->con)."</b><br/>";
 				$success=false;
 			}
 	}	

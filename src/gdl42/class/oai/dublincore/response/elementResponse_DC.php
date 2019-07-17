@@ -31,7 +31,7 @@ class elementResponse_DC extends elementResponse{
 	function elementGetRecord($identifier){
 		
 		$dbres 		= $this->er_db->select("metadata","STATUS, IDENTIFIER, DATE_MODIFIED as DATEMODIFIED, TYPE, XML_DATA","identifier LIKE '$identifier'");
-		$row		= @mysql_fetch_array($dbres);
+		$row		= @mysqli_fetch_array($dbres);
 
 		$header   	= $this->element_header($row['STATUS'],$row['IDENTIFIER'],$row['DATEMODIFIED'],$row['TYPE']);
 		$dataXML	= $this->er_metadata->readXML($row['XML_DATA']);
@@ -103,8 +103,8 @@ class elementResponse_DC extends elementResponse{
 		$dbres		= $this->get_resultSetRecordFromDatabase($cursor,$limit,$selective);
 
 		if ($dbres){
-			if (@mysql_num_rows($dbres)>0){
-				while($row = @mysql_fetch_array($dbres)){ 
+			if (@mysqli_num_rows($dbres)>0){
+				while($row = @mysqli_fetch_array($dbres)){ 
 					$header   = $this->element_header($row[STATUS],$row[IDENTIFIER],$row[DATEMODIFIED],$row[TYPE]);
 					
 					if ($row[STATUS] != "deleted"){
@@ -124,7 +124,7 @@ class elementResponse_DC extends elementResponse{
 				$total 				= $this->get_total_identifiers($selective);
 				$next_cursor		= $this->get_nextCursor($token,$limit,$total);
 				$dbres				= $this->get_resultSetRecordFromDatabase($next_cursor,$limit,$selective);
-				$c_next_record		= @mysql_num_rows($dbres);
+				$c_next_record		= @mysqli_num_rows($dbres);
 				$resumption_token 	= $this->element_resumptiontoken($token, $limit,$total,"oai_dc",$c_next_record,$request_query);
 
 				$element = "\n<ListRecords> $records $resumption_token </ListRecords>\n";
@@ -133,7 +133,7 @@ class elementResponse_DC extends elementResponse{
 				$element = $this->error_element("noRecordsMatch","Record not found");
 			}
 		} else {
-			$element = $this->error_element("dbError",mysql_error());
+			$element = $this->error_element("dbError",mysqli_error($gdl_db->con));
 		}
 		
 		return $element;

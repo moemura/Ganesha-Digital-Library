@@ -120,7 +120,7 @@ class validation_GN extends validation_oai {
 											$identifier = $request_query['identifier'];
 											if(isset($identifier)){
 												$dbres = $this->oai_db->select("metadata","identifier","identifier like '$identifier'");
-												if(@mysql_num_rows($dbres) != 1)
+												if(@mysqli_num_rows($dbres) != 1)
 													$stop = 1;
 											}else
 												$stop = 1;

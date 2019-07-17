@@ -324,13 +324,14 @@ class requestAction_GN extends requestAction {
 		// total box
 		$dbres		= $this->ra_db->select($boxname,"COUNT(*) as TOTAL");
 		if ($dbres){
-			$total = @mysql_result($dbres,0,"TOTAL");
+			$row = @mysqli_fetch_assoc($dbres);
+			$total = $row["TOTAL"];
 			$box_stats[TOTAL] = $total;
 		}
 		// total per folder
 		$dbres = $this->ra_db->select("$boxname b,metadata m","b.FOLDER,count(b.folder) as TOTAL","b.status <> 'deleted' AND m.IDENTIFIER = b.IDENTIFIER","","","","b.Folder");
 		if ($dbres){
-			while ($row = @mysql_fetch_array($dbres)){
+			while ($row = @mysqli_fetch_array($dbres)){
 				$folder = $row['FOLDER'];
 				$total2 = $row['TOTAL'];
 				$box_stats[FOLDER][$folder] = $total2;
@@ -410,7 +411,8 @@ class requestAction_GN extends requestAction {
 			$path	= implode("/",explode("=",$file_fragment));
 			
 			$dbres = $this->ra_db->select("queue","temp_folder","path like '$path'  and  DC_PUBLISHER_ID  = '$publisher' ");
-			$temp_folder	= trim(@mysql_result($dbres,0,"temp_folder"));
+			$row = @mysqli_fetch_assoc($dbres);
+			$temp_folder	= trim($row["temp_folder"]);
 			
 			if(!empty($temp_folder))
 					if(file_exists($temp_folder)){

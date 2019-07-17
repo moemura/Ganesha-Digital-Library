@@ -99,7 +99,9 @@ class requestFormatter{
 													$dbres	= $this->rf_db->select("Set","spec","nomor = $id");
 													
 													if($dbres){
-														$set 	= @mysql_result($dbres,$set_no-1,"spec");
+														mysqli_data_seek($dbres, $set_no-1);
+														$row = mysqli_fetch_assoc($dbres);
+														$set 	= $row["spec"];
 														$node	= $this->rf_sync['sync_harvest_node'];
 														if(!empty($set)){
 															if(empty($node)) $node = 0;
