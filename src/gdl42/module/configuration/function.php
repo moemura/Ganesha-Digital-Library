@@ -472,7 +472,7 @@ function write_file_system() {
 	$file="config/system.php";
 	$filehandle=fopen($file,"w");
 	if ($filehandle) {
-		$str_system="<?
+		$str_system="<?php
 ";
 		foreach ($frm as $idxFrm => $valFrm) {
 			if ($valFrm=="true") {				

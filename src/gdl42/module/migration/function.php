@@ -72,7 +72,7 @@ function write_file_system() {
 	$file="module/migration/conf.php";
 	$filehandle=fopen($file,"w");
 	if ($filehandle) {
-		$str_system="<?
+		$str_system="<?php
 ";
 		foreach ($frm as $idxFrm => $valFrm) {
 			$str_system.="\$db_source[\"".$idxFrm."\"]=\"".$valFrm."\";

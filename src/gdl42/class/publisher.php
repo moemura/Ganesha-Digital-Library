@@ -150,7 +150,7 @@ class publisher {
 		
 		$type=strtoupper($type[$frm["type"]]);
 		$contype=strtoupper($contype[$frm["connection"]]);
-		$pub_conf = "<?
+		$pub_conf = "<?php
 			# Automatically generated on ".date("Y-m-d H:i:s")."
 		
 			\$gdl_publisher['id']  = \"$frm[id]\";
@@ -190,7 +190,7 @@ class publisher {
 		
 		$type=strtoupper($type[$frm["type"]]);
 		$contype=strtoupper($contype[$frm["contype"]]);
-		$pub_conf = "<?
+		$pub_conf = "<?php
 			# Automatically generated on ".date("Y-m-d H:i:s")."
 		
 			\$gdl_publisher['id']  = \"$frm[ID]\";

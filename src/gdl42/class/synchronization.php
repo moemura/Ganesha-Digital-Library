@@ -48,7 +48,7 @@
 			}
 			
 			
-			$sync_conf = "<?
+			$sync_conf = "<?php
 			# Automatically generated on ".date("Y-m-d H:i:s")."
 		
 			# ******* Repository Name

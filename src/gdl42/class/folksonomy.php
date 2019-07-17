@@ -8,7 +8,7 @@ function save_configuration($frm) {
 		if(!preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/",$date))
 			$date = "0000-00-00T00:00:00Z";
 		
-		$sync_conf = "<?
+		$sync_conf = "<?php
 		# Automatically generated on ".date("Y-m-d H:i:s")."
 		
 		# ******** Setting Konfigurasi

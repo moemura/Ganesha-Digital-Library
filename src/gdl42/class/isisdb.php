@@ -61,7 +61,7 @@ class isisdb {
 			
 			$filehandle=@fopen($dir."/owner.inc","w");
 			if ($filehandle) {
-				$filecontent="<?
+				$filecontent="<?php
 		\$owner[\"orgname\"]=\"".$frm["orgname"]."\";
 		\$owner[\"dbname\"]=\"".$frm["dbname"]."\";
 		\$owner[\"email\"]=\"".$frm["email"]."\";
@@ -165,7 +165,7 @@ class isisdb {
 	function save_configuration($db_name,$frm) {
 		$elementscfg = $this->isisdbdir."/".$db_name."/elements.cfg";
 		$filehandle=fopen($elementscfg,"w");
-		$strcfg="<?
+		$strcfg="<?php
 ";
 		
 		foreach ($frm as $idxFrm => $valFrm) {
