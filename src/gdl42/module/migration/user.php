@@ -16,7 +16,7 @@ if (file_exists("./files/misc/user.lck")){
 		$gdl_content->set_meta("<META HTTP-EQUIV=Refresh CONTENT=\"2; URL=$url\">");
 		$main = "<p>"._TRYCONNECT;
 		$con = @mysqli_connect($db_source['host'], $db_source['uname'], $db_source['password'], $db_source['name']);
-		//@mysqli_select_db($db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
+		//@mysqli_select_db($con, $db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
 		$str_sql = "select count(UID) as total from user";
 		$dbsource = @mysqli_query($con, $str_sql);
 		$row = @mysqli_fetch_assoc($dbsource);
@@ -26,7 +26,7 @@ if (file_exists("./files/misc/user.lck")){
 	} else {
 		
 		@con = @mysqli_connect($db_source['host'], $db_source['uname'], $db_source['password'], $db_source['name']);
-		//@mysqli_select_db($db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
+		//@mysqli_select_db($con, $db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
 		$str_sql = "select u.email,u.password,u.confirm,u.gid,u.full_name,u.datestamp,u.validation,u.address,u.city,u.country,u.institution,u.job from user u";
 		$dbsource = @mysqli_query($con, $str_sql);
 

@@ -100,8 +100,8 @@ class session{
 		global $gdl_content,$gdl_sys;
 		
 		// Setting bahasa
-		$lang = $_COOKIE['gdl_lang'];
-		$newlang = $_GET['newlang'];
+		$lang = isset($_COOKIE['gdl_lang']) ? $_COOKIE['gdl_lang'] : null;
+		$newlang = isset($_GET['newlang']) ? $_GET['newlang'] : null;
 		
 		if (isset($newlang)) {
 			if (file_exists("./lang/$newlang.php")) {
@@ -124,8 +124,8 @@ class session{
 		global $gdl_content, $gdl_sys;
 		
 		// Setting theme
-		$theme = $_COOKIE['gdl_theme'];
-		$newtheme = $_GET['newtheme'];
+		$theme = isset($_COOKIE['gdl_theme']) ? $_COOKIE['gdl_theme'] : null;
+		$newtheme = isset($_GET['newtheme']) ? $_GET['newtheme'] : null;
 		
 		if (isset($newtheme)) {
 			if (file_exists("./theme/$newtheme/theme.php")) {
@@ -152,7 +152,10 @@ class session{
 		$db = new database();
 		//$passwd= "old_password".('$password');
 		
-		$dbres = $db->select("user u,group g","u.name as user_name,u.active, u.group_id,g.name as group_name,g.authority","u.group_id=g.group_id and u.user_id='$userid' and u.password=old_password('$password')");
+		$userid = mysqli_real_escape_string($db->con, $userid);
+		$password = mysqli_real_escape_string($db->con, $password);
+		
+		$dbres = $db->select("user u,group g","u.name AS user_name,u.active, u.group_id,g.name AS group_name,g.authority","u.group_id=g.group_id AND u.user_id='$userid' AND (SHA2($password, 512) OR u.password='$db->mysql3password($password)')");
 		if (@mysqli_num_rows($dbres)==0){
 			return false;
 		} else {

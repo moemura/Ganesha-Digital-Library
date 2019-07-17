@@ -42,10 +42,18 @@ class user {
 		$this->validation = $vn;
 		$this->job = $job;
 		
+		$userid = mysqli_real_escape_string($db->con, $userid);
+		$password = mysqli_real_escape_string($db->con, $password);
+		$fullname = mysqli_real_escape_string($db->con, $fullname);
+		$vn = mysqli_real_escape_string($db->con, $vn);
+		$address = mysqli_real_escape_string($db->con, $address);
+		$city = mysqli_real_escape_string($db->con, $city);
+		$country = mysqli_real_escape_string($db->con, $country);
+		$institution = mysqli_real_escape_string($db->con, $institution);
+		$job = mysqli_real_escape_string($db->con, $job);
 	  	
-		$db->insert("user","user_id, password, active, group_id, name, validation, address, city, country, institution, job",
-		
-					"'$userid', old_password('$password'),'0', 'User', '$fullname','$vn', '$address', '$city', '$country', '$institution', '$job'");
+		$db->insert("user","user_id, password, active, group_id, name, validation, address, city, country, institution, job",		
+					"'$userid', SHA2('$password', 512),'0', 'User', '$fullname','$vn', '$address', '$city', '$country', '$institution', '$job'");
 
 	}
 	
@@ -161,6 +169,12 @@ class user {
 	function update ($newprofile, $a) {
 		global $gdl_db;					 
 		$date = date("Y-m-d H:i:s");
+		
+		foreach($newprofile as $key=>$value) {
+			$newprofile[$key] = mysqli_real_escape_string($gdl_db->con, $value);
+		}
+		$a = mysqli_real_escape_string($gdl_db->con, $a);
+		
 		$gdl_db->update("user","password=$newprofile[PASSWORD], group_id='$newprofile[GROUPLEVEL]', 
 		
 					name='$newprofile[FULLNAME]', address='$newprofile[ADDRESS]', city='$newprofile[CITY]', 
@@ -180,6 +194,11 @@ class user {
 	function update_user($newprofile,$a) {
 		global $gdl_db;					 
 		$date = date("Y-m-d H:i:s");
+		
+		foreach($newprofile as $key=>$value) {
+			$newprofile[$key] = mysqli_real_escape_string($gdl_db->con, $value);
+		}
+		
 		$gdl_db->update("user","password=$newprofile[PASSWORD], 
 		
 					name='$newprofile[FULLNAME]', address='$newprofile[ADDRESS]', city='$newprofile[CITY]', 
@@ -198,6 +217,9 @@ class user {
 
 	function get_identity ($a) {
 		global $gdl_db;
+		
+		$a = mysqli_real_escape_string($gdl_db->con, $a);
+		
 		$dbres = $gdl_db->select("user", "*", "user_id='$a'");
 		
 		while ($row = @mysqli_fetch_array ($dbres)){

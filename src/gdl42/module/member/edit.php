@@ -32,8 +32,8 @@ if (!isset($page) || empty ($page) || ($page!== "updt")){
 	if (empty ($frm['PASSWORD']) && empty ($frm['PASSWORDCONFIRM'])){
 		$frm['PASSWORD'] = $frm['PASSWORDCONFIRM'] = "'".$gdl_account->passwd."'";
 	} else {
-		$frm['PASSWORD'] =  "old_password('$frm[PASSWORD]')";
-		$frm['PASSWORDCONFIRM'] = "old_password('$frm[PASSWORDCONFIRM]')";
+		$frm['PASSWORD'] =  "SHA2('$frm[PASSWORD]', 512)";
+		$frm['PASSWORDCONFIRM'] = "SHA2('$frm[PASSWORDCONFIRM]', 512)";
 	}
 	
 	if ($gdl_form->verification($frm)) {

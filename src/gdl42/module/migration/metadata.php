@@ -15,7 +15,7 @@ if (file_exists("./files/misc/metadata.lck")){
 		$gdl_content->set_meta("<META HTTP-EQUIV=Refresh CONTENT=\"2; URL=$url\">");
 		$main = "<p>"._TRYCONNECT;
 		$con = @mysqli_connect($db_source['host'], $db_source['uname'], $db_source['password'], $db_source['name']);
-		//@mysqli_select_db($db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
+		//@mysqli_select_db($con, $db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
 		$str_sql = "select count(identifier) as total from metadata";
 		$dbsource = @mysqli_query($con, $str_sql);
 		$row = @mysqli_fetch_assoc($dbsource);
@@ -25,7 +25,7 @@ if (file_exists("./files/misc/metadata.lck")){
 	} else {
 		
 		$con = @mysqli_connect($db_source['host'], $db_source['uname'], $db_source['password'], $db_source['name']);
-		//@mysqli_select_db($db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
+		//@mysqli_select_db($con, $db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
 		$str_sql = "select m.identifier,f.parent,m.type,x.xmldata,m.datemodified,m.owner,f.path from metadata m, metadata_xml x, folder_tree f where m.identifier=x.identifier and m.identifier=f.identifier";
 		$dbsource = @mysqli_query($con, $str_sql);
 		

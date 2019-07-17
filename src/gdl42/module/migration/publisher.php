@@ -16,7 +16,7 @@ if (file_exists("./files/misc/publisher.lck")){
 		$gdl_content->set_meta("<META HTTP-EQUIV=Refresh CONTENT=\"2; URL=$url\">");
 		$main = "<p>"._TRYCONNECT;
 		$con = @mysqli_connect($db_source['host'], $db_source['uname'], $db_source['password'], $db_source['name']);
-		//@mysqli_select_db($db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
+		//@mysqli_select_db($con, $db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
 		$str_sql = "select count(idpublisher) as total from publisher";
 		$dbsource = @mysqli_query($con, $str_sql);
 		$row = @mysqli_fetch_assoc($dbres);
@@ -26,7 +26,7 @@ if (file_exists("./files/misc/publisher.lck")){
 	} else {
 		
 		$con = @mysqli_connect($db_source['host'], $db_source['uname'], $db_source['password'], $db_source['name']);
-		//@mysqli_select_db($db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
+		//@mysqli_select_db($con, $db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
 		$str_sql = "select * from publisher";
 		$dbsource = @mysqli_query($con, $str_sql);
 		

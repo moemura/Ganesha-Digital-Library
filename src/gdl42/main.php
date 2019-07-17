@@ -55,7 +55,7 @@ if(file_exists("./config/folks.php"))
 include_once ("./class/oai/global_include.php");
 $gdl_partner			= new partnership();
 
-$frm_relog	= $_POST['relog'];
+$frm_relog	= isset($_POST['relog']) ? $_POST['relog'] : null;
 if(is_array($frm_relog))
 	$gdl_session->cek_posting_remoteLoginInfo($frm_relog);
 

@@ -20,8 +20,8 @@ class database {
 		global $gdl_err,$gdl_content;
 		
 		include ("./config/db.php");
-		$con = @mysqli_connect($gdl_db_conf['host'], $gdl_db_conf['uname'], $gdl_db_conf['password'], $gdl_db_conf['name']);
-		//@mysqli_select_db($gdl_db_conf['name']) or $gdl_content->set_error("Unable to select database","Error Connection");
+		$this->con = @mysqli_connect($gdl_db_conf['host'], $gdl_db_conf['uname'], $gdl_db_conf['password']);
+		@mysqli_select_db($this->con, $gdl_db_conf['name']) or $gdl_content->set_error("Unable to select database","Error Connection");
 		$this->prefix=$gdl_db_conf['prefix'];
 	}
 	
@@ -33,7 +33,7 @@ class database {
 	
 	function create_db($db_name) {
 		$str_sql="create database `".$db_name."`;";
-		$db_result=@mysqli_query($con, $str_sql);
+		$db_result=mysqli_query($this->con, $str_sql);
 		
 		return $db_result;
 	}
@@ -43,13 +43,14 @@ class database {
 		if (!empty($this->prefix))
 			$prefix=$this->prefix."_";
 			
+			$result = '';
 			$table = explode(",",$tables);
 			if (is_array($table)) {
 				while (list($key,$val) = each($table)){
 					$tab=explode(" ",$val);
 					if (is_array($tab)) {
-						$tabname=$tab[0];
-						$tabalias=$tab[1];
+						$tabname= isset($tab[0]) ? $tab[0] : null;
+						$tabalias=isset($tab[1]) ? $tab[1] : null;
 					}
 						
 					if ($key<>0) $result .=",";
@@ -83,10 +84,10 @@ class database {
 		if (!empty($limit)) $str_sql.=" limit $limit";
 		if (!empty($groupby)) $str_sql.=" group by $groupby"; 
 
-		$db_result = @mysqli_query($con, $str_sql);
+		$db_result = @mysqli_query($this->con, $str_sql);
 		if($this->print_script){ 
 			echo $str_sql;
-			echo mysqli_error($con);
+			echo mysqli_error($this->con);
 		}
 		return $db_result;
 	}
@@ -95,10 +96,10 @@ class database {
 		$str_sql="insert into ".$this->tables($table);  
 		if (!empty($fields)) $str_sql .=" ($fields)";
 		if (!empty($values)) $str_sql .=" values($values)";
-		$db_result = @mysqli_query($con, $str_sql);
+		$db_result = @mysqli_query($this->con, $str_sql);
 		//echo $str_sql."<br>";
-		//if (mysqli_error($con))
-		// echo mysqli_error($con)."<br/><b>$str_sql</b><br/>";
+		//if (mysqli_error($this->con))
+		//	echo mysqli_error($this->con)."<br/><b>$str_sql</b><br/>";
 		
 		return $db_result;
 	}  
@@ -106,18 +107,58 @@ class database {
 	function update($table,$newvals,$where="") {  
 		$str_sql="update ".$this->tables($table)." set $newvals";  
 		if (!empty($where)) $str_sql.=" where $where";
-		$db_result = @mysqli_query($con, $str_sql); 
+		$db_result = @mysqli_query($this->con, $str_sql); 
 /*		echo $str_sql."<br>";
-		echo mysqli_error($con);*/
+		echo mysqli_error($this->con);*/
 		return $db_result; 
 	}  
 		  
 	function delete($table,$where="") {
 		$str_sql="delete from ".$this->tables($table);  
 		if (!empty($where)) $str_sql.=" where $where "; 
-		$db_result = @mysqli_query($con, $str_sql);
+		$db_result = @mysqli_query($this->con, $str_sql);
 		return $db_result;
 	}  
 
+	// from https://stackoverflow.com/questions/37596450/old-password-function-in-5-7-5
+	// equivalent to MySQL's OLD_PASSWORD() function
+    function mysql3password($input, $hex = true) {
+        $nr    = 1345345333;
+        $add   = 7;
+        $nr2   = 0x12345671;
+        $tmp   = null;
+        $inlen = strlen($input);
+        for ($i = 0; $i < $inlen; $i++) {
+            $byte = substr($input, $i, 1);
+            if ($byte == ' ' || $byte == "\t") {
+                continue;
+            }
+            $tmp = ord($byte);
+            $nr ^= ((($nr & 63) + $add) * $tmp) + (($nr << 8) & 0xFFFFFFFF);
+            $nr2 += (($nr2 << 8) & 0xFFFFFFFF) ^ $nr;
+            $add += $tmp;
+        }
+        $out_a  = $nr & ((1 << 31) - 1);
+        $out_b  = $nr2 & ((1 << 31) - 1);
+        $output = sprintf("%08x%08x", $out_a, $out_b);
+        if ($hex) {
+            return $output;
+        }
+
+        return hexHashToBin($output);
+    }
+
+    function hexHashToBin($hex) {
+        $bin = "";
+        $len = strlen($hex);
+        for ($i = 0; $i < $len; $i += 2) {
+            $byte_hex  = substr($hex, $i, 2);
+            $byte_dec  = hexdec($byte_hex);
+            $byte_char = chr($byte_dec);
+            $bin .= $byte_char;
+        }
+
+        return $bin;
+    }
 }
 ?>
