@@ -146,7 +146,7 @@ function save_configuration() {
 	$dbphp="./config/db.php";
 	$filehandle=@fopen($dbphp,"w");
 	if ($filehandle) {
-		$strcfg="<?
+		$strcfg="<?php
 		";
 		
 		foreach ($frm as $idx => $val) {
