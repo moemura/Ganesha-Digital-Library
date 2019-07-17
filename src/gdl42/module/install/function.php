@@ -282,7 +282,7 @@ function create_table() {
 
 	} 
 	
-	$result=@mysqli_select_db($gdl_db_conf["name"]);
+	$result=@mysqli_select_db($gdl_db->con, $gdl_db_conf["name"]);
 	if ($result) {
 			$content.="<p>"._SELECTDBSUCCESS." <b>".$gdl_db_conf["name"]."</b></p>";			
 		}
@@ -500,7 +500,7 @@ function create_table() {
 		$gdl_db_conf["prefix"]."user"=>"
 								CREATE TABLE `".$gdl_db_conf["prefix"]."user` (
 						  `user_id` varchar(60) NOT NULL default '',
-						  `password` varchar(20) NOT NULL default '',
+						  `password` varchar(128) NOT NULL default '',
 						  `active` tinyint(1) NOT NULL default '0',
 						  `group_id` varchar(100) default NULL,
 						  `name` varchar(50) default NULL,
@@ -624,10 +624,14 @@ function data_form() {
 }
 
 function fill_data() {
-	global $frm, $gdl_account, $gdl_publisher2, $gdl_db;;
+	global $frm, $gdl_account, $gdl_publisher2, $gdl_db;
+	
+	foreach($frm as $key=>$value) {
+		$frm[$key] = mysqli_real_escape_string($gdl_db->con, $value);
+	}
 	
 	$result1=$gdl_db->insert("user","user_id,group_id,name","'public','public','Public'");
-	$result2=$gdl_db->insert("user","","'".$frm["EMAIL"]."',old_password('".$frm["PASSWORD"]."'),1,'admin','".$frm["FULLNAME"]."',now(),NULL,'".$frm["ADDRESS"]."','".$frm["CITY"]."','".$frm["COUNTRY"]."','".$frm["INSTITUTION"]."','".$frm["JOB"]."'");
+	$result2=$gdl_db->insert("user","","'".$frm["EMAIL"]."',SHA2('".$frm["PASSWORD"]."', 512),1,'admin','".$frm["FULLNAME"]."',NOW(),NULL,'".$frm["ADDRESS"]."','".$frm["CITY"]."','".$frm["COUNTRY"]."','".$frm["INSTITUTION"]."','".$frm["JOB"]."'");
 	if ($result1 && $result2)
 		$content.="<b>"._SUCCESSADDLOGIN."</b><br/>";
 	else
