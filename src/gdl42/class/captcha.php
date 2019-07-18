@@ -56,7 +56,7 @@
     var $imagetype="png"; // can also be "png";
     var $lang="en"; // also "en"
     var $public_key;    // public key
-    var $font_file="./module/member/lucon.ttf";
+    var $font_file="/../module/member/lucon.ttf";
     function ocr_captcha($long=5,$lx=120,$ly=30,$nb_noise=25) {
       $this->key=md5("A nicely little text to stay private and use for generate private key");
       $this->long=$long;
@@ -64,6 +64,7 @@
       $this->ly=$ly;
       $this->nb_noise=$nb_noise;
       $this->public_key=substr(md5(uniqid(rand(),true)),0,$this->long); // generate public key with entropy
+	  $this->font_file = dirname(__FILE__) . $this->font_file;
     }
     
     function get_filename($public="") { 
