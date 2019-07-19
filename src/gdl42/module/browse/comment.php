@@ -103,7 +103,7 @@ function read_comment(){
 		$main .= " by $rows[4]";
 		if ($rows[5]<>"") $main .= ", ".str_replace("@","{at}",$rows[5]);
 		$main .= "</span><br/>\n";
-		$main .= "$rows[7]\n";
+		$main .= strip_tags($rows[7])."\n";
 		$field[1] = "$main";
 		$item[] = $field;
 	}
