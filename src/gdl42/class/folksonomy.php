@@ -43,6 +43,8 @@ function save_configuration($frm) {
 function get_list($table,$limit,$filter="") {
 		global $gdl_db;
 		
+		$result = array();
+		
 		if($table == "folksonomy"){
 			$dbres = $gdl_db->select($table,"TOKEN, FREKUENSI","TOKEN LIKE '$filter%'","FREKUENSI,Token","desc,asc",$limit);
 		}else
@@ -421,8 +423,8 @@ function get_range_date(){
 		}
 	}
 	
-	$result[from] 	= $start_date;
-	$result[until]	= $end_date;
+	$result['from'] 	= $start_date;
+	$result['until']	= $end_date;
 	
 	return $result;
 }
