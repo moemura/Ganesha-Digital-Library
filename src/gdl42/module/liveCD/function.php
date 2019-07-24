@@ -563,10 +563,10 @@ function box_job($url){
 		}
 	}
 	
-	if($_POST[submit]== _JOBRESET)
+	if($_POST['submit']== _JOBRESET)
 		remove_job($dir_tmp,"job.txt");
-	else if(($_POST[submit] == _JOBREMOVE) && (is_array($_POST[remove])))
-		remove_job($dir_tmp,"job.txt",$_POST[remove]);
+	else if(($_POST['submit'] == _JOBREMOVE) && (is_array($_POST['remove'])))
+		remove_job($dir_tmp,"job.txt",$_POST['remove']);
 	
 	if(is_array($folder)){
 		$arr_job	= @file("$dir_tmp/job.txt");

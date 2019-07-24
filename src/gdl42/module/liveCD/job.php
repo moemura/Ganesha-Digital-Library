@@ -24,7 +24,7 @@ if(!$check['status']){
 }else{
 	$main	.= "<br/><br/>".box_job($url);
 	
-	if($_POST[submit] == _JOBACTION){
+	if($_POST['submit'] == _JOBACTION){
 		$main	.= "<br/><br/>".box_info_connection(-1,$url);
 	}
 	
