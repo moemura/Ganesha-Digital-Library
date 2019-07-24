@@ -92,6 +92,8 @@ class publisher {
 	function get_list($search,$limit) {
 		global $gdl_db;
 		
+		$result = array();
+		
 		if ($search)
 			$where="DC_PUBLISHER_ID like '%$search%' or DC_PUBLISHER like '%$search%'";
 	
