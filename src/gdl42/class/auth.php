@@ -77,12 +77,18 @@ class authentication{
 		while (false !== ($entry = $d->read())) {
 			if (($entry <> ".") and ($entry <> "..")){
 				if (strchr($gdl_session->authority,"{".$entry) or $gdl_session->authority=="*"){
+					
+					// define language per module
+					if (file_exists("./module/$entry/lang/".$gdl_content->language.".php")) {
+						include("./module/$entry/lang/".$gdl_content->language.".php");
+					}
+					
 					if (file_exists("./module/$entry/conf.php") && file_exists("./files/misc/install.lck")) {
 						include ("./module/$entry/conf.php");
-						if (!empty ($gdl_modul[name])) {
+						if (!empty ($gdl_modul['name'])) {
 							$modul[$entry] = "$gdl_modul[name]";
 						} 
-						$gdl_modul[name]="";
+						$gdl_modul['name']="";
 					}
 				}
 			}
