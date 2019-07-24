@@ -316,6 +316,8 @@
 		function get_list($searchkey,$start,$limit) {
 			global $gdl_db;
 			
+			$result = array();
+			
 			$dbres = $gdl_db->select("repository","NOMOR,ID_PUBLISHER,REPOSITORY_NAME,HOST_URL,OAI_SCRIPT,OPTION_PREFIX","REPOSITORY_NAME LIKE '$searchkey%'","REPOSITORY_NAME,ID_PUBLISHER","asc,asc","$start,$limit");
 			while ($rows = @mysqli_fetch_row($dbres)){
 				$result[$rows[0]]['REC']	= $rows ['0'];
