@@ -29,8 +29,8 @@ if (!isset($page) || empty ($page) || ($page!== "add")){
 	$gdl_content->path="<a href=\"index.php\">Home</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=register\">"._ADDMEMBER."</a>";
 } else {
 	if ($gdl_form->verification($frm) && $frm) {
-		if ($gdl_account->cek_password($frm[PASSWORD],$frm[PASSWORDCONFIRM]) && $gdl_account->cek_existing_mail($frm[EMAIL]) && $gdl_account->cek_mail($frm[EMAIL]) && ($gdl_captcha->check_captcha($frm["CAPTCHA_PKEY"],$frm["CAPTCHA_TEXT"]))) {
-				$gdl_account->register($frm[EMAIL],$frm[PASSWORD],$frm[FULLNAME],$frm[ADDRESS],$frm[CITY],$frm[COUNTRY],$frm[INSTITUTION],$frm[JOB]);
+		if ($gdl_account->cek_password($frm['PASSWORD'],$frm['PASSWORDCONFIRM']) && $gdl_account->cek_existing_mail($frm['EMAIL']) && $gdl_account->cek_mail($frm['EMAIL']) && ($gdl_captcha->check_captcha($frm["CAPTCHA_PKEY"],$frm["CAPTCHA_TEXT"]))) {
+				$gdl_account->register($frm['EMAIL'],$frm['PASSWORD'],$frm['FULLNAME'],$frm['ADDRESS'],$frm['CITY'],$frm['COUNTRY'],$frm['INSTITUTION'],$frm['JOB']);
 				$main .="<b>"._ADDUSERSUCCESS."</b>";
 				$main .= "<p>".search_member_form ()."</p>\n";
 				$main .=display_member($y);

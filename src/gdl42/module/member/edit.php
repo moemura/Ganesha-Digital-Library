@@ -24,7 +24,7 @@ $action = "./gdl.php?mod=member&amp;op=edit&amp;a=$_GET[a]&amp;page=updt";
 $page = $_GET['page'];
 if (!isset($page) || empty ($page) || ($page!== "updt")){
 	$main .= form_register ($action);
-	$main = gdl_content_box($main,_USEREDIT." (".$_GET[a].")");
+	$main = gdl_content_box($main,_USEREDIT." (".$_GET['a'].")");
 	$gdl_content->set_main($main); 
 	$gdl_content->path="<a href=\"index.php\">Home</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=member\">"._MEMBER."</a>";
 } else {
@@ -32,15 +32,15 @@ if (!isset($page) || empty ($page) || ($page!== "updt")){
 	if (empty ($frm['PASSWORD']) && empty ($frm['PASSWORDCONFIRM'])){
 		$frm['PASSWORD'] = $frm['PASSWORDCONFIRM'] = "'".$gdl_account->passwd."'";
 	} else {
-		$frm['PASSWORD'] =  "SHA2('$frm[PASSWORD]', 512)";
-		$frm['PASSWORDCONFIRM'] = "SHA2('$frm[PASSWORDCONFIRM]', 512)";
+		//$frm['PASSWORD'] =  "SHA2('$frm[PASSWORD]', 512)";
+		//$frm['PASSWORDCONFIRM'] = "SHA2('$frm[PASSWORDCONFIRM]', 512)";
 	}
 	
 	if ($gdl_form->verification($frm)) {
 		if (! ($gdl_account->cek_password ($frm['PASSWORD'], $frm['PASSWORDCONFIRM']))) {				
 			$main = "<p>"._UPDATE_ERROR_PASSWORD."</p>\n";
 			$main .= form_register ($action);
-			$main = gdl_content_box($main,_USEREDIT." (".$_GET[a].")");
+			$main = gdl_content_box($main,_USEREDIT." (".$_GET['a'].")");
 			$gdl_content->set_main($main); 
 			$gdl_content->path="<a href=\"index.php\">Home</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=member\">"._MEMBER."</a>";
  		 } else {
@@ -50,14 +50,14 @@ if (!isset($page) || empty ($page) || ($page!== "updt")){
 				$main = "<p>"._UPDATESUCCESS."</p>\n";
 				$main .= "<p>".search_member_form ()."</p>\n";
 				$main .= display_member($y);
-				$main = gdl_content_box($main,_USEREDIT." (".$_GET[a].")");
+				$main = gdl_content_box($main,_USEREDIT." (".$_GET['a'].")");
 				$gdl_content->set_main($main); 
 				$gdl_content->path="<a href=\"index.php\">Home</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=member\">"._MEMBER."</a>";
 				} else { echo "gagal";}
 		} 
 	} else {
 		$main .= form_register ($action);
-		$main = gdl_content_box($main,_USEREDIT." (".$_GET[a].")");
+		$main = gdl_content_box($main,_USEREDIT." (".$_GET['a'].")");
 		$gdl_content->set_main($main); 
 		$gdl_content->path="<a href=\"index.php\">Home</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=member\">"._MEMBER."</a>";
 	}
