@@ -175,7 +175,7 @@ class user {
 		}
 		$a = mysqli_real_escape_string($gdl_db->con, $a);
 		
-		$gdl_db->update("user","password=$newprofile[PASSWORD], group_id='$newprofile[GROUPLEVEL]', 
+		$gdl_db->update("user","password=SHA2($newprofile[PASSWORD], 512), group_id='$newprofile[GROUPLEVEL]', 
 		
 					name='$newprofile[FULLNAME]', address='$newprofile[ADDRESS]', city='$newprofile[CITY]', 
 					
@@ -183,7 +183,7 @@ class user {
 					
 					active='$newprofile[ACTIVE]', date_modified='$date'",
 		
-					"user_id='$a'");
+					"user_id='$a'");mysqli_error($gdl_db->con);var_dump($newprofile);
 		if (mysqli_affected_rows($gdl_db->con) >0) {
 			return true;
 		} else 	{
@@ -199,7 +199,7 @@ class user {
 			$newprofile[$key] = mysqli_real_escape_string($gdl_db->con, $value);
 		}
 		
-		$gdl_db->update("user","password=$newprofile[PASSWORD], 
+		$gdl_db->update("user","password=SHA2($newprofile[PASSWORD], 512),
 		
 					name='$newprofile[FULLNAME]', address='$newprofile[ADDRESS]', city='$newprofile[CITY]', 
 					

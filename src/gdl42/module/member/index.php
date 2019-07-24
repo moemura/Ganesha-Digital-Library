@@ -33,8 +33,8 @@ if (preg_match("/{member->*}/",$gdl_session->authority) || $gdl_session->authori
 		if (empty ($frm['PASSWORD']) && empty ($frm['PASSWORDCONFIRM'])){
 		$frm['PASSWORD'] = $frm['PASSWORDCONFIRM'] = "'".$gdl_account->passwd."'";
 		} else {
-		$frm['PASSWORD'] =  "SHA2('$frm[PASSWORD]', 512)";
-		$frm['PASSWORDCONFIRM'] = "SHA2('$frm[PASSWORDCONFIRM]', 512)";
+		//$frm['PASSWORD'] =  "SHA2('$frm[PASSWORD]', 512)";
+		//$frm['PASSWORDCONFIRM'] = "SHA2('$frm[PASSWORDCONFIRM]', 512)";
 		}
 	   if (!($gdl_account->cek_password ($frm['PASSWORD'], $frm['PASSWORDCONFIRM']))) {				
 			$main = "<p>"._UPDATE_ERROR_PASSWORD."</p>\n";
