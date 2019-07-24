@@ -255,7 +255,7 @@ class session{
 	function session_connect($sess_id="",$providerId="",$providerNetwork=""){
 				
 		global $HTTP_SESSION_VARS;
-		session_register("sess_connect_sessionid","sess_providerId","sess_providerNetwork");
+		//session_register("sess_connect_sessionid","sess_providerId","sess_providerNetwork");
 		
 		//echo "SESS_CONNECT-0 : [$sess_id][$providerId][$providerNetwork] <br/>";
 		$HTTP_SESSION_VARS['sess_connect_sessionid']	= $sess_id;
