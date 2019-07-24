@@ -6,6 +6,7 @@ if (preg_match("/indonesian.php/i",$_SERVER['PHP_SELF'])) {
 
 define("_ADVANCESEARCH","Advance Search");
 define("_ALLMETADATA","All Metadata");
+define("_CREATOR","Creator / Author");
 define("_DOCUMENT","Document");
 define("_IMAGE","Image");
 define("_KEYWORD","Keyword");
@@ -60,6 +61,5 @@ define("_SUBJECT","Subject");
 define("_COAUTHOR","Co-Author and Editor");
 define("_COAUTHORCORPORATE","Co-Author Corporate");
 define("_IDENTIFICATION","Identification");
-
-
+define("_TYPE","Tipe");
 ?>

@@ -6,6 +6,7 @@ if (preg_match("/indonesian.php/i",$_SERVER['PHP_SELF'])) {
 
 define("_ADVANCESEARCH","Pencarian Metadata");
 define("_ALLMETADATA","Semua Artikel");
+define("_CREATOR","Pencipta / Author");
 define("_DOCUMENT","Dokumen");
 define("_IMAGE","Image");
 define("_KEYWORD","Kata Kunci");
@@ -59,4 +60,5 @@ define("_SUBJECT","Subyek");
 define("_COAUTHOR","Co-Author dan Editor");
 define("_COAUTHORCORPORATE","Perusahaan Co-Author");
 define("_IDENTIFICATION","Identifikasi");
+define("_TYPE","Tipe");
 ?>
