@@ -24,7 +24,7 @@
 
 class requestAction_DC extends requestAction {
 	
-	function requestAction_DC(){
+	function __construct(){
 		$this->init("oai_dc");
 	}
 

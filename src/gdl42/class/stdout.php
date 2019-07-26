@@ -13,7 +13,7 @@ class stdout{
 		/**
 			Konstruktor
 		*/
-		function stdout(){}
+		function __construct(){}
 		
 		/**
 			Header HTML dengan redirection

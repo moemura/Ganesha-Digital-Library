@@ -24,7 +24,7 @@
 
 class elementResponse_DC extends elementResponse{
 	
-	function elementResponse_DC(){
+	function __construct(){
 		$this->init();
 	}
 

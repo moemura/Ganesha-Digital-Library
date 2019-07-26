@@ -23,7 +23,7 @@
 
 class requestFormatter_GN extends requestFormatter {
 	
-	function requestFormatter_GN(){
+	function __construct(){
 		$this->init();
 	}
 	

@@ -30,7 +30,7 @@ class elementResponse{
 	var $er_session;
 	var $er_import;
 	
-	function elementResponse(){
+	function __construct(){
 		
 	}
 	

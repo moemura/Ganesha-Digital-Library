@@ -23,7 +23,7 @@
 
 class responseAction_DC extends responseAction {
 	
-	function responseAction_DC(){
+	function __construct(){
 		$this->init("oai_dc");
 	}
 

@@ -23,7 +23,7 @@
 
 class requestFormatter_DC extends requestFormatter {
 
-	function requestFormatter_DC(){
+	function __construct(){
 		$this->init();
 	}
 	

@@ -26,7 +26,7 @@ class oaiFactory{
 	var $metadataPrefix;
 	var $array_metadataPrefix;
 	
-	function oaiFactory($prefix){
+	function __construct($prefix){
 		$this->array_metadataPrefix = array("general","oai_dc");
 		
 		if(in_array($prefix,$this->array_metadataPrefix))

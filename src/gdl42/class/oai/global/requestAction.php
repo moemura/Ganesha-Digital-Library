@@ -30,7 +30,7 @@ class requestAction{
 	var $ra_sync;
 	
 	
-	function requestAction(){
+	function __construct(){
 	}
 	
 	function init($option){

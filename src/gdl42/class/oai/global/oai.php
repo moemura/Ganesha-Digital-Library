@@ -57,7 +57,7 @@ class oai{
 	/**
 		Konstruktor
 	*/
-	function oai(){
+	function __construct(){
 		$this->init();	
 	}
 	

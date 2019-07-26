@@ -23,7 +23,7 @@
 
 class elementResponse_GN extends elementResponse {
 	
-	function elementResponse_GN(){
+	function __construct(){
 		$this->init();
 	}
 	

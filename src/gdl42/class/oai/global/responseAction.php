@@ -24,7 +24,7 @@ class responseAction{
 	var $ra_elementResponse;
 	var $ra_metadata;
 	
-	function responseAction(){
+	function __construct(){
 		
 	}
 	

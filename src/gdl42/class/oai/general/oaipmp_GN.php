@@ -24,7 +24,7 @@
 class oaipmp_GN extends oai {
 	var $gn_responseAction;
 	
-	function oaipmp_GN(){
+	function __construct(){
 		$this->init();
 		$this->init_GN();	
 	}

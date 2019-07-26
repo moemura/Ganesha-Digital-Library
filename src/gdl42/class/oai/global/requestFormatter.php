@@ -42,7 +42,7 @@ class requestFormatter{
 	var $remoteLogin;
 	var $filename;
 	
-	function requestFormatter(){
+	function __construct(){
 		$this->init();
 	}
 	

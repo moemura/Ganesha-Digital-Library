@@ -24,7 +24,7 @@
 class requestAction_GN extends requestAction {
 	var $req_posting_file_info;
 	
-	function requestAction_GN(){
+	function __construct(){
 		$this->init("general");
 	}
 

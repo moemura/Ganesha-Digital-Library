@@ -28,7 +28,7 @@ class oaipmh_GN extends oai {
 	
 	var $gn_remoteLogin;
 	
-	function oaipmh_GN(){
+	function __construct(){
 		$this->init();
 		$this->init_GN();
 	}

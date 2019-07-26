@@ -25,7 +25,7 @@ class oaipmp_DC extends  oai {
 	
 	var $dc_responseAction;
 	
-	function oaipmp_DC(){
+	function __construct(){
 		$this->init();
 		$this->init_DC();	
 	}

@@ -33,7 +33,7 @@ class harvest{
 	var $harvest_sys;
 	var $main_url;
 	
-	function harvest(){
+	function __construct(){
 	}
 	
 	function init($option){

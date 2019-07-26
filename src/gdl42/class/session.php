@@ -27,7 +27,7 @@ class session{
 	var $remote_session;
 	var $user_signature;
 	
-	function session(){
+	function __construct(){
 	
 		global $gdl_sys,$gdl_content;
 		

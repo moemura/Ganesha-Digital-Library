@@ -33,7 +33,7 @@ class validation_oai{
 	var $error_code;
 	var $error_msg;
 
-	function validation_oai(){
+	function __construct(){
 		$this->init();
 	}
 	

@@ -23,7 +23,7 @@
 
 class responseAction_GN extends responseAction{
 	
-	function responseAction_GN(){
+	function __construct(){
 		$this->init("general");
 	}
 	
