@@ -25,7 +25,7 @@ class oaipmh_DC extends  oai {
 	var $dc_validationDC;
 	var $dc_requestAction;
 	
-	function oaipmh_DC(){
+	function __construct(){
 		$this->init();
 		$this->init_DC();
 	}
