@@ -1,5 +1,6 @@
 <?php
 
+include_once ("./class/content.php");
 include ("./config/system.php");
 include ("./config/publisher.php");
 include ("./class/db.php");
@@ -9,7 +10,7 @@ include("./class/metadata.php");
 include("./class/publisher.php");
 
 
-
+$gdl_content = new content();
 $gdl_db = new database();
 $gdl_session = new session();
 $gdl_auth = new authentication();
@@ -67,15 +68,15 @@ function download_redirect(){
 		$file_target= str_replace("files/","files/$publisher/",$file_target);
 		if (!file_exists($file_target)) {
 			if ($publisher == "#PUBLISHER#"){
-				$pub_property[_PUBLISHERHOSTNAME] = $gdl_publisher['hostname'];
+				$pub_property['_PUBLISHERHOSTNAME'] = $gdl_publisher['hostname'];
 			} else {	
 				$pub_property=$gdl_publisher2->get_property($publisher);					
 			}
 			
 			if (preg_match("/files\//",$row["path"]))
-				$file_target="http://".$pub_property[_PUBLISHERHOSTNAME]."/".$row["path"];
+				$file_target="".$pub_property['_PUBLISHERHOSTNAME']."/".$row["path"];
 			else
-				$file_target="http://".$pub_property[_PUBLISHERHOSTNAME]."/files/".$row["path"];
+				$file_target="".$pub_property['_PUBLISHERHOSTNAME']."/files/".$row["path"];
 		}
 			
 		echo  "<html>\n"
