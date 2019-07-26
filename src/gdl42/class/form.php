@@ -15,7 +15,7 @@ class form{
 	var $upload="";
 	var $column=false;
 	
-	function form(){
+	function __construct(){
 		$this->init();
 	}
 	
@@ -72,7 +72,7 @@ class form{
 					$field .= "<option value=\"$key_value\">----------</option>\n";
 				}
 				if(is_array($arr))
-					while (list($key,$val) = each($arr)){
+					foreach ($arr as $key => $val) {
 						$field .= "<option value=\"$key\">$val</option>\n";
 					}
 				$field .= "</select>";
@@ -84,7 +84,7 @@ class form{
 				$arr = $newfield['checked'];
 				$key_value = $newfield['value'];
 
-				while (list($key,$val) = each($arr)){
+				foreach ($arr as $key => $val) {
 					if(isset($key_value) and $key_value<>"" and ($key_value == $key))
 						$sign ="checked";
 					else
@@ -193,7 +193,7 @@ class form{
 		if($this->column==true){
 			// generated form using table 2 column
 			// generated field
-			while (list($key, $val) = each($this->field)) {
+			foreach ($this->field as $key => $val) {
 				if ($val['type']=="hidden"){
 					$html .= $val['field'];
 				}
@@ -215,7 +215,7 @@ class form{
 			}
 			
 			// generated button
-			while (list($key, $val) = each($this->button)) {
+			foreach ($this->button as $key => $val) {
 				if ($key==0){
 					$button = "$val[field]";
 				}else{
@@ -228,7 +228,7 @@ class form{
 		}else{
 			// generated form using table 1 column
 			// generated field
-			while (list($key, $val) = each($this->field)) {
+			foreach ($this->field as $key => $val) {
 				if ($val['type']=="title"){
 					$html .= "<tr class=\"bg2\">";
 					$html .= "<td class=\"title\"><b>$val[title]<b></td>";
@@ -243,7 +243,7 @@ class form{
 			}
 			
 			// generated button
-			while (list($key, $val) = each($this->button)) {
+			foreach ($this->button as $key => $val) {
 				if ($key==0){
 					$button = "$val[field]";
 				}else{
@@ -269,7 +269,7 @@ class form{
 
 			$data = explode(" ",$this->required);
 			$required="";
-			while (list($key, $val) = each($data)) {
+			foreach ($data as $key => $val) {
 
 				if($val<>""){
 					if (is_array($data)){
@@ -328,14 +328,14 @@ class form{
 		$html .= "<table class=\"form\">\n<tr class=\"bg1\">";
 		
 		
-			while (list($key, $val) = each($this->field)) {
+			foreach ($this->field as $key => $val) {
 				$html .= "<td class=\"label\">$val[title]</td>";
 				$html .= "<td>$val[field]</td>";
 			}
 
 		
 		// generated button
-			while (list($key, $val) = each($this->button)) {
+			foreach ($this->button as $key => $val) {
 				if ($key==0){
 					$button = "$val[field]";
 				}else{

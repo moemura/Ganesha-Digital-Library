@@ -108,7 +108,7 @@ class user {
 			if (file_exists($schema)){
 				$str_meta = implode('',file($schema));
 					
-				while(list($key,$val) = each($frm)){
+				foreach ($frm as $key => $val) {
 					$value = htmlspecialchars(nl2br($val),ENT_QUOTES);
 					$str_meta = str_replace("#$key#",$value,$str_meta);
 				}

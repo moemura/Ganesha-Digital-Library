@@ -22,7 +22,7 @@ class liveCD{
 	var $lv_folks;
 	var $lv_search;
 	
-	function liveCD(){
+	function __construct(){
 		$this->init();
 	}
 	

@@ -19,7 +19,7 @@ $arr_id = $_POST['id'];
 
 // delete bookmark
 if ((!empty($act)) and (!empty($arr_id))) {
-	while (list($key,$val) = each($arr_id)){
+	foreach ($arr_id as $key => $val) {
 		$gdl_db->delete("bookmark","bookmark_id=$key");
 	}
 

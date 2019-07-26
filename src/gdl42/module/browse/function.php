@@ -24,7 +24,7 @@ function get_metadata($node){
 	$limit = $page * $gdl_sys['perpage_browse'];
 	$metadata = $gdl_metadata->get_list($node,"","$limit,$gdl_sys[perpage_browse]",true);
 	if (is_array($metadata)){
-		while (list($key,$val) = each($metadata)){
+		foreach ($metadata as $key => $val) {
 			$type = $val['TYPE'];
 			$file = "";
 			if ($val['RELATION_COUNT'] > 0) $file = ", $val[RELATION_COUNT] "._FILES;
@@ -72,7 +72,7 @@ function gdl_metadata_list($data,$start,$count,$total,$page,$pages,$url=""){
         $form .= "<span><strong>$pref_nav</strong> | <strong>$next_nav</strong></span></p>";
 		$form .= "<ul class=\"filelist\">\n";
 		
-		while (list($key,$val) = each($data)){
+		foreach ($data as $key => $val) {
     		$form .= "<li>$val</li>\n";
 		}
 		
@@ -161,7 +161,7 @@ function related_file(){
 		$state= $_GET['state'];
 		
 		$type_file	= "";
-		while (list($key,$val) = each($arr_file)){
+		foreach ($arr_file as $key => $val) {
 			
 			if($state == "offline"){
 				$type_file	= "&amp;file=$val[name]";

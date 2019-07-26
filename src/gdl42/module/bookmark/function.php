@@ -41,7 +41,7 @@ if (mysqli_num_rows($dbres)==0) {
 	
 
 	// generate item
-	while (list($key, $val) = each($frm)) {
+	foreach ($frm as $key => $val) {
 		$type = $val['TYPE'];
 		//$meta_count = $gdl_folder->content_count($key);
 
@@ -95,7 +95,7 @@ if (mysqli_num_rows($dbres)==0) {
 	require_once("./config/type.php");
 
 	// generate item
-	while (list($key, $val) = each($frm)) {
+	foreach ($frm as $key => $val) {
 		$type = $val["metadata"]['TYPE'];
 		$title = $gdl_metadata->get_value($val["metadata"],"TITLE");
 		$identifier= $gdl_metadata->get_value($val["metadata"],"IDENTIFIER");

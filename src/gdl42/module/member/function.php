@@ -39,7 +39,7 @@ function display_member($q){
 	//$account = $gdl_account->get_list($q, $limitfinal,true);
 	
 	if (is_array($account)){
-		while (list($key,$val) = each($account)){
+		foreach ($account as $key => $val) {
 			$title = $val['FULLNAME'];
 			$meta_arr[$key] = "<a href=\"./gdl.php?mod=member&amp;op=edit&amp;a=$key\">$title</a>";
 	}
@@ -67,12 +67,12 @@ function display_member($q){
 		
 		$j = $limit+1;
 		// generate item
-		while (list($key, $val) = each($meta_arr)) {
+		foreach ($meta_arr as $key => $val) {
 			$property = $gdl_account->get_property($key);
 			$field[1] = "$j.";			
 			$field[2] = "$val";
 			$field[3] = "$property[GROUP]";
-				if ($property[ACTIVE] == 1)
+				if ($property['ACTIVE'] == 1)
 					$field[4] = _ACTIVE;
 				else
 					$field[4] = _NOACTIVE;	

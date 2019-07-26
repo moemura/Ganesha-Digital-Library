@@ -21,8 +21,8 @@ $search = new search();
 $query = $_GET['q'];
 if(isset($query)) $query = explode("+",$query);
 if (is_array($query)){
-	while (list($qkey,$qval) = each($query)){
-		while (list($key,$val) = each($frm)){
+	foreach ($query as $qkey => $qval) {
+		foreach ($frm as $key => $val) {
 			if(preg_match("/DC:/",$key))
 			   {
 				if ($key<>"DC:IDENTIFIER" && $key <> "DC:PREFIX" && $key <> "DC:PUBLISHER") $frm[$key] = $search->mark_term($val[0],$qval);
@@ -37,7 +37,7 @@ if (is_array($query)){
 }else{
 
 	if(is_array($frm))
-		while (list($key,$val) = each($frm)){
+		foreach ($frm as $key => $val) {
 			if (!empty($val)) $frm[$key] = $search->mark_term($val,$query);
 		}				
 }

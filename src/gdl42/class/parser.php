@@ -13,7 +13,7 @@ class parser {
 		$trans = array_flip($trans);
 		$xml = $this->readXML($xml_data);
 		if (is_array($xml)){
-			while (list($key,$val) = each($xml)){
+			foreach ($xml as $key => $val) {
 				$elem = str_replace(".","_",$key);
 				$xdata = $xml[$key][0];
 				$xdata = utf8_decode($xdata);
@@ -47,7 +47,7 @@ class parser {
 					
 					// is attributes exist
 					if (is_array($attributes)){
-						while (list($key,$val) = each($attributes)){
+						foreach ($attributes as $key => $val) {
 							$xml["$mytag.$key"][] = $val;
 						}
 					}
@@ -73,7 +73,7 @@ class parser {
 	{
 		reset($tags);
 		
-		while(list($key,$val) = each($tags)){
+		foreach ($tags as $key => $val) {
 			if (empty($tag))
 				$tag_path = $val;
 			else
@@ -127,7 +127,7 @@ class parser {
 		$schema = "./schema/$frm[TYPE_SCHEMA].xml";
 		if (file_exists($schema)){
 			$str_meta = implode('',file($schema));
-			while(list($key,$val) = each($frm)){
+			foreach ($frm as $key => $val) {
 				$value = htmlspecialchars(nl2br(utf8_encode($val)),ENT_QUOTES);
 				$str_meta = str_replace("#$key#",$value,$str_meta);
 			}

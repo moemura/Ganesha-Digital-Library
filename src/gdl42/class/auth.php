@@ -110,7 +110,7 @@ class authentication{
 			// mencari otorisasi operasi modul
 			if (is_array($gdl_menu)){
 				if ($gdl_session->authority=="*"){
-					while (list($key, $val) = each($gdl_menu)) {
+					foreach ($gdl_menu as $key => $val) {
 						$menu_action[$key] = "<a href=\"$url"."op=$key\">$val</a>";
 					}
 				}else{
@@ -132,7 +132,7 @@ class authentication{
 						}
 					}
 		
-					while (list($key, $val) = each($gdl_menu)) {
+					foreach ($gdl_menu as $key => $val) {
 						if (strchr($action,$key)){
 							$menu_action[$key] = "<a href=\"$url"."op=$key\">$val</a>";
 						}

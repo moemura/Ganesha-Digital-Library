@@ -25,15 +25,15 @@ if ((!empty($act)) and (!empty($arr_id))) {
 	$submit=$_POST["submit"];
 	if (preg_match('/'._DELETEBOOKMARK.'/i',$submit) || preg_match('/'._DELETEREQUEST.'/i',$submit))
 	{	
-		while (list($key,$val) = each($arr_id)){
+		foreach ($arr_id as $key => $val) {
 			$gdl_db->delete("bookmark","bookmark_id=$key");
 		}
 	} elseif (preg_match('/'._USERREQUESTMOVE.'/i',$submit)) {
-		while (list($key,$val) = each($arr_id)) {
+		foreach ($arr_id as $key => $val) {
 				$gdl_db->update("bookmark","time_stamp='".$date."',request=1","bookmark_id=$key");
 		}
 	} elseif (preg_match('/'._BOOKMARKMOVE.'/i',$submit)) {
-		while (list($key,$val) = each($arr_id)) {
+		foreach ($arr_id as $key => $val) {
 				$gdl_db->update("bookmark","time_stamp='".$date."',request=null","bookmark_id=$key");
 		}		
 	}

@@ -160,7 +160,7 @@ class elementResponse_GN extends elementResponse {
 					$pubid = $row['DC_PUBLISHER_ID'];
 					
 					// generate element
-					while (list($key,$val) = each($row)){
+					foreach ($row as $key => $val) {
 						if (!is_numeric($key)){
 							$elm = strtolower($key);
 	

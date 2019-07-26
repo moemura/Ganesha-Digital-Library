@@ -26,7 +26,7 @@ if (isset($del)){
 	$relation = $_POST['relation'];
 	$action=false;
 
-	while (list($key, $val) = each($relation)){
+	foreach ($relation as $key => $val) {
 		if(!empty($val)) $action=true;
 	}
 	

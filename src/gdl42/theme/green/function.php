@@ -20,7 +20,7 @@ function gdl_relation_box($content,$title=""){
 	}
 	$form .= "<ul>\n";
 	if (is_array($content)){
-		while (list($key, $val) = each($content)) {
+		foreach ($content as $key => $val) {
 			$form .= "<li class=\"noline\">$val</li>\n";
 		}
 	}else{

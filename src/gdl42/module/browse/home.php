@@ -48,7 +48,7 @@ if($state == "offline"){
 $metadata = $gdl_metadata->get_list($node_offline,"","0,5",false);
 if (is_array($metadata)){
 	$main .= "<ul class=\"filelist\">\n";
-	while (list($key,$val) = each($metadata)){
+	foreach ($metadata as $key => $val) {
 		$type = $val['TYPE'];
 		$file = "";
 		if ($val['RELATION_COUNT'] > 0) $file = ", $val[RELATION_COUNT] "._FILES;
@@ -107,7 +107,7 @@ if ($gdl_folks["folks_active_option"]) {
 
 $metadata = $gdl_metadata->get_list($node_offline,"","5,7");
 if (is_array($metadata)){
-	while (list($key, $val) = each($metadata)) {
+	foreach ($metadata as $key => $val) {
 		$news[]= "<a href=\"./gdl.php?mod=browse&amp;op=read&amp;id=$key\">$val[TITLE]</a>";
 	}
 	$last_news = gdl_relation_box($news,_LASTNEWS);

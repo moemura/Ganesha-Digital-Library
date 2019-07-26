@@ -50,7 +50,7 @@ class search{
 	// Function for advanced search
 	function query_advanced($schema="",$frm){
 		if (is_array($frm)){
-			while (list($key,$val) = each($frm[q])){
+			foreach ($frm[q] as $key => $val) {
 				if (!empty($val)){
 					$metaname = $frm[tag][$key];
 					$word .= " $bool $metaname = ($val) ";
@@ -134,7 +134,7 @@ class search{
 			
 			// search all schema filtered by type
 			$option['all'] = _ALLMETADATA;
-			while (list($key,$val) = each($gdl_type)){
+			foreach ($gdl_type as $key => $val) {
 				$option[$key] = "$val";
 			}
 
@@ -174,10 +174,10 @@ class search{
 			// get meta tag
 			$field = 0;
 						
-			while (list($key,$val) = each($search_tab)){
+			foreach ($search_tab as $key => $val) {
 				$tabs[$key] = "$val[schema]";
 				if ($key==$schema){					
-					while (list($metatag,$metaname) = each($val)){
+					foreach ($val as $metatag => $metaname) {
 						if ($metatag <> "schema") {
 							$sel_option .= "<option value=\"$metatag\">$field $metaname</option>\n";
 							//$field = $field + 1 ;
@@ -242,8 +242,8 @@ class search{
 		}else{ $main .= "<a href=\"./gdl.php?mod=search&amp;schema=dc\">"._SEARCHALL."</a>";}
 		
 		
-		while (list($key,$val) = each($search_tab)){
-			while (list($key1,$val1) = each($val)){
+		foreach ($search_tab as $key => $val) {
+			foreach ($val as $keyl => $vall) {
 				if ($key1=="schema"){
 					if ($selected==$key){	
 						$main .=" | <b>$val1</b>";

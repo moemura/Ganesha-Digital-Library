@@ -96,7 +96,7 @@ function get_folder($folder,$window){
 		$item[] = $field;
 	}
 	if (is_array($data)){
-		while (list($key, $val) = each($data)) {
+		foreach ($data as $key => $val) {
 			if (isset($_SESSION["node2"]))
 				$input="<input type=checkbox name=folder[$i] value=$key />";
 			$field[1] = "<img src=\"./theme/".$gdl_content->theme."/image/icon_dir_list.png\" alt=\"\"/>$input";
@@ -114,13 +114,13 @@ function get_folder($folder,$window){
 		$metadata = $gdl_metadata->get_list($folder,"","",true);
 		$i=0;
 		if (is_array($metadata)){
-				while (list($key,$val) = each($metadata)){
-				$title = $val['TITLE'];
-				if (strlen($title) > 50 ) $title = substr($title,0,47)."...";
-				$meta_arr[$key] = "<a href=\"./gdl.php?mod=browse&amp;op=read&amp;id=$key\">$title</a>";
+				foreach ($metadata as $key => $val) {
+					$title = $val['TITLE'];
+					if (strlen($title) > 50 ) $title = substr($title,0,47)."...";
+					$meta_arr[$key] = "<a href=\"./gdl.php?mod=browse&amp;op=read&amp;id=$key\">$title</a>";
 				}
 				
-				while (list($key, $val) = each($meta_arr)) {
+				foreach ($meta_arr as $key => $val) {
 					if (isset($_SESSION["node2"]))
 						$input="<input type=checkbox name=metadata[$i] value=$key />";
 					$property = $gdl_metadata->get_property($key);
@@ -168,7 +168,7 @@ function get_metadata($node){
 	$metadata = $gdl_metadata->get_list($node,"","$limit,$gdl_sys[perpage_browse]",true);
 
 	if (is_array($metadata)){
-		while (list($key,$val) = each($metadata)){
+		foreach ($metadata as $key => $val) {
 			$title = $val['TITLE'];
 			if (strlen($title) > 150 ) $title = substr($title,0,147)."...";
 			$meta_arr[$key] = "<a href=\"./gdl.php?mod=browse&amp;op=read&amp;id=$key\">$title</a>";
@@ -191,7 +191,7 @@ function get_metadata($node){
 		$header[4] = _ACTION;
 		
 		// generate item
-		while (list($key, $val) = each($meta_arr)) {
+		foreach ($meta_arr as $key => $val) {
 			$property = $gdl_metadata->get_property($key);
 			$field[1] = "<img src=\"./theme/".$gdl_content->theme."/image/icon_file_list.png\" alt=\"\"/>";
 			$field[2] = "$val";

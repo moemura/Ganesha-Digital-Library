@@ -16,7 +16,7 @@ class database {
 	var $prefix="";
 	var $con;
 	
-	function database($gdl_db_conf=array()){
+	function __construct($gdl_db_conf=array()){
 		global $gdl_err,$gdl_content;
 		
 		include ("./config/db.php");
@@ -46,7 +46,7 @@ class database {
 			$result = '';
 			$table = explode(",",$tables);
 			if (is_array($table)) {
-				while (list($key,$val) = each($table)){
+				foreach ($table as $key => $val) {
 					$tab=explode(" ",$val);
 					if (is_array($tab)) {
 						$tabname= isset($tab[0]) ? $tab[0] : null;

@@ -13,7 +13,7 @@ class isisdb {
 	var $bin;
 	var $isisdbdir;
 	
-	function isisdb() {
+	function __construct() {
 		global $gdl_sys;
 		
 		if ($gdl_sys["os"] == "win"){

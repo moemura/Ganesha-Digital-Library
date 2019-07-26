@@ -62,10 +62,10 @@ class indexing{
 	function indexing_cleanupxml($xml_data){
 		global $gdl_metadata;
 		
-		$alien_char = array(";","‘","’","&","'","\"","“","”","~","»","%","©","°","´","–");
+		$alien_char = array(";","â€˜","â€™","&","'","\"","â€œ","â€","~","Â»","%","Â©","Â°","Â´","â€“");
 		
 		$data = $xml_data;		
-		while(list($key,$val) = each($alien_char)){
+		foreach ($alien_char as $key => $val) {
 			$data = str_replace($val,"",$data);
 		}
 						
@@ -214,13 +214,13 @@ class indexing{
 	
 	// print
 	$mergeres = explode("\n",$merge_result);
-	while (list($k,$v) = each($mergeres)){
-		if (preg_match("/Replaced/",$v)){
+	foreach ($mergeres as $key => $val) {
+		if (preg_match("/Replaced/",$val)){
 			$replaced++;
-		} elseif (preg_match("/Processing/",$v)) {
+		} elseif (preg_match("/Processing/",$val)) {
 			continue;
 		} else {
-			$return.= $v."<br>";
+			$return.= $val."<br>";
 		}
 	}	
 	if ($replaced > 0) $return=$replaced." files were replaced.<br>";

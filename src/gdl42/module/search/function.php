@@ -55,7 +55,7 @@ function search_result($schema,$methods="") {
 		
 		if (is_array($frm)){
 			$qfrm = $frm[q];
-			while (list($key,$val) = each($qfrm)){
+			foreach ($qfrm as $key => $val) {
 				if (!empty($val)){
 					$metaname = $frm[tag][$key];
 					
@@ -93,7 +93,7 @@ function search_result($schema,$methods="") {
 		include("./config/type.php");
 		
 		if(is_array($result))
-			while (list($key,$val) = each($result)){
+			foreach ($result as $key => $val) {
 				if ($gdl_sys['os']=="freebsd") $val = str_replace("/","", $val);
 				if (preg_match("/catalog/",$val)) {
 					$catalog=explode("=",$val);
@@ -122,7 +122,7 @@ function search_result($schema,$methods="") {
 					
 					if (is_array($frm)){
 						$qterm = $frm[q];
-						while (list($key,$val) = each($qterm)){
+						foreach ($qterm as $key => $val) {
 							if (!empty($val)){
 									$title = $search->mark_term($title,$val);																						
 							}

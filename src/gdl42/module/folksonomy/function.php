@@ -181,7 +181,7 @@ function display_stopword() {
 			$url 	= "./gdl.php?mod=folksonomy&amp;op=garbage&amp;";
 			$j		= $limit+1;
 			
-			while (list($key,$val) = each($stopworddata)) {
+			foreach ($stopworddata as $key => $val) {
 				$field[1]=$j;
 				$field[2]=$stopworddata[$key]["TOKEN"];
 				$field[3]="<center><a href=\"./gdl.php?mod=folksonomy&amp;op=garbage&amp;id=".$stopworddata[$key]["ID"]."&amp;del=confirm\">"._STOPWORDDELETE."</center>";
@@ -280,7 +280,7 @@ function display_DistribusiFolksonomy() {
 			$url = "./gdl.php?mod=folksonomy&amp;op=update&amp;filter=$filter&amp;";
 			$j=$limit+1;
 			
-			while (list($key,$val) = each($distribusidata)) {
+			foreach ($distribusidata as $key => $val) {
 				$field[1]=$j;
 				$field[2]=$distribusidata[$key]["TOKEN"];
 				$field[3]=$distribusidata[$key]["FREKUENSI"];

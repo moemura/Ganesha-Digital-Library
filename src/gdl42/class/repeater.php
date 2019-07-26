@@ -24,7 +24,7 @@ class repeater{
 				."padding: 0px;\n"
 				."}\n";
 		if (!empty($colwidth)){
-			while (list($key, $val) = each($colwidth)) {
+			foreach ($colwidth as $key => $val) {
 				if ($val<>""){
 					$style .= "th.c$id$key{\n"
 						."width: $val;\n"
@@ -39,7 +39,7 @@ class repeater{
 		// generate header
 		if(!empty($this->header)){
 			$main .= "<tr>";
-			while (list($key, $val) = each($this->header)) {
+			foreach ($this->header as $key => $val) {
 				if(empty($colwidth[$key])){
 					$main .= "<th>$val</th>";
 				}else{
@@ -52,14 +52,14 @@ class repeater{
 		// generate item
 		$num = 1;
 		if (is_array($this->item)) {
-		while (list($itemkey, $itemval) = each($this->item)) {
+		foreach ($this->item as $itemkey => $itemval) {
 			if ($num % 2 == 0){
 				$main .= "<tr class=\"bg2\">";
 		   	}else{
 				$main .= "<tr class=\"bg1\">";
 		   	}
 			
-			while (list($key, $val) = each($itemval)) {
+			foreach ($itemval as $key => $val) {
 				$main .= "<td>$val</td>";
 			}
 			
@@ -71,7 +71,7 @@ class repeater{
 		// generate footer
 		if (!empty($this->footer)){
 			$main .= "<tr>";
-			while (list($key, $val) = each($this->footer)) {
+			foreach ($this->footer as $key => $val) {
 				$main .= "<td>$val</td>";
 			}
 			$main .= "</tr>\n";

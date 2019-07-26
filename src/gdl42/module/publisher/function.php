@@ -58,7 +58,7 @@ function display_publisher($searchkey) {
 			$url = "./gdl.php?mod=publisher&amp;";
 			$j=$limit+1;
 			
-			while (list($key,$val) = each($publisherdata)) {
+			foreach ($publisherdata as $key => $val) {
 				$field[1]=$j;
 				$field[2]="<a href=\"./index.php?mod=publisher&amp;op=detail&amp;id='".$publisherdata[$key]["ID"]."'\">".$publisherdata[$key]["ID"]."</a>";
 				$field[3]=$publisherdata[$key]["NAME"];
@@ -163,7 +163,7 @@ function display_property($PUBLISHER_ID) {
 	$header[1]=_PUBLISHERPROPERTY;
 	$header[2]=_PROPERTYVALUE;
 	
-	while (list($key,$val) = each($property)) {
+	foreach ($property as $key => $val) {
 		$field[1]=$key;
 		$field[2]=$val;
 		$item[]=$field;

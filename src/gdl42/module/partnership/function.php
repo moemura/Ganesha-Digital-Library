@@ -71,7 +71,7 @@ function box_partnership(){
 			$j=$start;
 			
 			if(is_array($publisherdata))
-				while (list($key,$val) = each($publisherdata)){
+				foreach ($publisherdata as $key => $val) {
 
 					$remote		= $url."remote=$val[idpublisher]";
 					$field[1]	= $j;

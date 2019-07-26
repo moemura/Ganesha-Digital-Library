@@ -19,7 +19,7 @@ class metadata extends parser {
 	var $total;
 	var $count;
 	
-	function metadata(){
+	function __construct(){
 		$this->identifier = isset($_SESSION['gdl_identifier']) ? $_SESSION['gdl_identifier'] : null;
 	}
 	
@@ -468,7 +468,7 @@ class metadata extends parser {
 		}
 		*/
 		
-		while (list($key,$val) = each($args)){
+		foreach ($args as $key => $val) {
 			$request .= "\n        $key=\"$val\"";
 		}
 		$request .= ">\n http://$_SERVER[SERVER_NAME]$_SERVER[PATH_INFO]\n</request>\n";

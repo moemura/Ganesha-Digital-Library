@@ -622,41 +622,40 @@ function box_files($main_url="",$folder=""){
 				$table .= "<td><b>"._SIZE."(Bytes)</b></td>\n";
 			$table .= "</tr>\n";
 			
-			$i=1;
-			if(empty($directory))
-				$directory = $arr_dir[0];
-			
-			$list_job	= array();
-			$array_job	= $gdl_synchronization->get_list_queue($folder);
-			while (list($key,$val) = each($array_job)){array_push($list_job,$val['PATH']);}
-			$handle 	= @opendir($directory);
-			$bgcolor="bgcolor=\"#CCCCFF\" height=\"25px\"";
-			while(($entry = @readdir($handle)) > -1){
-				if((strcasecmp($entry,".") == 0) || (strcasecmp($entry,"..") == 0)){continue;}
-				$object = $directory."/".$entry;
-				if(is_file($object)){
-					$b_color="";
-					if($i % 2 == 0) $b_color = $bgcolor;
-					$table .= "<tr $b_color>\n";
-						$table .= "<td>$i</td>\n";
-						$check	= (in_array($object,$list_job))?"checked":"";
-						$table .= "<td><input type =\"checkbox\" name=\"frm[$object]\" value=\"$object\" $check/></td>\n";
-						$table .= "<td>$entry</td>\n";
-						$waktu_akses = fileatime($object);
-						$table .= "<td>".date("j F Y, H:m:i",$waktu_akses)."</td>\n";
-						$table .= "<td>".filesize($object)."</td>\n";
-					$table .= "<tr>\n";
-					$i++;
-				}
-			}
-			@closedir($handle);
+	$i=1;
+	if(empty($directory))
+		$directory = $arr_dir[0];
+	
+	$list_job	= array();
+	$array_job	= $gdl_synchronization->get_list_queue($folder);
+	foreach ($array_job as $key => $val) {array_push($list_job,$val['PATH']);}
+	$handle 	= @opendir($directory);
+	$bgcolor="bgcolor=\"#CCCCFF\" height=\"25px\"";
+	while(($entry = @readdir($handle)) > -1){
+		if((strcasecmp($entry,".") == 0) || (strcasecmp($entry,"..") == 0)){continue;}
+		$object = $directory."/".$entry;
+		if(is_file($object)){
+			$b_color="";
+			if($i % 2 == 0) $b_color = $bgcolor;
+			$table .= "<tr $b_color>\n";
+				$table .= "<td>$i</td>\n";
+				$check	= (in_array($object,$list_job))?"checked":"";
+				$table .= "<td><input type =\"checkbox\" name=\"frm[$object]\" value=\"$object\" $check/></td>\n";
+				$table .= "<td>$entry</td>\n";
+				$waktu_akses = fileatime($object);
+				$table .= "<td>".date("j F Y, H:m:i",$waktu_akses)."</td>\n";
+				$table .= "<td>".filesize($object)."</td>\n";
+			$table .= "<tr>\n";
+			$i++;
+		}
+	}
+	@closedir($handle);
 				
-		$table .= "</table>\n";
-		$table .= "<br><input type=\"submit\" name=\"frm[submit]\" value=\"QUEUE\">\n";
+	$table .= "</table>\n";
+	$table .= "<br><input type=\"submit\" name=\"frm[submit]\" value=\"QUEUE\">\n";
 	$table .= "</form>\n";
 	return $dir_nav.$table;
 }
-
 
 function display_repository($searchkey){
 	global $gdl_content,$gdl_synchronization,$gdl_sys;
@@ -700,7 +699,7 @@ function display_repository($searchkey){
 			$j=$start;
 			
 			if(is_array($repositorydata))
-				while (list($key,$val) = each($repositorydata)){
+				foreach ($repositorydata as $key => $val) {
 					$identify 	= "<a href='$url"."page=$page&amp;update=Identify&amp;record=$val[REC]#responseAction'>Identify</a>";
 					$set 		= "<a href='$url"."page=$page&amp;update=ListSets&amp;record=$val[REC]#responseAction'>Set</a>";
 					$edit 		= "<a href='$url"."page=$page&amp;action=edit&amp;record=$val[REC]#editRepository'>Edit</a>";
@@ -808,7 +807,7 @@ function box_queue(){
 			$j=$start;
 			
 			if(is_array($queuedata))
-				while (list($key,$val) = each($queuedata)){
+				foreach ($queuedata as $key => $val) {
 					$delete		= "<a href='$url"."page=$page&amp;action=delete&amp;record=$val[NO]'>Delete</a>";
 					$field[1]= $j;
 					$field[2]= $val['PATH'];
@@ -893,7 +892,7 @@ function box_status_outbox($url){
 	
 	$statusdata = $gdl_synchronization->get_list_status_outbox();
 	if(is_array($statusdata))
-		while (list($key,$val) = each($statusdata)){
+		foreach ($statusdata as $key => $val) {
 			$delete		= "<a href='$url". "&amp;action=delete&amp;status=$val[STATUS]'>Delete</a>";
 			$field[1]= ++$j;
 			$field[2]= $val['STATUS'];
@@ -937,7 +936,7 @@ function box_status_posting($url,$sub){
 
 	$statusdata = $gdl_synchronization->get_list_queue_finish_job();
 	if(is_array($statusdata))
-		while (list($key,$val) = each($statusdata)){
+		foreach ($statusdata as $key => $val) {
 			$delete		= "<a href='$url". "&amp;sub=$sub&amp;action=delete&amp;record=$val[NO]'>Delete</a>";
 			$queue		= "<a href='$url". "&amp;sub=$sub&amp;action=queue&amp;record=$val[NO]'>Re-queue</a>";
 			
@@ -966,5 +965,4 @@ function box_status_posting($url,$sub){
 	return $form;
 
 }
-
 ?>

@@ -102,12 +102,12 @@ echo "<!-- is used to live CD this block should be closed -->\n"
 	ksort($gdl_content->module);
 	echo "<ul>\n"
 		."<li><a href=\"./index.php\">Home</a></li>\n";
-	while (list($key, $val) = each($gdl_content->module)) {
+	foreach ($gdl_content->module as $key => $val) {
 		echo "<li><a href=\"./gdl.php?mod=$key\">$val</a>";
 		if ($key==$gdl_mod){
 			if (count ($gdl_content->menu) != "") {
 				echo "<ul>";	
-				while (list($menukey, $menuval) = each($gdl_content->menu)) {
+				foreach ($gdl_content->menu as $menukey => $menuval) {
 					echo "<li class=\"menu\">$menuval</li>\n";
 				}		
 				echo "</ul>";

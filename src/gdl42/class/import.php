@@ -54,7 +54,7 @@ class import{
 		
 		$no = 0;
 		
-		while(list($key,$val) = each($arr_data)){
+		foreach ($arr_data as $key => $val) {
 			
 			$val = trim($val);
 			
@@ -668,7 +668,7 @@ class import{
 		$parent_id 		= 0;
 		$folder_tree 	= "0/";
 		
-		while (list($key,$val) = each($folders)){
+		foreach ($folders as $key => $val) {
 			$val	= trim($val);
 			if (strlen($val) == 0) continue;
 			
@@ -842,7 +842,7 @@ class import{
 
 		// identifiers
 
-		while (list($key,$val) = each ($xml['HEADER.IDENTIFIER'])){
+		foreach ($xml['HEADER.IDENTIFIER'] as $key => $val) {
 			$count++;
 			
 			$identifier = $val;

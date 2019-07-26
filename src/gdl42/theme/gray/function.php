@@ -20,7 +20,7 @@ function gdl_relation_box($content,$title=""){
 	}
 	$form .= "<ul>\n";
 	if (is_array($content)){
-		while (list($key, $val) = each($content)) {
+		foreach ($content as $key => $val) {
 			$form .= "<li class=\"noline\">$val</li>\n";
 		}
 	}else{
@@ -40,7 +40,7 @@ function gdl_search_box($form,$tabs="",$selected=""){
     	$main .= "<a href=\"./gdl.php?mod=search&amp;schema=dc\">"._SEARCHALL."</a>";
    	}
    	if (is_array($tabs)){
-		while (list($key,$val) = each($tabs)){
+		foreach ($tabs as $key => $val) {
 			if ($selected==$key){	
 				$main .=" | <b>$val</b>";
 			}else{
