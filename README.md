@@ -10,6 +10,7 @@ Originally developed by KMRG ITB (http://kmrg.itb.ac.id) ([archive](https://web.
 
 * Backup old files.
 * Replace everything except config and bin folder.
-* Increase length of the password hash field to 128 using the following SQL.
+* Increase length of the password hash field to 128 using the following SQL. (Replace gdl_user with actual table name.)
+```sql
 ALTER TABLE `gdl_user` MODIFY COLUMN `password` varchar(128) NOT NULL DEFAULT '' AFTER `user_id`;
-Replace gdl_user with actual table name.
+```
