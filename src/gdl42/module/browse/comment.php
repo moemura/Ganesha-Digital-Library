@@ -125,7 +125,8 @@ if (!isset($page)) {
 }elseif ($page=="upload"){
 	
 		// upload comment
-		$frm=$_POST["frm"];
+		$frm = $gdl_db->escape_array($_POST["frm"]);
+		$frm = $gdl_db->strip_tags_array($frm);
 		
 		$user_id = $gdl_session->user_id;
 		$date = date("Y-m-d H:i:s");
