@@ -71,6 +71,7 @@ class database {
 			$arr_sort	= explode(",",$sort);
 			
 			$count = count($arr_order);
+			$str_order = "";
 			for($i=0;$i<$count;$i++){
 				if($i == 0)
 					$str_order .= "$arr_order[$i]  $arr_sort[$i] ";
@@ -119,6 +120,29 @@ class database {
 		$db_result = @mysqli_query($this->con, $str_sql);
 		return $db_result;
 	}  
+
+	public function escape_string($str_data)
+    {
+        return mysqli_real_escape_string($this->con, $str_data);
+    }
+
+	public function escape_array($arr)
+    {
+		$clean = array();
+		foreach($arr as $key=>$value) {
+			$clean[$key] = mysqli_real_escape_string($this->con, trim($value));
+		}
+		return $clean;
+    }
+	
+	public function strip_tags_array($arr)
+    {
+		$clean = array();
+		foreach($arr as $key=>$value) {
+			$clean[$key] = strip_tags(trim($value));
+		}
+		return $clean;
+    }
 
 	// from https://stackoverflow.com/questions/37596450/old-password-function-in-5-7-5
 	// equivalent to MySQL's OLD_PASSWORD() function
