@@ -15,7 +15,7 @@ function mydocs_exist() {
 	global $gdl_folder,$gdl_session;
 	$member_node=$gdl_folder->check_folder("Member",0);
 	$node=$gdl_folder->check_folder($gdl_session->user_id,$member_node);
-	$content.="Folder <a href='./gdl.php?mod=browse&amp;node=".$node."'>/Member/".$gdl_session->user_id."/</a> [<a href='./gdl.php?mod=browse&amp;node=".$node."'>Browse</a>] | [<a href='./gdl.php?mod=explorer&amp;node=".$node."'>Explorer</a>] ";
+	$content = "Folder <a href='./gdl.php?mod=browse&amp;node=".$node."'>/Member/".$gdl_session->user_id."/</a> [<a href='./gdl.php?mod=browse&amp;node=".$node."'>Browse</a>] | [<a href='./gdl.php?mod=explorer&amp;node=".$node."'>Explorer</a>] ";
 	return $content;
 }
 
