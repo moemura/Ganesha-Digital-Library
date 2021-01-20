@@ -12,9 +12,9 @@
 if (preg_match("/add.php/i",$_SERVER['PHP_SELF'])) die();
 require_once "./module/register/function.php";
 require_once("./module/member/function.php");
-$page = $_GET['page'];
+$page = isset($_GET['page']) ? $_GET['page'] : null;
 $url = substr(strrchr($_SERVER['REQUEST_URI'], "?"),1);
-$frm=$_POST["frm"];
+$frm=isset($_POST["frm"]) ? $_POST["frm"] : null;
 
 if ($url<>""){
 	$url=htmlentities($url)."&amp;";
@@ -22,6 +22,7 @@ if ($url<>""){
 $action = $_SERVER['PHP_SELF']."?".$url."&amp;page=add";
 //$action = "./gdl.php?mod=register&amp;page=reg";
 
+$main = '';
 if (!isset($page) || empty ($page) || ($page!== "add")){
 	$main .= form_register($action);
 	$main = gdl_content_box($main,_REGISTRATION);
@@ -33,9 +34,10 @@ if (!isset($page) || empty ($page) || ($page!== "add")){
 				$gdl_account->register($frm['EMAIL'],$frm['PASSWORD'],$frm['FULLNAME'],$frm['ADDRESS'],$frm['CITY'],$frm['COUNTRY'],$frm['INSTITUTION'],$frm['JOB']);
 				$main .="<b>"._ADDUSERSUCCESS."</b>";
 				$main .= "<p>".search_member_form ()."</p>\n";
-				$main .=display_member($y);
+				$main .=display_member(null);
 			}
 		else {
+			$regerror = '';
 			if (! ($gdl_account->cek_mail($frm['EMAIL']))) 
 				$regerror = _REGISTRATION_ERROR_EMAIL;
 			if (! ($gdl_account->cek_password ($frm['PASSWORD'], $frm['PASSWORDCONFIRM'])))
@@ -54,5 +56,4 @@ if (!isset($page) || empty ($page) || ($page!== "add")){
 	$gdl_content->set_main($main); 
 	$gdl_content->path="<a href=\"index.php\">Home</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=register\">"._ADDMEMBER."</a>";
 }
-
 ?>

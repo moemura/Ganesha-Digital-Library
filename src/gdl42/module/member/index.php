@@ -13,17 +13,18 @@ if (preg_match("/index.php/i",$_SERVER['PHP_SELF'])) {
 }
 
 $frm = $gdl_account->get_identity ($gdl_session->user_id);
-if (isset ($_POST['q'])){
+if (isset($_POST['q'])){
 	$q = urlencode ($_POST['q']);
 	header ("location: ./gdl.php?mod=member&y=$q");
 }
 
-$y=$_GET['y'];
-$frm=$_POST["frm"];
+$y=isset($_GET['y']) ?$_GET['y'] : null;
+$frm=isset($_POST["frm"]) ? $_POST["frm"] : null;
 
 require_once("./module/member/function.php");
 require_once("./module/register/function.php");
 $action = "./gdl.php?mod=member";
+$main = '';
 if (preg_match("/{member->*}/",$gdl_session->authority) || $gdl_session->authority=="*") {
 	$main = "<p>".search_member_form ()."</p>\n";
 	$main .= display_member($y);

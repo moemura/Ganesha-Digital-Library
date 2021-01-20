@@ -15,7 +15,7 @@ function display_member($q){
 
 	require_once("./class/repeater.php");
 
-	$page = $_GET['page'];
+	$page = isset($_GET['page']) ? $_GET['page'] : null;
 	if (!isset($page) || preg_match("/add/",$page) || preg_match("/updt/",$page) ){
 	 	$page = 0 ;
 	}else{
@@ -146,7 +146,7 @@ function search_member_form ()
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"q",			
-				"value"=>"$_GET[y]",
+				"value"=>isset($_GET['y']) ? "$_GET[y]" : '',
 				"text"=>_SEARCH_USER_MAIL,
 				"size"=>30));
 	$gdl_form->add_button(array(
