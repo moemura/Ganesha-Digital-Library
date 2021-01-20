@@ -8,6 +8,7 @@ class parser {
 
 	function read_xml($xml_data){
 
+		$frm = array();
 		// htmlspecialchars table
 		$trans = get_html_translation_table(HTML_SPECIALCHARS);
 		$trans = array_flip($trans);
@@ -31,10 +32,10 @@ class parser {
 			unset($value);
 			// get the arrays
 			$tag = strtoupper($mvalues[$j]["tag"]);
-			$type = $mvalues[$j]["type"];
-			$level = $mvalues[$j]["level"];
-			$value = $mvalues[$j]["value"];
-			$attributes = $mvalues[$j]["attributes"];
+			$type = isset($mvalues[$j]["type"]) ? $mvalues[$j]["type"] : null;
+			$level = isset($mvalues[$j]["level"]) ? $mvalues[$j]["level"] : null;
+			$value = isset($mvalues[$j]["value"]) ? $mvalues[$j]["value"] : null;
+			$attributes = isset($mvalues[$j]["attributes"]) ? $mvalues[$j]["attributes"] : null;
 
 			switch($type){
 				case "complete":
@@ -73,6 +74,7 @@ class parser {
 	{
 		reset($tags);
 		
+		$tag_path = '';
 		foreach ($tags as $key => $val) {
 			if (empty($tag))
 				$tag_path = $val;
@@ -95,6 +97,7 @@ class parser {
 		xml_parse_into_struct($parser,$xmldata,$vl,$tg);
 		xml_parser_free($parser);
 	
+		$root = 0;
 		foreach ($tags as $key=>$val) {
 			$root++;
 			if ($root == 1){
@@ -134,7 +137,7 @@ class parser {
 			
 			$str_meta = addslashes($str_meta);
 			
-			if ($frm['RELATION_COUNT']==0){
+			if (isset($frm['RELATION_COUNT']) && $frm['RELATION_COUNT']==0){
 				// clean up empty XML
 				$str_meta = preg_replace("/#[[:alpha:]]+#/","",$str_meta);
 				$str_meta = preg_replace("/#[[:alpha:]]+_[[:alpha:]]+#/","",$str_meta);
@@ -146,7 +149,5 @@ class parser {
 			return 0;
 		}
 	}
-	
 }
-
 ?>

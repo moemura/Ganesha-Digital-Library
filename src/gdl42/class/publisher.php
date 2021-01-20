@@ -61,7 +61,8 @@ class publisher {
 									",DC_PUBLISHER_ADMIN".
 									",DC_PUBLISHER_CKO".									
 									",DC_PUBLISHER_HUBSERVER".
-									",DC_PUBLISHER_DATEMODIFIED","$where","DC_PUBLISHER_DATEMODIFIED","desc",$limit);
+									",DC_PUBLISHER_DATEMODIFIED","$where","DC_PUBLISHER_DATEMODIFIED","desc");
+		$result = array();
 		while ($rows = @mysqli_fetch_row($dbres)){
 			$result[_PUBLISHERSERIALNUMBER]= $rows ['0'];
 			$result[_PUBLISHERNETWORK]= $rows ['1'];
@@ -94,6 +95,7 @@ class publisher {
 		
 		$result = array();
 		
+		$where = '';
 		if ($search)
 			$where="DC_PUBLISHER_ID like '%$search%' or DC_PUBLISHER like '%$search%'";
 	
@@ -177,12 +179,12 @@ class publisher {
 			\$gdl_publisher['hubserver']  = \"$frm[hubserver]\";
 			?>";
 		
-			// save to file
-			$fp = fopen("config/publisher.php","w");
-			$result=fputs($fp,$pub_conf);
-			fclose($fp);
-			
-			return $result;
+		// save to file
+		$fp = fopen("config/publisher.php","w");
+		$result=fputs($fp,$pub_conf);
+		fclose($fp);
+		
+		return $result;
 	}
 	
 	function save_configuration2($frm) {
@@ -217,13 +219,12 @@ class publisher {
 			\$gdl_publisher['hubserver']  = \"$frm[hubserver]\";
 			?>";
 		
-			// save to file
-			$fp = fopen("config/publisher.php","w");
-			$result=fputs($fp,$pub_conf);
-			fclose($fp);
-			
-			return $result;
+		// save to file
+		$fp = fopen("config/publisher.php", "w");
+		$result=fputs($fp,$pub_conf);
+		fclose($fp);
+		
+		return $result;
 	}
-
 }		
 ?>

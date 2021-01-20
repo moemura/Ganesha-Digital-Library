@@ -30,6 +30,7 @@ class search{
 		}
 
 		$cmd = `$str_cmd`;
+		$q = '';
 
 		return $this->process($cmd,$start,$q);
 		
@@ -46,9 +47,9 @@ class search{
 		return $query;
 	}
 
-	
 	// Function for advanced search
 	function query_advanced($schema="",$frm){
+		$word = '';
 		if (is_array($frm)){
 			foreach ($frm[q] as $key => $val) {
 				if (!empty($val)){
@@ -79,6 +80,8 @@ class search{
 		if (empty($start)) $start = 1;
 		$stop = $gdl_sys['perpage_browse'] ;
 		
+		$id_num = 0;
+		$noresult = false;
 		for ($i = 0;$i< sizeof($res);$i++){
 			
 			$f = explode(" ",$res[$i]);
@@ -90,7 +93,7 @@ class search{
 			} elseif ($f[0] == "err:"){
 				$this->error = "<blockquote><b>$res[$i]</b></blockquote>";
 				$noresult = true;
-			} elseif (($f[0] != "#")&&($f[2] != "")){
+			} elseif ((isset($f[0]) && $f[0] != "#")&&(isset($f[2]) && $f[2] != "")){
 				$id_num = $id_num + 1;
 				
 				if($this->treshold == -1)
@@ -104,10 +107,8 @@ class search{
 					$result[]=$id;
 				}
 			} else {
-				
 				if (preg_match("/hits/i",$res[$i])) $this->hit= $f[4];
 				if (preg_match("/run time/i",$res[$i]))$this->runtime= $f[3];
-	
 			}
 		}
 				
@@ -117,7 +118,6 @@ class search{
 		} else {
 			return false;
 		}
-
 	}
 
 	// Generate form
@@ -237,6 +237,7 @@ class search{
 		
 		include ("./module/search/conf.php");
 		
+		$main = '';
 		if ($selected=="") $selected=="dc";
 		if ($selected=="dc"){$main .= "<b>"._SEARCHALL."</b>";
 		}else{ $main .= "<a href=\"./gdl.php?mod=search&amp;schema=dc\">"._SEARCHALL."</a>";}
@@ -244,7 +245,7 @@ class search{
 		
 		foreach ($search_tab as $key => $val) {
 			foreach ($val as $keyl => $vall) {
-				if ($key1=="schema"){
+				if (isset($key1) && $key1=="schema"){
 					if ($selected==$key){	
 						$main .=" | <b>$val1</b>";
 					}else{

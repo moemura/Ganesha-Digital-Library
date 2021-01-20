@@ -80,7 +80,7 @@ class authentication{
 					
 					// define language per module
 					if (file_exists("./module/$entry/lang/".$gdl_content->language.".php")) {
-						include("./module/$entry/lang/".$gdl_content->language.".php");
+						include_once("./module/$entry/lang/".$gdl_content->language.".php");
 					}
 					
 					if (file_exists("./module/$entry/conf.php") && file_exists("./files/misc/install.lck")) {
@@ -108,7 +108,7 @@ class authentication{
 			$url = "./gdl.php?mod=$gdl_mod&amp;";
 			
 			// mencari otorisasi operasi modul
-			if (is_array($gdl_menu)){
+			if (isset($gdl_menu) && is_array($gdl_menu)){
 				if ($gdl_session->authority=="*"){
 					foreach ($gdl_menu as $key => $val) {
 						$menu_action[$key] = "<a href=\"$url"."op=$key\">$val</a>";
@@ -117,11 +117,11 @@ class authentication{
 				
 					$arr_module = explode("}",$gdl_session->authority);
 					foreach ($arr_module as $value) {
-						if (strchr($value,"{".$mod)){
-							$action = preg_replace("/{".$mod."->/", "", $value);
+						if (strchr($value,"{".$gdl_mod)){
+							$action = preg_replace("/{".$gdl_mod."->/", "", $value);
 							if (($action == "*")or($action == " *")){
 								$action = "";
-								$d = dir("./module/$mod");
+								$d = dir("./module/$gdl_mod");
 								while (false !== ($entry = $d->read())) {
 									if (strchr($entry,".php")){
 										$action .= preg_replace("/.php/", "", $entry).",";
@@ -146,5 +146,4 @@ class authentication{
 		if (!empty($menu_action)) $gdl_content->menu = $menu_action;
 	}
 }
-
 ?>

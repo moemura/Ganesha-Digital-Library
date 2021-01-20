@@ -41,26 +41,26 @@ function save_configuration($frm) {
 }
 
 function get_list($table,$limit,$filter="") {
-		global $gdl_db;
+	global $gdl_db;
+	
+	$result = array();
+	
+	if($table == "folksonomy"){
+		$dbres = $gdl_db->select($table,"TOKEN, FREKUENSI","TOKEN LIKE '$filter%'","FREKUENSI,Token","desc,asc",$limit);
+	}else
+		$dbres = $gdl_db->select($table,"GARBAGE_ID as ID, TOKEN","","","",$limit);
 		
-		$result = array();
-		
+	while ($rows = @mysqli_fetch_row($dbres)){				
 		if($table == "folksonomy"){
-			$dbres = $gdl_db->select($table,"TOKEN, FREKUENSI","TOKEN LIKE '$filter%'","FREKUENSI,Token","desc,asc",$limit);
-		}else
-			$dbres = $gdl_db->select($table,"GARBAGE_ID as ID, TOKEN","","","",$limit);
-			
-		while ($rows = @mysqli_fetch_row($dbres)){				
-			if($table == "folksonomy"){
-				$result[$rows[0]]['TOKEN']		= $rows ['0'];
-				$result[$rows[0]]['FREKUENSI']	= $rows['1'];
-			}else{
-				$result[$rows[0]]['ID']			= $rows ['0'];
-				$result[$rows[0]]['TOKEN']		= $rows ['1'];
-			}
+			$result[$rows[0]]['TOKEN']		= $rows ['0'];
+			$result[$rows[0]]['FREKUENSI']	= $rows['1'];
+		}else{
+			$result[$rows[0]]['ID']			= $rows ['0'];
+			$result[$rows[0]]['TOKEN']		= $rows ['1'];
 		}
-		
-		return $result;
+	}
+	
+	return $result;
 }
 
 function getTotalStopWord(){
@@ -96,8 +96,8 @@ function reset_stopword(){
 function update_folksonomy(){
 	global $gdl_sync,$gdl_metadata,$gdl_db,$gdl_stdout,$gdl_folks;
 	
-	$token 			= $_GET['token'];
-	$total			= $_GET['total'];
+	$token 			= isset($_GET['token']) ? $_GET['token'] : null;
+	$total			= isset($_GET['total']) ? $_GET['total'] : null;
 	$date_filter	= $gdl_folks['folks_start_date'];
 	if(!preg_match("/[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z/",$date_filter)){
 		$date_filter = "date_modified >= '0000-00-00 00:00:00'";
@@ -139,13 +139,13 @@ function update_folksonomy(){
 function clean_stopwordToken(){
 	global $gdl_sync,$gdl_metadata,$gdl_db,$gdl_stdout;
 	
-	$token 	= $_GET['token'];
-	$total	= $_GET['total'];
+	$token 	= isset($_GET['token']) ? $_GET['token'] : null;
+	$total	= isset($_GET['total']) ? $_GET['total'] : null;
 	
 	if(empty($token)) $token = 0;
 	if(empty($total)) $total = $this-> getTotalStopWord();
 	$limit	= $gdl_sync['sync_count_records'];
-	if(preg_match("/^[0-9]+$/",$limi) == FALSE) $limit = 20;
+	if(preg_match("/^[0-9]+$/",$limit) == FALSE) $limit = 20;
 	$start 	= $token*$limit;
 	
 	$rToken = $gdl_db->select("garbagetoken","Token","","","","$start,$limit");
@@ -261,7 +261,7 @@ function getTotalFolksonomy($filter){
 function delete_tokenFolksonomy(){
 	global $gdl_db;
 	
-	$id = $_GET['id'];
+	$id = isset($_GET['id']) ? $_GET['id'] : null;
 	$id = trim($id);
 	if(strlen($id)>0)
 		$dbres = $gdl_db->delete("folksonomy","Token LIKE '$id'");
@@ -270,12 +270,11 @@ function delete_tokenFolksonomy(){
 function delete_tokenStopword(){
 	global $gdl_db;
 	
-	$id = $_GET['id'];
+	$id = isset($_GET['id']) ? $_GET['id'] : null;
 	$id = trim($id);
 	if(strlen($id)>0)
 		$dbres = $gdl_db->delete("garbagetoken","GARBAGE_ID LIKE '$id'");
 }
-
 
 function box_folksonomy(){
 	global $gdl_db,$gdl_folks;
@@ -377,6 +376,7 @@ function box_folksonomy(){
 		
 	}
 	
+	$result = "";
 	if(!empty($str_folksonomy)){
 
 			$result = "<div><table  style=\"background-color:$bColor\">
@@ -398,7 +398,6 @@ function show_box_folksonomy(){
 		return $this->box_folksonomy();
 	}else return "";
 }
-
 
 function get_range_date(){
 	global $gdl_db;

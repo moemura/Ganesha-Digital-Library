@@ -108,6 +108,11 @@
 					$until_ins_v	= "'$until',";
 			}
 			
+			if(!isset($frm['sync_harvest_set'])){
+				$frm['sync_harvest_set'] = '';
+				$frm['sync_harvest_node'] = '';
+			}
+			$gdl_db->print_script = true;
 			if(!empty($frm['sync_repository_id'])){
 				//update
 				$update = "repository_name='$frm[sync_repository_name]',
@@ -125,7 +130,7 @@
 						   $until_updt
 						   count_record=$frm[sync_count_records],
 						   harvest_node='$frm[sync_harvest_node]'";
-						   
+var_dump($gdl_db);
 				$gdl_db->update("repository","$update","nomor=$frm[sync_repository_id]");
 			}else{
 				//insert new
@@ -134,7 +139,7 @@
 				$value = "'$frm[sync_repository_name]','$frm[sync_hub_server_name]',$frm[sync_hub_server_port],$frm[sync_use_proxy],'$frm[sync_proxy_server_address]',
 						  $frm[sync_proxy_server_port],'$frm[sync_oai_script]','$script',$frm[sync_fragment_size],
 						  $frm[sync_show_response],'$frm[sync_harvest_set]',$from_ins_v $until_ins_v $frm[sync_count_records],'$frm[sync_harvest_node]'";
-						  
+
 				$gdl_db->insert("repository","$column","$value");
 			}
 			
@@ -200,7 +205,7 @@
 			}
 			
 			$this->response_connection 	= $response_xml;
-			$this->response_target 		= $result['response'];
+			$this->response_target 		= isset($result['response']) ? $result['response'] : null;
 			$status = $this->sync_connection_status($response_xml);
 			
 			return $status;
@@ -218,9 +223,9 @@
 			
 			global $HTTP_SESSION_VARS,$gdl_session;
 			
-			$sess_id	= $xml['SESSIONID'];
-			$providerId	= $xml['PROVIDERID'];
-			$network	= $xml['PROVIDERNETWORK'];
+			$sess_id	= isset($xml['SESSIONID']) ? $xml['SESSIONID'] : null;
+			$providerId	= isset($xml['PROVIDERID']) ? $xml['PROVIDERID'] : null;
+			$network	= isset($xml['PROVIDERNETWORK']) ? $xml['PROVIDERNETWORK'] : null;
 			
 			$result 	= 0;
 			if (!empty($sess_id)){
@@ -277,7 +282,7 @@
 		function update_repository_from_publisher(){
 			global $gdl_db,$gdl_stdout,$gdl_sys;
 			
-			$token = $_GET['token'];
+			$token = isset($_GET['token']) ? $_GET['token'] : null;
 			$limit = $gdl_sys['perpage_publisher'];
 			
 			$start = $token*$limit;
@@ -295,10 +300,10 @@
 					}else{
 						$gdl_db->insert("repository","repository_name,host_url,id_publisher,modified","'$repo_name','$base','$id',current_timestamp()");
 					}
-					
 				}
 			}
 			
+			$result = '';
 			$dbres_3 = $gdl_db->select("publisher","count(IDPUBLISHER) as total");
 			if($dbres_3){
 				$row = @mysqli_fetch_assoc($dbres_3);
@@ -386,11 +391,8 @@
 						}
 					}
 				}
-				
 			}
-			
 		}
-		
 
 		function get_info_repository($id){
 			global $gdl_db;
@@ -472,6 +474,7 @@
 			$result = array();
 			$publisher = $gdl_harvest->get_current_publisher();
 			
+			$fetch = '';
 			if(!empty($start) && !empty($limit) && ($publisher != null))
 				$fetch = "$start,$limit";
 				
@@ -559,7 +562,6 @@
 			$gdl_db->update("queue","status = 'queue'","no = '$record'");
 		}
 		
-		
 		function clean_inbox(){
 			global $gdl_stdout,$gdl_db;
 			
@@ -625,7 +627,7 @@
 		function extract_identifier_from_metadata($url_redirect){
 			global $gdl_sync,$gdl_publisher,$gdl_db,$gdl_stdout;
 		
-			$token	= $_GET['token'];
+			$token	= isset($_GET['token']) ? $_GET['token'] : null;
 			$token	= (preg_match("/^[0-9]+$/",$token))?$token:0;
 			$limit		= $gdl_sync['sync_count_records'];
 			$limit	= (preg_match("/^[0-9]+$/",$limit))?$limit:10;
@@ -657,7 +659,5 @@
 			
 			return $result;
 		}
-
 	};
-
 ?>

@@ -20,7 +20,7 @@ class form{
 	}
 	
 	function init(){
-		$this->required=$_SESSION['gdl_required'];
+		$this->required=isset($_SESSION['gdl_required']) ? $_SESSION['gdl_required'] : null;
 		$_SESSION['gdl_required']="";
 		if(isset($_SESSION['gdl_upload'])){
 			$this->upload=$_SESSION['gdl_upload'];
@@ -44,7 +44,7 @@ class form{
 			$fields_required = preg_replace("/\[/", "", $newfield['name']);
 			$fields_required = trim(preg_replace("/\]/", "", $fields_required));
 			
-			if (!($fields_required=="" or $required=="") and $newfield['value']==""){
+			if (!($fields_required=="" or $required=="") and isset($newfield['value']) and $newfield['value']==""){
 				if (preg_match('/'.$fields_required.'/',$required)){
 					$title = "<span class=\"red\">$newfield[text]</span>";
 				}else{
@@ -62,10 +62,11 @@ class form{
 		
 		$new_field['column']=$column;
 		
+		$field = '';
 		switch ($newfield['type']){
 			case 'select':
-				$arr = $newfield['option'];
-				$key_value = $newfield['value'];
+				$arr = isset($newfield['option']) ? $newfield['option'] : null;
+				$key_value = isset($newfield['value']) ? $newfield['value'] : null;
 				$field = "<select name=\"$newfield[name]\">\n";
 				if(isset($key_value) and $key_value<>""){
 					$field .= "<option value=\"$key_value\">$arr[$key_value]</option>\n";
@@ -144,7 +145,7 @@ class form{
 	
 	function add_button($newbutton){
 		$column = true;
-		if (isset($newbutton['column'])) $column = $newfield['column'];
+		if (isset($newbutton['column'])) $column = $newbutton['column'];
 		if ($column==true) $this->column=true;
 		
 		$button = "<input class=\"button\" type=\"$newbutton[type]\" name=\"$newbutton[name]\"";
@@ -276,9 +277,9 @@ class form{
 						// khusus untuk schema metadata yg mempunyai name $frm[TITLE] dan sejenisnya
 						$arr_key = preg_replace("/frm\[/", "", $val);
 						$arr_key = trim(preg_replace("/\]/", "", $arr_key));
-						$temp = trim($values[$arr_key]);
+						$temp = isset($values[$arr_key]) ? trim($values[$arr_key]) : null;
 					}else{
-						$temp = trim($values[$val]);
+						$temp = isset($values[$val]) ? trim($values[$val]) : null;
 					}
 					if($temp == ""){
 						$required = "$required $val";
@@ -286,12 +287,12 @@ class form{
 				}
 			}
 			if ($required==""){
-				$_SESSION['gdl_required']="";
-				$this->required="";
-				$_SESSION['gdl_upload']="";
+				$_SESSION['gdl_required'] = "";
+				$this->required = "";
+				$_SESSION['gdl_upload'] = "";
 				return true;
 			}else{
-				$this->required=$required;
+				$this->required = $required;
 				return false;
 			}
 		}

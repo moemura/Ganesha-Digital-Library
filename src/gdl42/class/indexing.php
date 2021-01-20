@@ -18,7 +18,9 @@ class indexing{
 		$tmpdir = "./files/tmp/indexing";
 
 		$dbres = $db->select("metadata","identifier,prefix,xml_data","xml_data is not null AND xml_data<>'deleted'");
-			
+		
+		$dump_id = '';
+		$count = 0;
 		while ($row = mysqli_fetch_array($dbres)){
 			$dump_id .= "$row[identifier] ";
 			$count++;
@@ -26,7 +28,7 @@ class indexing{
 			$id = "$row[identifier]";
 			$id = preg_replace("/\//","_slash_",$id);
 			
-			$data = $row[xml_data];
+			$data = $row['xml_data'];
 			$data = $this->indexing_cleanupxml($data);
 		
 			$size = strlen($data);
@@ -50,7 +52,6 @@ class indexing{
 			$fp = @fopen("$tmpdir/$id","w");
 			@fputs ($fp, $data);
 			@fclose($fp);
-
 		}
 		
 		// Count records have been extracted from the database.
@@ -109,7 +110,7 @@ class indexing{
 		}
 */
 		$str_cmd = "$swishe[bin] -c $swishe[cfg]";
-		$main .= "<pre>$str_cmd\n";
+		$main = "<pre>$str_cmd\n";
 		
 		$cmd = `$str_cmd`;
 		
@@ -165,6 +166,7 @@ class indexing{
 	// deleting swish temporary
 	function indexing_del_swtmp(){
 		$tmpdir = "./";
+		$main = '';
 		if ($dir = opendir($tmpdir)) {
 			while (($file = readdir($dir)) !== false) {
 				if (substr($file,0,9) == "swtmpfnum"){
@@ -180,6 +182,7 @@ class indexing{
 	function indexing_init(){
 		
 		$tmpdir = "./files/tmp/indexing";
+		$main = '';
 		if ($dir = opendir($tmpdir)) {
 			while (($file = readdir($dir)) !== false) {
 				if (strlen($file)>5){

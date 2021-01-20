@@ -146,7 +146,7 @@
     
     function display_captcha($noise=true) {
       $this->make_captcha($noise);
-      $res.="<img src='".$this->get_filename()."' border='0'>\n";
+      $res="<img src='".$this->get_filename()."' border='0'>\n";
       return $res;
     }
   }

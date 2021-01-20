@@ -15,7 +15,6 @@ class folder{
 			if ($gdl_session->refresh==true) $this->refresh($node);
 		}
 		
-		
 		// cari folder dalam node tersebut		
 		if($is_offline == true){
 			//$gdl_db->print_script = true;
@@ -38,6 +37,8 @@ class folder{
 			$dbres = $gdl_db->select("folder","folder_id,name,count","parent=$node","name","asc");
 		
 		
+		$host = "";
+		$form = "";
 		while ($rows = @mysqli_fetch_row($dbres)){
 			$dbres2 = $gdl_db->select("publisher","DC_PUBLISHER,DC_PUBLISHER_HOSTNAME","DC_PUBLISHER_ID='".$rows[1]."'");
 			if (@mysqli_num_rows($dbres2) > 0) {
@@ -70,6 +71,7 @@ class folder{
 			if ($gdl_session->refresh==true) $this->refresh($node);
 		}
 		// cari folder dalam node tersebut
+		$result = array();
 		$dbres = $gdl_db->select("folder","folder_id,name,count","parent=$node","name","asc");
 		while ($rows = @mysqli_fetch_row($dbres)){
 			$result[$rows[0]]['name']=$rows[1];
@@ -180,6 +182,7 @@ class folder{
 	
  	function get_path_name($node,$hyperlink=""){
 		global $gdl_db,$gdl_sys;
+		$path='';
 		if ($hyperlink==""){
 			while ($node <> 0){
 				$dbres = $gdl_db->select("folder","parent,name","folder_id=$node");
@@ -204,6 +207,8 @@ class folder{
 
  	function get_path($node){
 		global $gdl_db;
+		
+		$path = "";
 		if ($node==0){$path = "0";
 		}else{
 			while ($node <> 0){
@@ -224,6 +229,7 @@ class folder{
 		if ($gdl_mod=="explorer"){$url ="./gdl.php?mod=explorer&amp;";
 		}else{ $url ="./gdl.php?mod=browse&amp;";}
 		
+		$path = "";
 		if(!is_array($node))
 			while ($node <> 0){
 				$dbres = $db->select("folder","parent,name","folder_id=$node");
@@ -242,6 +248,7 @@ class folder{
 		require_once ("./class/db.php");
 		$db = new database();
 		
+		$url = '';
 		if ($window==1)
 			$url ="./gdl.php?mod=explorer&amp;n1=";
 		elseif ($window==2)
@@ -249,6 +256,7 @@ class folder{
 		else
 			$url ="./gdl.php?mod=explorer&amp;node=";
 			
+		$path = '';
 		while ($node <> 0){
 			$dbres = $db->select("folder","parent,name","folder_id=$node");
 			if (@mysqli_num_rows($dbres) > 0){
@@ -372,6 +380,7 @@ class folder{
 	function get_hierarchy($node) {
 		$path=$this->get_path($node);
 		$node1=explode("/",$path);
+		$name = '';
 		if (is_array($node1)) {
 			foreach($node1 as $valNode) {
 				if ($valNode>0) {

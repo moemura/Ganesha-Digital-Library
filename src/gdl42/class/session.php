@@ -35,7 +35,7 @@ class session{
 		$db = new database();
 		session_start();
 		$time = date("Y-m-d H:i:s");
-		$user_id = $_SESSION['gdl_user'];
+		$user_id = isset($_SESSION['gdl_user']) ? $_SESSION['gdl_user'] : null;
 
 		if (!isset($user_id)){			
 			
@@ -95,7 +95,6 @@ class session{
 		$this->set_theme();
 	}
 	
-	
 	function set_language(){
 		global $gdl_content,$gdl_sys;
 		
@@ -142,7 +141,6 @@ class session{
 			setcookie("gdl_theme",$gdl_sys['theme'],time()+($gdl_sys['page_caching'] * 60));
 			$gdl_content->theme=$gdl_sys['theme'];
 		}
-
 	}
 	
 	function login($userid,$password) {
@@ -154,8 +152,9 @@ class session{
 		
 		$userid = mysqli_real_escape_string($db->con, $userid);
 		$password = mysqli_real_escape_string($db->con, $password);
+		$passwordhash = $db->mysql3password($password);
 		
-		$dbres = $db->select("user u,group g","u.name AS user_name,u.active, u.group_id,g.name AS group_name,g.authority","u.group_id=g.group_id AND u.user_id='$userid' AND (SHA2($password, 512) OR u.password='$db->mysql3password($password)')");
+		$dbres = $db->select("user u,group g","u.name AS user_name,u.active, u.group_id,g.name AS group_name,g.authority","u.group_id=g.group_id AND u.user_id='$userid' AND (u.password=SHA2('$password', 512) OR u.password='$passwordhash')");
 		if (@mysqli_num_rows($dbres)==0){
 			return false;
 		} else {
@@ -296,12 +295,12 @@ class session{
 	/**-------------------------------------------- Critical security start--------------------**/
 	// Modify below function to make your security more secure.
 	function give_user_signature($remoteUser,$password){
-			global $gdl_sys;
-			
-			$app_sign	= $gdl_sys['application_signature'];
-			$signature 	= (empty($app_sign))?"$remoteUser-$password":"$remoteUser-$password-$app_sign";
-			
-			return sha1($signature);
+		global $gdl_sys;
+		
+		$app_sign	= $gdl_sys['application_signature'];
+		$signature 	= (empty($app_sign))?"$remoteUser-$password":"$remoteUser-$password-$app_sign";
+		
+		return sha1($signature);
 	}
 
 	// To secure your sistem, you can modify this code.

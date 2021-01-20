@@ -26,6 +26,7 @@ class metadata extends parser {
 	function get_list($node="",$type="",$limit="",$count=""){
 		global $gdl_db,$gdl_sync,$gdl_sys,$gdl_publisher;
 		
+		$where = "";
 		if(is_array($node)){
 			for($i=0;$i<count($node);$i++){
 				$where = ($i==0)?"(folder=$node[$i])":"$where or (folder=$node[$i])";
@@ -55,7 +56,9 @@ class metadata extends parser {
 			$row = @mysqli_fetch_assoc($dbres);
 			$this->total = $row["total"];
 		}
-
+		
+		$result = array();
+		
 		// list metadata per page
 
 		$dbres = $gdl_db->select("metadata","identifier,owner,folder,xml_data,prefix","$where","date_modified","desc",$limit);
@@ -68,13 +71,13 @@ class metadata extends parser {
 				$result[$rows[0]]['TYPE']= $frm['TYPE'];
 				$result[$rows[0]]['DATE_MODIFIED']= $frm['DATE_MODIFIED'];
 				$result[$rows[0]]['CREATOR']= $frm['CREATOR'];
-				$result[$rows[0]]['RELATION_COUNT']= $frm['RELATION_COUNT'];
+				$result[$rows[0]]['RELATION_COUNT']= isset($frm['RELATION_COUNT']) ? $frm['RELATION_COUNT'] : 0;
 			}else if ($prefix == "oai_dc"){ // dublin core
 				$result[$rows[0]]['TITLE']= $frm['DC:TITLE'];
 				$result[$rows[0]]['TYPE']= $frm['DC:TYPE'];
 				$result[$rows[0]]['DATE_MODIFIED']= $frm['DC:DATE'];
 				$result[$rows[0]]['CREATOR']= $frm['DC:CREATOR'];
-				$result[$rows[0]]['RELATION_COUNT']= $frm['RELATION_COUNT'];
+				$result[$rows[0]]['RELATION_COUNT']= isset($frm['RELATION_COUNT']) ? $frm['RELATION_COUNT'] : 0;
 			}
 		}
 		$this->count = @mysqli_num_rows($dbres);
@@ -173,6 +176,7 @@ class metadata extends parser {
 			$frm['IDENTIFIER_HIERARCHY']=$gdl_folder->get_hierarchy($values['folder']);
 			$this->write($frm,$values);
 			
+			$xmlrela = '';
 			$temp=$this->readXML($xmldata);	
 			for ($i = 1; $i <= $frm['RELATION_COUNT']; $i++) {
 				$frm['RELATION_NO'] = $i;
@@ -216,6 +220,7 @@ class metadata extends parser {
 	function write($frm,$property){
 		global $gdl_db,$gdl_auth,$gdl_publisher,$gdl_sys,$gdl_form,$gdl_content,$gdl_folder,$gdl_session;
 		
+		$status = "";
 		if ($status=="") { $status = "null";
 		}else{ $status = "'$status'";}
 		
@@ -223,12 +228,12 @@ class metadata extends parser {
 		$frm['PUBLISHER'] = $gdl_publisher['id'];
 		$frm['DATE_MODIFIED']	= date("Y-m-d H:i:s");
 		$frm['CONTRIBUTOR_MODIFIEDBY'] = $gdl_session->user_id;
-		if ($frm['DATE']=="") $frm['DATE'] = date("Y-m-d");
+		if (isset($frm['DATE']) && $frm['DATE']=="") $frm['DATE'] = date("Y-m-d");
 		$path = $gdl_folder->get_path($property['folder']);
 		
 		if (empty($frm['IDENTIFIER'])){
 			// upload new metadata
-			$frm['IDENTIFIER'] = $this->get_identifier($frm['CREATOR']);
+			$frm['IDENTIFIER'] = $this->get_identifier(isset($frm['CREATOR']) ? $frm['CREATOR'] : null);
 			// generate xml, need identifier
 			$xmldata = $this->generate_xml($frm);
 			$xmldata = $this->clear_badchars($xmldata);
@@ -290,7 +295,7 @@ class metadata extends parser {
 		$dbres = $gdl_db->select("metadata","xml_data,repository","identifier='$id'");
 		$row = @mysqli_fetch_assoc($dbres);
 		$frm=$this->read_xml($row["xml_data"]);
-		$publisher = $frm['PUBLISHER'];
+		$publisher = isset($frm['PUBLISHER']) ? $frm['PUBLISHER'] : null;
 		if(empty($publisher)) $publisher = $row["repository"];
 		return $publisher;
 	}
@@ -518,30 +523,29 @@ class metadata extends parser {
 		return "</oai_dc:dc>\n";
 	}
 	
-	function get_value($frm,$key,$opt2="",$index=""){
-		$result = $frm[$key];
+	function get_value($frm, $key, $opt2="", $index=""){
+		$result = isset($frm[$key]) ? $frm[$key] : '';
 		
 		if(empty($result) && ($result != "0")){
 			$key = str_replace("_",".",$key);
-			$result = $frm[$key];
+			$result = isset($frm[$key]) ? $frm[$key] : '';
 		}
 		
 		if(empty($result) && ($result != "0")){
 			$key = "DC:".$key;
-			$result = $frm[$key];
+			$result = isset($frm[$key]) ? $frm[$key] : '';
 		}
 
 		if(empty($result) && !empty($opt2) && ($result != "0")){
-			$result = $frm[$opt2];
+			$result = isset($frm[$opt2]) ? $frm[$opt2] : null;
 			if(empty($result)){
 				$key = "DC:".$opt2;
-				$result = $frm[$key];
+				$result = isset($frm[$key]) ? $frm[$key] : '';
 			}
 		}
 		
 		
 		if(is_array($result)){
-
 			if(empty($index))
 				$result = $result[0];
 			else{
@@ -556,6 +560,7 @@ class metadata extends parser {
 function metadata_dump($server,$publisherid,$startdate) {
 		global $gdl_db,$gdl_publisher;
 		
+		$where = '';
 		if ($server==1)
 			$where=" AND xml_data LIKE '%<publisher>".$gdl_publisher['id']."</publisher>%'";
 		elseif ($server==2)
@@ -563,6 +568,7 @@ function metadata_dump($server,$publisherid,$startdate) {
 		
 		$dbres=$gdl_db->select("metadata","identifier,date_modified,type,xml_data","date_modified > '".$startdate."'".$where);
 		
+		$dump = '';
 		while ($rows = @mysqli_fetch_array($dbres)){
 		$dump .= "
 <record>
@@ -637,7 +643,5 @@ function convert_metadata_general_to_oai_dc($dataXML){
 	
 		return $metadata;
 	}
-
 }
-
 ?>

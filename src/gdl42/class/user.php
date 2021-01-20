@@ -28,7 +28,6 @@ class user {
 			$db->update ("user", "active='1'","user_id='$userid' AND validation='$account'");
 			return true;
 		}
-	
 	}
 	
 	function register ($userid, $password, $fullname, $address, $city, $country, $institution, $job) {
@@ -73,7 +72,6 @@ class user {
 		} else {
 			return false;
 		}	
-	
 	}		
 
 	function cek_password ($passwd, $passwdconfrim) {
@@ -126,6 +124,7 @@ class user {
 	function get_list($search="", $limit="",$count=""){
 		global $gdl_db,$gdl_session;
 		
+		$where = '';
 		if ($search <> "") $where = "user_id like '%$search%' or name like '%$search%'";
 		if ($where <> "") $where .= " and ";
 				$where .= "user_id!='Public' and user_id!='".$gdl_session->user_id."'";
@@ -148,7 +147,6 @@ class user {
 		//$_SESSION['gdl_identifier'] = "";			
 		return $result;
 	}
-
 
 	function get_property ($id){
 		global $gdl_db;
@@ -175,7 +173,7 @@ class user {
 		}
 		$a = mysqli_real_escape_string($gdl_db->con, $a);
 		
-		$gdl_db->update("user","password=SHA2($newprofile[PASSWORD], 512), group_id='$newprofile[GROUPLEVEL]', 
+		$gdl_db->update("user","password=SHA2('$newprofile[PASSWORD]', 512), group_id='$newprofile[GROUPLEVEL]', 
 		
 					name='$newprofile[FULLNAME]', address='$newprofile[ADDRESS]', city='$newprofile[CITY]', 
 					
@@ -183,7 +181,7 @@ class user {
 					
 					active='$newprofile[ACTIVE]', date_modified='$date'",
 		
-					"user_id='$a'");mysqli_error($gdl_db->con);var_dump($newprofile);
+					"user_id='$a'");
 		if (mysqli_affected_rows($gdl_db->con) >0) {
 			return true;
 		} else 	{
@@ -199,7 +197,7 @@ class user {
 			$newprofile[$key] = mysqli_real_escape_string($gdl_db->con, $value);
 		}
 		
-		$gdl_db->update("user","password=SHA2($newprofile[PASSWORD], 512),
+		$gdl_db->update("user","password=SHA2('$newprofile[PASSWORD]', 512),
 		
 					name='$newprofile[FULLNAME]', address='$newprofile[ADDRESS]', city='$newprofile[CITY]', 
 					

@@ -7,7 +7,7 @@ if (preg_match("/file.php/i",$_SERVER['PHP_SELF'])) {
 class file_relation{
 	
 	function upload($identifier){
-		global $gdl_sys,$gdl_metadata,$gdl_session;
+		global $gdl_sys, $gdl_metadata, $gdl_session, $gdl_db, $frm;
 		
 		require_once ("./class/db.php");
 		$db = new database();
@@ -21,9 +21,10 @@ class file_relation{
 			mkdir ($homedir,0755);
 		}
 		
-		$count = $_POST['count'];
+		$count = isset($_POST['count']) ? $_POST['count'] : null;
 		$rel_count = 0;
 		
+		$xmlrela = '';
 		for ($i = 1; $i <= $count; $i++) {
 			
 			if ($_FILES['fname']['name'][$i]<>""){
