@@ -3,26 +3,25 @@ if (preg_match("/indonesian.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 
-define("_SEARCHREQUEST","Pencarian Permintaan dengan ID User");
-define("_NO","No.");
-define("_TITLE","Identifier / Judul");
-define("_SENT","Dikirim");
-define("_COMMENT","Komentar");
-define("_ACTION","Aksi");
-define("_REQUESTDISPLAYING","Menampilkan Permintaan");
-define("_SEARCHREQUEST","Pencarian Permintaan dengan ID User");
-define("_SEARCH","Cari");
-define("_FROM","Dari");
-define("_REQUESTDELETESUCCESS","Penghapusan permintaan berhasil");
-define("_REQUESTDELETEFAILED","Penghapusan permintaan gagal");
-define("_CANNOTFOUNDREQUESTDATA","Tidak dapat menemukan data permintaan");
-define("_AUTHOR","Pengarang");
-define("_GIVEYOURMESSAGE","Berikan pesan Anda");
-define("_SEND","Kirim");
-define("_INSERTCOMMENTSUCCESS","Pengiriman komentar berhasil");
-define("_INSERTCOMMENTFAILED","Pengiriman komentar gagal");
-define("_OF","Dari");
-define("_PAGE","Halaman");
-define("_ADD","Tambah");
-define("_EDIT","Ubah");
+defined('_SEARCHREQUEST') or define("_SEARCHREQUEST","Pencarian Permintaan dengan ID User");
+defined('_NO') or define("_NO","No.");
+defined('_TITLE') or define("_TITLE","Identifier / Judul");
+defined('_SENT') or define("_SENT","Dikirim");
+defined('_COMMENT') or define("_COMMENT","Komentar");
+defined('_ACTION') or define("_ACTION","Aksi");
+defined('_REQUESTDISPLAYING') or define("_REQUESTDISPLAYING","Menampilkan Permintaan");
+defined('_SEARCH') or define("_SEARCH","Cari");
+defined('_FROM') or define("_FROM","Dari");
+defined('_REQUESTDELETESUCCESS') or define("_REQUESTDELETESUCCESS","Penghapusan permintaan berhasil");
+defined('_REQUESTDELETEFAILED') or define("_REQUESTDELETEFAILED","Penghapusan permintaan gagal");
+defined('_CANNOTFOUNDREQUESTDATA') or define("_CANNOTFOUNDREQUESTDATA","Tidak dapat menemukan data permintaan");
+defined('_AUTHOR') or define("_AUTHOR","Pengarang");
+defined('_GIVEYOURMESSAGE') or define("_GIVEYOURMESSAGE","Berikan pesan Anda");
+defined('_SEND') or define("_SEND","Kirim");
+defined('_INSERTCOMMENTSUCCESS') or define("_INSERTCOMMENTSUCCESS","Pengiriman komentar berhasil");
+defined('_INSERTCOMMENTFAILED') or define("_INSERTCOMMENTFAILED","Pengiriman komentar gagal");
+defined('_OF') or define("_OF","Dari");
+defined('_PAGE') or define("_PAGE","Halaman");
+defined('_ADD') or define("_ADD","Tambah");
+defined('_EDIT') or define("_EDIT","Ubah");
 ?>
