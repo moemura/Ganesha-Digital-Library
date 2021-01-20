@@ -1,5 +1,4 @@
 <?php 
-
 /***************************************************************************
                          /module/organization/function.php
                              -------------------
@@ -59,7 +58,7 @@ function list_of_organization() {
 	$grid->header=$header;
 	$grid->item=$item;
 	$grid->colwidth=$colwidth;
-	$content.="<a href='./gdl.php?mod=organization&amp;op=add'>"._ADD."</a>";
+	$content="<a href='./gdl.php?mod=organization&amp;op=add'>"._ADD."</a>";
 	$content.=$grid->generate();
 	
 	return $content;	
@@ -104,6 +103,7 @@ function add_organization_form($action="") {
 function insert_organization() {
 	global $frm,$gdl_folder;
 	
+	$content ='';
 	$organization_node=$gdl_folder->check_folder("Organization",0);
 	if (preg_match("/err/",$organization_node))
 		$content.=_ADDORGANIZATIONFAILED;
@@ -126,6 +126,7 @@ function insert_organization() {
 function edit_organization() {
 	global $frm,$gdl_folder,$id;
 	
+	$content ='';
 	$organization_node=$gdl_folder->check_folder("Organization",0);
 	if (preg_match("/err/",$organization_node))
 		$content.=_EDITORGANIZATIONFAILED;
