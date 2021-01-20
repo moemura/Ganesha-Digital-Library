@@ -4,7 +4,8 @@ if (preg_match("/file.php/i",$_SERVER['PHP_SELF'])) die();
 require_once ("./module/browse/function.php");
 require_once ("./module/browse/lang/".$gdl_content->language.".php");
 
-$del = $_GET['del'];
+$del = isset($_GET['del']) ? $_GET['del'] : null;
+global $frm;
 
 if (isset($del)){
 
@@ -17,19 +18,19 @@ if (isset($del)){
 	}else{
 		$gdl_content->set_error(_UPLOADFAIL,_ERROR,"upload.file.delete_relation");
 	}	
-	
-}else{
+} else {
 
 	// upload / edit file relation
 	
-	$id = $_POST['id'];
-	$relation = $_POST['relation'];
+	$id = isset($_POST['id']) ? $_POST['id'] : null;
+	$relation = isset($_POST['relation']) ? $_POST['relation'] : null;
 	$action=false;
 
 	foreach ($relation as $key => $val) {
 		if(!empty($val)) $action=true;
 	}
 	
+	$main = '';
 	if ($action==false){
 	
 		// upload new file
@@ -59,7 +60,7 @@ if (isset($del)){
 			mkdir ($homedir,0755);
 		}
 
-		$count = $_POST['count'];
+		$count = isset($_POST['count']) ? $_POST['count'] : 0;
 		
 		for ($i = 1; $i <= $count; $i++) {
 			if ($relation[$i]==""){
@@ -90,7 +91,6 @@ if (isset($del)){
 				
 				// generate xml data relation external
 				$frm['TYPE_SCHEMA'] = "relation";
-				
 				
 				// input data to table relation
 				$rel_field = "identifier,date_modified,no,name,part,path,format,size,uri,note";

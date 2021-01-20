@@ -1,5 +1,4 @@
 <?php
-
 if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
@@ -57,7 +56,7 @@ function relation_form($count,$identifier){
 		$gdl_form->add_field(array(
 					"type"=>"textarea",
 					"name"=>"desc[$i]",
-					"value"=>$file[$i]['note'],
+					"value"=>isset($file[$i]['note']) ? $file[$i]['note'] : '',
 					"text"=>_DESCRIPTION,
 					"rows"=>5,
 					"cols"=>59));
@@ -77,6 +76,7 @@ function relation_form($count,$identifier){
 function current_state(){
 	global $gdl_metadata, $gdl_folder;
 	
+	$main ='';
 	if ($_SESSION["gdl_identifier"]){
 		$frm = $gdl_metadata->read($_SESSION["gdl_identifier"]);
 		$main .= "<p><b>"._CURRENTMETADATA." :</b> <a href=\"./gdl.php?mod=browse&amp;op=read&amp;id=".$_SESSION["gdl_identifier"]."\">$frm[TITLE]</a> ";
@@ -86,5 +86,4 @@ function current_state(){
 	$main .= "<p><b>"._CURRENTFOLDER." :</b> ".$gdl_folder->get_path_name($_SESSION['gdl_node'],true)."</p>";
 	return $main;
 }
-
 ?>
