@@ -7,35 +7,39 @@ function search_result($schema,$methods="") {
 	require_once ("./class/search.php");
 	$search = new search();
 	
-	$page = $_GET['page'];
+	$page = isset($_GET['page']) ? $_GET['page'] : null;
 	if(isset($page)){
-		$schema = $_GET['s'];
-		$type = $_GET['type'];
+		$schema = isset($_GET['s']) ? $_GET['s'] : null;
+		$type = isset($_GET['type']) ? $_GET['type'] : null;
 	}else{
 		if($methods != "url"){
-			$schema = $_POST['s'];
-			$type = $_POST['type'];
+			$schema = isset($_POST['s']) ? $_POST['s'] : null;
+			$type = isset($_POST['type']) ? $_POST['type'] : null;
 		}else{
 			$schema	= "dc";
 			$type	= "all";
 		}
 	}
 	
+	if(isset($page)){$frm = isset($_GET['frm']) ? $_GET['frm'] : null;
+	} else {$frm = isset($_POST['frm']) ? $_POST['frm'] : null;}
+	
 	// get start searching
 	if(isset($page)){$start = (($page * $gdl_sys['perpage_browse'])+1)- $gdl_sys['perpage_browse'];
 	}else{$start = 1;}
 	
+	$query = '';
 	// create query string
 	if ($schema=="dc"){
 		// search all
 		if(isset($page)){
-			$query = $_GET['dc'];
+			$query = isset($_GET['dc']) ? $_GET['dc'] : null;
 		}else{
-			$query = $_POST['keyword'];
+			$query = isset($_POST['keyword']) ? $_POST['keyword'] : null;
 		}
 		
 		if(empty($query) && ($methods == "url"))
-			$query = $_GET['keyword'];
+			$query = isset($_GET['keyword']) ? $_GET['keyword'] : null;
 			
 		// atribut untuk url
 		$q = "dc=$query&amp;type=$type";
@@ -50,14 +54,12 @@ function search_result($schema,$methods="") {
 		
 	}else{
 		// search advance
-		if(isset($page)){$frm = $_GET['frm'];
-		}else{$frm=$_POST['frm'];}
 		
 		if (is_array($frm)){
-			$qfrm = $frm[q];
+			$qfrm = $frm['q'];
 			foreach ($qfrm as $key => $val) {
 				if (!empty($val)){
-					$metaname = $frm[tag][$key];
+					$metaname = $frm['tag'][$key];
 					
 					if (isset($q)){
 						$q .= "&frm[bol][]=$bool&";
@@ -68,12 +70,12 @@ function search_result($schema,$methods="") {
 					$q .= "&frm[q][]=$val";
 					$query .= "$metaname=$val";
 					$sread .= "$val";
-					$bool = $frm[bol][$key];
+					$bool = $frm['bol'][$key];
 				}
 			}
 		}
 		if ($schema <> "dc") $query = "schema=$schema and $query";
-		$str_query = $search->query_advanced($schema,$frm);	
+		$str_query = $search->query_advanced($schema, $frm);	
 	}
 
 	$index_by_database = (int) $_SESSION['index_by_database'];
@@ -121,7 +123,7 @@ function search_result($schema,$methods="") {
 					$description = "<span class=\"note\">".substr($gdl_metadata->get_value($xmlmeta,"DATE"),0,10).", $gdl_type[$type] "._BY." ".$gdl_metadata->get_value($xmlmeta,"CREATOR")."</span>";
 					
 					if (is_array($frm)){
-						$qterm = $frm[q];
+						$qterm = $frm['q'];
 						foreach ($qterm as $key => $val) {
 							if (!empty($val)){
 									$title = $search->mark_term($title,$val);																						
@@ -131,9 +133,7 @@ function search_result($schema,$methods="") {
 						$title = $search->mark_term($title,$query);
 					}
 					
-					
 					$meta_arr[] = "<a href=\"./gdl.php?mod=browse&amp;op=read&amp;id=".$gdl_metadata->get_value($xmlmeta,"IDENTIFIER")."&amp;q=$sread\"><b>$title</b></a><br/>$description";
-					
 				}
 			}
 				

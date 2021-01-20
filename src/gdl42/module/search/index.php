@@ -12,13 +12,13 @@ $search = new search();
 
 
 if(isset($_GET['page'])){ 
-	$schema = $_GET['s']; 
+	$schema = isset($_GET['s']) ? $_GET['s'] : null; 
 } else { 
-	$schema = $_POST['s'];
+	$schema = isset($_POST['s']) ? $_POST['s'] : null;
 }
 
 if (!isset($schema)) 
-	$schema = $_GET['schema'];
+	$schema = isset($_GET['schema']) ? $_GET['schema'] : null;
 
 if (file_exists("./schema/$schema.xml") || $schema=="catalogs"){
 	$gdl_content->set_main($search->generate_form($schema));
@@ -26,7 +26,8 @@ if (file_exists("./schema/$schema.xml") || $schema=="catalogs"){
 	$gdl_content->set_main($search->generate_form("dc"));
 }
 
-$folks = $_GET['action'];
+$folks = isset($_GET['action']) ? $_GET['action'] : null;
+$main = '';
 if (isset($_GET['page']) or isset($_POST['s'])) 
 	$main = search_result($schema);
 else if(isset($folks)){
