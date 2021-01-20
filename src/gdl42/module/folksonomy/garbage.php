@@ -6,11 +6,12 @@ if (preg_match("/garbage.php/i",$_SERVER['PHP_SELF'])) {
 global $gdl_folksonomy;
 
 require_once("./module/folksonomy/function.php");
-$del	= $_GET['del'];
+$del	= isset($_GET['del']) ? $_GET['del'] : null;
 if(isset($del) && ($del == "confirm")){
 	$gdl_folksonomy->delete_tokenStopword();
 }
 
+$ret_ins = '';
 if(isset($_POST['stopword'])){
 	$ret = $gdl_folksonomy->addNewStopword($_POST['stopword']);
 	if($ret == 0){
@@ -27,5 +28,4 @@ $main 	.= display_stopword();
 $main 	= gdl_content_box($main,_STOPWORDMANAGEMENT);
 $gdl_content->set_main($main);
 $gdl_content->path="<a href=\"index.php\">Home</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=publisher\">"._PUBLISHER."</a>";
-
 ?>

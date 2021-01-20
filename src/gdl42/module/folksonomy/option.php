@@ -3,7 +3,8 @@ require_once "./module/folksonomy/function.php";
 
 global $gdl_stdout;
 
-$frm=$_POST["frm"];
+$frm=isset($_POST["frm"]) ? $_POST["frm"] : null;
+$main = '';
 if ($gdl_form->verification($frm) && $frm) {
 	$main .= write_file_sync();
 }

@@ -7,12 +7,13 @@ if (preg_match("/update.php/i",$_SERVER['PHP_SELF'])) {
 global $gdl_folksonomy;
 require_once("./module/folksonomy/function.php");
 
-$sub 	= $_GET['sub'];
-$del	= $_GET['del'];
+$sub 	= isset($_GET['sub']) ? $_GET['sub'] : null;
+$del	= isset($_GET['del']) ? $_GET['del'] : null;
 if(isset($del) && ($del == "confirm")){
 	$gdl_folksonomy->delete_tokenFolksonomy();
 }
 
+$refresh = '';
 if(isset($sub)){
 	switch($sub){
 		case "reset" 	:
@@ -33,6 +34,4 @@ $main	.= $refresh;
 $main 	=  gdl_content_box($main,_FOLKSONOMYMANAGEMENT);
 $gdl_content->set_main($main);
 $gdl_content->path="<a href=\"index.php\">Home</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=folksonomy\">"._FOLKSONOMY."</a>";
-
-
 ?>
