@@ -15,9 +15,9 @@ if (preg_match("/index.php/i",$_SERVER['PHP_SELF'])) {
 }
 
 $_SESSION['DINAMIC_TITLE'] = _DISCUSSION;
-$searchkey = $_POST['searchkey'];
+$searchkey = isset($_POST['searchkey']) ? $_POST['searchkey'] : null;
 if (!$searchkey)
-	$searchkey = $_GET['searchkey'];
+	$searchkey = isset($_GET['searchkey']) ? $_GET['searchkey'] : null;
 require_once("./module/discussion/function.php");
 $main = "<p>".search_discussion_form ()."</p>\n";
 

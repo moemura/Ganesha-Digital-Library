@@ -17,14 +17,16 @@ function display_discussion($searchkey) {
 	
 	require_once("./class/repeater.php");
 	
-	$page=$_GET['page'];
+	$page=isset($_GET['page']) ? $_GET['page'] : null;
 	if (!isset($page)){
 	 	$page = 0 ;
 	}else{
 		$page = $page-1;
 	}
 
-	if (!empty($searchkey)) {
+	$urlsearch = '';
+	$where = '';
+	if (isset($searchkey) && !empty($searchkey)) {
 			$urlsearch="&amp;searchkey=$searchkey";
 			$where=" AND (m.xml_data LIKE '%<title>%$searchkey%</title>%' or c.user_id LIKE '%$searchkey%' or c.subject LIKE '%$searchkey%')";
 		}
@@ -139,7 +141,7 @@ function search_discussion_form ($action="")
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"searchkey",			
-				"value"=>"$_POST[searchkey]",
+				"value"=>isset($_POST['searchkey']) ? $_POST['searchkey'] : '',
 				"text"=>_SEARCHDISCUSSION,
 				"size"=>30));
 	$gdl_form->add_button(array(
