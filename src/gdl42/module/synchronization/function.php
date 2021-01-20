@@ -10,7 +10,7 @@ function shortcut_repository(){
 	$id	= $gdl_sync['sync_repository_id'];
 	$id	= (preg_match("/^[0-9]+$/",$id))?$id:"";
 	
-	$page	= $_GET['page'];
+	$page	= isset($_GET['page']) ? $_GET['page'] : null;
 	$page	= (preg_match("/^[0-9]+$/",$page))?$page:1;
 	
 	$content="";
@@ -38,7 +38,7 @@ function search_repository_form(){
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"searchkey",			
-				"value"=>"$_POST[searchkey]",
+				"value"=>isset($_POST['searchkey']) ? "$_POST[searchkey]" : '',
 				"text"=>_SEARCHREPOSITORY,
 				"size"=>30));
 	$gdl_form->add_button(array(
@@ -51,9 +51,7 @@ function search_repository_form(){
 	return $content;
 }
 
-
-
-function edit_form($frm="",$option="") {
+function edit_form($frm=array(),$option="") {
 	global $gdl_form,$gdl_sync,$gdl_db;
 	
 	if (empty($frm) && empty($option)) {
@@ -62,7 +60,7 @@ function edit_form($frm="",$option="") {
 	}
 	
 	$gdl_form->set_name("edit_sync");
-	$page = $_GET['page'];
+	$page = isset($_GET['page']) ? $_GET['page'] : null;
 	
 	if(isset($page))$page = "&amp;page=$page";
 	
@@ -113,7 +111,7 @@ function edit_form($frm="",$option="") {
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"frm[sync_hub_server_name]",			
-				"value"=>$frm["sync_hub_server_name"],
+				"value"=>isset($frm["sync_hub_server_name"]) ? $frm["sync_hub_server_name"] : '',
 				"text"=>_TARGETSERVERNAME,
 				"required"=>true,
 				"size"=>50));
@@ -137,7 +135,7 @@ function edit_form($frm="",$option="") {
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"frm[sync_proxy_server_address]",			
-				"value"=>$frm["sync_proxy_server_address"],
+				"value"=>isset($frm["sync_proxy_server_address"]) ? $frm["sync_proxy_server_address"] : '',
 				"text"=>_PROXYADDRESS, 
 				"size"=>50));
 				
@@ -151,7 +149,7 @@ function edit_form($frm="",$option="") {
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"frm[sync_oai_script]",			
-				"value"=>$frm["sync_oai_script"],
+				"value"=>isset($frm["sync_oai_script"]) ? $frm["sync_oai_script"] : '',
 				"text"=>_OAISCRIPT,
 				"required"=>true,
 				"size"=>50));
@@ -180,13 +178,13 @@ function edit_form($frm="",$option="") {
 				"type"=>"select",
 				"option"=>$array_set,
 				"name"=>"frm[sync_harvest_set]",			
-				"value"=>$frm["sync_harvest_set"],
+				"value"=>isset($frm["sync_harvest_set"]) ? $frm["sync_harvest_set"] : '',
 				"text"=>_SETOPTION));
 				
 		$gdl_form->add_field(array(
 					"type"=>"text",
 					"name"=>"frm[sync_harvest_node]",			
-					"value"=>$frm["sync_harvest_node"],
+					"value"=>isset($frm["sync_harvest_node"]) ? $frm["sync_harvest_node"] : '',
 					"text"=>_HARVESTALLRECORDSUNDERNODEID,
 					"size"=>10));
 	}
@@ -194,30 +192,30 @@ function edit_form($frm="",$option="") {
 	$gdl_form->add_field(array(
 					"type"=>"text",
 					"name"=>"frm[sync_harvest_from]",			
-					"value"=>$frm["sync_harvest_from"],
+					"value"=>isset($frm["sync_harvest_from"]) ? $frm["sync_harvest_from"] : '',
 					"text"=>_OPTIONFROM,
 					"size"=>10));
 	$gdl_form->add_field(array(
 					"type"=>"text",
 					"name"=>"frm[sync_harvest_until]",			
-					"value"=>$frm["sync_harvest_until"],
+					"value"=>isset($frm["sync_harvest_until"]) ? $frm["sync_harvest_until"] : '',
 					"text"=>_OPTIONUNTIL,
 					"size"=>10));
 					
-	$key = array_keys(array("3","5","10","15","20","25","30"),$frm["sync_count_records"]);
+	$key = array_keys(array("3","5","10","15","20","25","30"), $frm["sync_count_records"]);
 	
 	$gdl_form->add_field(array(
 				"type"=>"select",
 				"option"=>array("3","5","10","15","20","25","30"),
-				"name"=>"frm[sync_count_records]",			
-				"value"=>$key[0],
+				"name"=>"frm[sync_count_records]",
+				"value"=>isset($key[0]) ? $key[0] : '',
 				"text"=>_NUMOFRECORD,
 				"required"=>true));
 
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"frm[sync_fragment_size]",			
-				"value"=>$frm["sync_fragment_size"],
+				"value"=>isset($frm["sync_fragment_size"]) ? $frm["sync_fragment_size"] : '',
 				"text"=>_FRAGMENTSIZE, 
 				"required"=>true,
 				"size"=>10));
@@ -241,7 +239,7 @@ function edit_form($frm="",$option="") {
 			"name"=>"frm[submit]",
 			"value"=>_SAVECHANGES)); 
 
-	$content .= $gdl_form->generate();
+	$content = $gdl_form->generate();
 	return $content;	
 }
 
@@ -277,7 +275,6 @@ function write_file_sync($frm) {
 		$sync_count_records=array("3","5","10","15","20","25","30");
 		$frm["sync_count_records"]=$sync_count_records[$frm["sync_count_records"]];
 	}
-
 	
 	/**
 	* 0 : Save form to repository
@@ -285,6 +282,7 @@ function write_file_sync($frm) {
 	* 2 : Load default setting
 	*/
 
+	$message = '';
 	if($action=="2"){
 		$bufferFormSubmit = $frm;
 	}else{
@@ -305,6 +303,7 @@ function write_file_sync($frm) {
 function disconnection_form(){
 	global $gdl_synchronization;
 	
+	$title = '';
 	if($gdl_synchronization->is_connected()){
 		$gdl_synchronization->client_disconnection();
 		
@@ -338,7 +337,7 @@ function export_form() {
 				"type"=>"radio",
 				"name"=>"frm[server]",
 				"checked"=>array(_ALLSERVER,_MYGDLSERVER,_SERVERWITHPUBLISHERID),
-				"value"=>$frm["server"],
+				"value"=>isset($frm["server"]) ? $frm["server"] : '',
 				"required"=>true,
 				"text"=>_EXPORTFROMSERVER   
 				));
@@ -346,7 +345,7 @@ function export_form() {
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"frm[publisher_id]",			
-				"value"=>$frm["publisher_id"],
+				"value"=>isset($frm["publisher_id"]) ? $frm["publisher_id"] : '',
 				"text"=>_PUBLISHERID, 
 				"size"=>20));
 				
@@ -363,7 +362,7 @@ function export_form() {
 			"name"=>"frm[submit]",
 			"value"=>_EXPORT)); 
 			
-	$content .= $gdl_form->generate();
+	$content = $gdl_form->generate();
 	return $content;	
 }
 
@@ -377,6 +376,7 @@ function export_process() {
 			
 		}
 	
+	$content = '';
 	$strdump=$gdl_metadata->metadata_dump($frm["server"],$frm["publisher_id"],$frm["starting_date"]);
 	if ($strdump)	{
 	
@@ -409,7 +409,6 @@ function export_process() {
 	}
 	
 	return $content;
-	
 }
 
 function download_metadata_archive() {
@@ -478,7 +477,7 @@ function list_of_uploaded_file() {
 			$header[7]=_ACTION;
 			
 			$no=1;
-			
+			$item = array();
 			while (($file = readdir($dirhandle)) !== false) {
 				if (preg_match("/.gz/i",$file) && preg_match("/metadata-/i",$file) && !preg_match("/.log/i",$file)) {
 					$pubid = explode("-",$file);
@@ -512,7 +511,6 @@ function list_of_uploaded_file() {
 			$colwidth[5] = "75px";
 			$colwidth[6] = "75px";
 			$colwidth[7] = "75px";
-			
 					
 			$grid->header=$header;
 			$grid->item=$item;
@@ -586,18 +584,19 @@ function box_files($main_url="",$folder=""){
 	$arr_dir 	= array();
 	$arr_file	= array();
 
-		while(($entry = @readdir($handle)) > -1){
-			if((strcasecmp($entry,".") == 0) || (strcasecmp($entry,"..") == 0)){continue;}
-			
-			$object = $parent."/".$entry;
-			if(is_dir($object)){
-				$arr_dir[$entry]=$object;
-			}else {
-				$arr_file[$entry]=$object;
-			}
+	while(($entry = @readdir($handle)) > -1){
+		if((strcasecmp($entry,".") == 0) || (strcasecmp($entry,"..") == 0)){continue;}
+		
+		$object = $parent."/".$entry;
+		if(is_dir($object)){
+			$arr_dir[$entry]=$object;
+		}else {
+			$arr_file[$entry]=$object;
 		}
+	}
 	closedir($handle);
 	
+	$dir_nav = '';
 	$uri = "./gdl.php?mod=synchronization&op=posting&sub=1";
 	if(empty($folder)) $folder = $parent."/0";
 	foreach ($arr_dir as $index => $value){
@@ -608,6 +607,7 @@ function box_files($main_url="",$folder=""){
 			$dir_nav .= "&nbsp;<a href=\"$uri&amp;path=$value\">".$index."</a>&nbsp;";
 	}
 	
+	$path = '';
 	if(!empty($directory))
 		$path = "&amp;path=$directory";
 	
@@ -624,7 +624,7 @@ function box_files($main_url="",$folder=""){
 			
 	$i=1;
 	if(empty($directory))
-		$directory = $arr_dir[0];
+		$directory = isset($arr_dir[0]) ? $arr_dir[0] : null;
 	
 	$list_job	= array();
 	$array_job	= $gdl_synchronization->get_list_queue($folder);
@@ -659,11 +659,10 @@ function box_files($main_url="",$folder=""){
 
 function display_repository($searchkey){
 	global $gdl_content,$gdl_synchronization,$gdl_sys;
-
 	
 	require_once("./class/repeater.php");
 	
-	$page	= $_GET['page'];
+	$page	= isset($_GET['page']) ? $_GET['page'] : null;
 	if (!isset($page)){
 	 	$page = 0 ;
 	}else{
@@ -698,6 +697,7 @@ function display_repository($searchkey){
 			$url = "./gdl.php?mod=synchronization&amp;op=option&amp;";
 			$j=$start;
 			
+			$item = array();
 			if(is_array($repositorydata))
 				foreach ($repositorydata as $key => $val) {
 					$identify 	= "<a href='$url"."page=$page&amp;update=Identify&amp;record=$val[REC]#responseAction'>Identify</a>";
@@ -715,7 +715,6 @@ function display_repository($searchkey){
 					$item[]=$field;
 				}
 			
-			
 			$colwidth[1] = "10px";
 			$colwidth[2] = "45px";
 			$colwidth[3] = "150px";
@@ -724,10 +723,9 @@ function display_repository($searchkey){
 			$colwidth[6] = "75px";
 			$colwidth[7] = "75px";
 			
-					
-			$grid->header=$header;
-			$grid->item=$item;
-			$grid->colwidth=$colwidth;
+			$grid->header = $header;
+			$grid->item = $item;
+			$grid->colwidth = $colwidth;
 			
 			if ($page==1){
 			$pref_nav = "<a href=\"$url"."page=1\">&laquo; Prev</a>";
@@ -754,6 +752,7 @@ function display_repository($searchkey){
 			$form.= "[<a href='index.php?mod=synchronization&amp;op=option&amp;action=show#editRepository'>"._CURRENTREPOSITORYCONNECTION."</a>]";
 			$form.= $grid->generate();
 			
+			$page_nav = '';
 			if($pages<>""){
 				$page_nav = _PAGE." : ";
 				$i = 1;
@@ -775,12 +774,10 @@ function display_repository($searchkey){
 
 function box_queue(){
 	global $gdl_content,$gdl_synchronization,$gdl_sys,$gdl_form;
-
 	
 	require_once("./class/repeater.php");
 	
-	$page=$_GET['page'];
-	$page = $_GET['page'];
+	$page = isset($_GET['page']) ? $_GET['page'] : null;
 	if (!isset($page)){
 	 	$page = 0 ;
 	}else{
@@ -790,91 +787,91 @@ function box_queue(){
 	$limit	= $gdl_sys['perpage_publisher'];
 	$start 	= $page * $limit;
 	$total	= $gdl_synchronization->get_total_queue();
-	$queuedata	=	$gdl_synchronization->get_list_queue($folder,$start,$limit);
+	$queuedata	=	$gdl_synchronization->get_list_queue(isset($folder) ? $folder : null, $start, $limit);
 	$count	= count($queuedata);
 
-			$grid=new repeater();
+	$grid=new repeater();
+	
+	$header[1]=_QUEUENUMBER;
+	$header[2]=_QUEUEPATH;
+	$header[3]=_QUEUESTATUS;
+	$header[4]=_QUEUEACTION;
+	
+	$page = $page + 1;
+	$pages = ceil($total/$gdl_sys['perpage_publisher']);
+	$start = 1 + (($page-1) * $gdl_sys['perpage_publisher']);
+	$url = "./gdl.php?mod=synchronization&op=posting&sub=1&amp;";
+	$j=$start;
+	
+	$item = array();
+	if(is_array($queuedata))
+		foreach ($queuedata as $key => $val) {
+			$delete		= "<a href='$url"."page=$page&amp;action=delete&amp;record=$val[NO]'>Delete</a>";
+			$field[1]= $j;
+			$field[2]= $val['PATH'];
+			$field[3]= $val['STATUS'];
+			$field[4]= "[$delete]";
+			$j++;
+			$item[]=$field;
+		}
+	
+	$colwidth[1] = "10px";
+	$colwidth[2] = "300px";
+	$colwidth[3] = "50px";
+	$colwidth[4] = "150px";
 			
-			$header[1]=_QUEUENUMBER;
-			$header[2]=_QUEUEPATH;
-			$header[3]=_QUEUESTATUS;
-			$header[4]=_QUEUEACTION;
-			
-			$page = $page + 1;
-			$pages = ceil($total/$gdl_sys['perpage_publisher']);
-			$start = 1 + (($page-1) * $gdl_sys['perpage_publisher']);
-			$url = "./gdl.php?mod=synchronization&op=posting&sub=1&amp;";
-			$j=$start;
-			
-			if(is_array($queuedata))
-				foreach ($queuedata as $key => $val) {
-					$delete		= "<a href='$url"."page=$page&amp;action=delete&amp;record=$val[NO]'>Delete</a>";
-					$field[1]= $j;
-					$field[2]= $val['PATH'];
-					$field[3]= $val['STATUS'];
-					$field[4]= "[$delete]";
-					$j++;
-					$item[]=$field;
-				}
-			
-			
-			$colwidth[1] = "10px";
-			$colwidth[2] = "300px";
-			$colwidth[3] = "50px";
-			$colwidth[4] = "150px";
-			
-					
-			$grid->header=$header;
-			$grid->item=$item;
-			$grid->colwidth=$colwidth;
-			
-			if ($page==1){
-			$pref_nav = "<a href=\"$url"."page=1\">&laquo; Prev</a>";
-			} else{
-				$prev_page = $page-1;
-				$pref_nav = "<a href=\"$url"."page=$prev_page\">&laquo; Prev</a>";
-			}
+	$grid->header=$header;
+	$grid->item=$item;
+	$grid->colwidth=$colwidth;
+	
+	if ($page==1){
+		$pref_nav = "<a href=\"$url"."page=1\">&laquo; Prev</a>";
+	} else {
+		$prev_page = $page-1;
+		$pref_nav = "<a href=\"$url"."page=$prev_page\">&laquo; Prev</a>";
+	}
 
-			// next navigator
-			if ($page==$pages){
-				$next_nav = "<a href=\"$url"."page=$page\">Next &raquo;</a>";
+	// next navigator
+	if ($page==$pages){
+		$next_nav = "<a href=\"$url"."page=$page\">Next &raquo;</a>";
+	}else{
+		$next_page = $page+1;
+		$next_nav = "<a href=\"$url"."page=$next_page\">Next &raquo;</a>";
+	}
+	
+	$end = $start + $count - 1;
+	$form = "<p class=\"contentlisttop\">"._POSTINGDISPLAYING." $start - $end "._OF." total $total posting file<br/>";
+	if (empty ($searchkey))
+		$form .= "<span><strong>$pref_nav</strong> | <strong>$next_nav</strong></span></p>";
+	
+	$form.= $grid->generate();
+	
+	$page_nav = '';
+	if($pages<>""){
+		$page_nav = _PAGE." : ";
+		$i = 1;
+		while ($i <= $pages) {
+			if ($i==$page){
+				$page_nav .= "<b>[$i]</b> ";
 			}else{
-				$next_page = $page+1;
-				$next_nav = "<a href=\"$url"."page=$next_page\">Next &raquo;</a>";
+				$page_nav .= "<a href=\"$url"."page=$i\">$i</a> ";
 			}
-			
-			$end = $start + $count - 1;
-			$form = "<p class=\"contentlisttop\">"._POSTINGDISPLAYING." $start - $end "._OF." total $total posting file<br/>";
-			if (empty ($searchkey))
-				$form .= "<span><strong>$pref_nav</strong> | <strong>$next_nav</strong></span></p>";
-			
-			$form.= $grid->generate();
-			
-			if($pages<>""){
-				$page_nav = _PAGE." : ";
-				$i = 1;
-				while ($i <= $pages) {
-					if ($i==$page){
-						$page_nav .= "<b>[$i]</b> ";
-					}else{
-						$page_nav .= "<a href=\"$url"."page=$i\">$i</a> ";
-					}
-					$i++; 
-				}
-			}
-			if (empty ($searchkey))
-				$form .= "<p class=\"contentlistbottom\">$page_nav</p>\n";
-				
-		$gdl_form->set_name("posting_file");
-		$gdl_form->action="./gdl.php?mod=synchronization&op=posting&sub=1";
-		$gdl_form->add_field(array(
-			"type"=>"title",
-			"text"=>_STARTPOSTING));
-		$gdl_form->add_button(array(
-			"type"=>"submit",
-			"name"=>"frm[posting]",
-			"value"=>_POSTINGFILES)); 
-		$content .= $gdl_form->generate();
+			$i++; 
+		}
+	}
+	if (empty ($searchkey))
+		$form .= "<p class=\"contentlistbottom\">$page_nav</p>\n";
+		
+	$gdl_form->set_name("posting_file");
+	$gdl_form->action="./gdl.php?mod=synchronization&op=posting&sub=1";
+	$gdl_form->add_field(array(
+		"type"=>"title",
+		"text"=>_STARTPOSTING));
+	$gdl_form->add_button(array(
+		"type"=>"submit",
+		"name"=>"frm[posting]",
+		"value"=>_POSTINGFILES)); 
+	$content = $gdl_form->generate();
 	
 	return $form.$content;
 }
@@ -890,8 +887,10 @@ function box_status_outbox($url){
 	$header[3]=_OUTBOX_SUM;
 	$header[4]=_OUTBOX_ACTION;
 	
+	$item = array();
 	$statusdata = $gdl_synchronization->get_list_status_outbox();
-	if(is_array($statusdata))
+	if(is_array($statusdata)){
+		$j = 0;
 		foreach ($statusdata as $key => $val) {
 			$delete		= "<a href='$url". "&amp;action=delete&amp;status=$val[STATUS]'>Delete</a>";
 			$field[1]= ++$j;
@@ -900,20 +899,20 @@ function box_status_outbox($url){
 			$field[4]= "[$delete]";
 			$item[]=$field;
 		}
-				
+	}
+	
 	$colwidth[1] = "10px";
 	$colwidth[2] = "100px";
 	$colwidth[3] = "50px";
 	$colwidth[4] = "150px";
-	
 			
 	$grid->header=$header;
 	$grid->item=$item;
 	$grid->colwidth=$colwidth;
 	
-	$extract		= "[<a href='$url". "&amp;action=extract>Extract Identifier</a>]";
+	$extract = "[<a href='$url". "&amp;action=extract>Extract Identifier</a>]";
 	
-	$form.= $grid->generate("195");
+	$form = $grid->generate("195");
 	
 	return $form.$extract;
 }
@@ -933,7 +932,6 @@ function box_status_posting($url,$sub){
 	$header[3]=_BOX_STATUS;
 	$header[4]=_BOX_ACTION;
 	
-
 	$statusdata = $gdl_synchronization->get_list_queue_finish_job();
 	if(is_array($statusdata))
 		foreach ($statusdata as $key => $val) {
@@ -947,14 +945,12 @@ function box_status_posting($url,$sub){
 			$field[3]= $val['STATUS'];
 			$field[4]= $action;
 			$item[]=$field;
-
 		}
 				
 	$colwidth[1] = "10px";
 	$colwidth[2] = "100px";
 	$colwidth[3] = "50px";
 	$colwidth[4] = "150px";
-	
 			
 	$grid->header=$header;
 	$grid->item=$item;
@@ -963,6 +959,5 @@ function box_status_posting($url,$sub){
 	$form.= "<br/><br/>"._BOX_STATUS_POSTING." ($curr_publisher)<br/>".$grid->generate("195");
 	
 	return $form;
-
 }
 ?>

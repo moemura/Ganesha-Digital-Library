@@ -1,10 +1,11 @@
 <?php
 global $gdl_synchronization,$gdl_stdout,$gdl_sync, $l,$HTTP_SESSION_VARS,$gdl_harvest;
-$sub_operation = $_GET['sub'];
+$sub_operation = isset($_GET['sub']) ? $_GET['sub'] : null;
 
 $title = "Connecting to Target Server: <b>$gdl_sync[sync_hub_server_name]</b>";
 if(strcasecmp($sub_operation,"connecting") == 0){
 
+	$msg = '';
 	$ret_val = $gdl_synchronization->sync_connection($sub_operation);
 	switch($ret_val){
 		case -1 :// timeout
@@ -51,7 +52,7 @@ if(strcasecmp($sub_operation,"connecting") == 0){
 				$html .= "<h3>$title</h3>";
 				$msg = "Trying connection to <b>Target Server ($gdl_sync[sync_hub_server_name])</b>.";
 				
-				if ($gdl_sync[sync_use_proxy]) 
+				if ($gdl_sync['sync_use_proxy']) 
 					$msg .= "<br>Using proxy: <b>$gdl_sync[sync_proxy_server_address]:$gdl_sync[sync_proxy_server_port]</b>.";
 				$msg .= "<br>Please wait... ";
 				
