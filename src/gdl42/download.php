@@ -1,5 +1,4 @@
 <?php
-
 include_once ("./class/content.php");
 include ("./config/system.php");
 include ("./config/publisher.php");
@@ -8,7 +7,6 @@ include ("./class/auth.php");
 include ("./class/session.php");
 include("./class/metadata.php");
 include("./class/publisher.php");
-
 
 $gdl_content = new content();
 $gdl_db = new database();
@@ -24,8 +22,8 @@ function download_redirect(){
 	
 	$dbres = $gdl_db->select("relation","part,path,identifier,uri","relation_id=$file_id");
 	$row = @mysqli_fetch_assoc($dbres);
-	$file_target= $row["path"];
-	$file_part= $row["part"];
+	$file_target = $row["path"];
+	$file_part = $row["part"];
 	$publisher = $gdl_metadata->get_publisher($row["identifier"]);
 	
    if ($gdl_publisher['id']==$publisher){
@@ -108,8 +106,8 @@ function access_denied(){
 	
 	$dbres = $gdl_db->select("relation","name,note","relation_id=$file_id");
 	$row = @mysqli_fetch_assoc($dbres);
-	$file_name= $row["name"];
-	$file_note= $row["note"];
+	$file_name = $row["name"];
+	$file_note = $row["note"];
 	
 	echo  "<html>\n"
 		."<head>\n"
@@ -132,8 +130,8 @@ function access_denied(){
 if ($gdl_sys['public_download']){
 		download_redirect();
 }else{
-	if ($gdl_session->user_id=="public"){
-		$redirfrom=$_GET["redirfrom"];
+	if ($gdl_session->user_id == "public"){
+		$redirfrom = isset($_GET["redirfrom"]) ? $_GET["redirfrom"] : null;
 		if (empty($redirfrom))
 			access_denied();
 		else
@@ -142,5 +140,4 @@ if ($gdl_sys['public_download']){
 		download_redirect();
 	}
 }
-
 ?>

@@ -65,7 +65,7 @@ $gdl_session->setup_indexing_option();
 
 // set general language
 if (file_exists("./lang/".$gdl_content->language.".php")) {
-	include("./lang/".$gdl_content->language.".php");
+	include_once("./lang/".$gdl_content->language.".php");
 }
 
 // set general function
@@ -84,7 +84,7 @@ if (preg_match("/\.\./",$gdl_mod)|| preg_match("/\.\./",$gdl_op)) {
 					if ($gdl_auth->module() || (preg_match("/install/",$gdl_mod) && !file_exists("./files/misc/install.lck"))){
 						// define language per modul
 						if (file_exists("./module/$gdl_mod/lang/".$gdl_content->language.".php")) {
-							include("./module/$gdl_mod/lang/".$gdl_content->language.".php");
+							include_once("./module/$gdl_mod/lang/".$gdl_content->language.".php");
 						}
 						
 						if ($gdl_auth->operation() || (preg_match("/install/",$gdl_mod) && !file_exists("./files/misc/install.lck"))){
@@ -102,7 +102,7 @@ if (preg_match("/\.\./",$gdl_mod)|| preg_match("/\.\./",$gdl_op)) {
 				}
 		}
 $request_uri = $_SERVER["REQUEST_URI"];
-$dinamic_title = $_SESSION['DINAMIC_TITLE'];
+$dinamic_title = isset($_SESSION['DINAMIC_TITLE']) ? $_SESSION['DINAMIC_TITLE'] : null;
 if(empty($dinamic_title) || ($request_uri == "/index.php")){ $dinamic_title = "WELCOME";}
 
 // display error, replace all content
@@ -116,10 +116,10 @@ echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR
 	."<link rel=\"shortcut icon\" href=\"./favicon.ico\" />\n";
 if ($gdl_content->meta<>"") echo $gdl_content->meta;
 echo "<link rel=\"stylesheet\" href=\"./theme/".$gdl_content->theme."/".$gdl_content->theme.".css\" type=\"text/css\" media=\"screen\"/>\n";
-if ((file_exists("./theme/".$gdl_content->theme."/".$gdl_content->theme."_print.css"))&& ($_GET['mod']== "browse") && ($_GET['op']=="read") && (! empty ($_GET['id'])))
+if ((file_exists("./theme/".$gdl_content->theme."/".$gdl_content->theme."_print.css"))&& (isset($_GET['mod']) && $_GET['mod']== "browse") && (isset($_GET['op']) && $_GET['op']=="read") && (! empty ($_GET['id'])))
 	echo "<link rel=\"stylesheet\" href=\"./theme/".$gdl_content->theme."/".$gdl_content->theme."_print.css\" type=\"text/css\" media=\"print\"/>\n";
 
-$is_state_offline = $_GET['state'];
+$is_state_offline = isset($_GET['state']) ? $_GET['state'] : null;
 
 if($is_state_offline != "offline"){
 	if (file_exists("gdl.xml"))	
@@ -152,5 +152,4 @@ echo "<body>\n\n";
 include("./theme/".$gdl_content->theme."/theme.php");
 echo "</body>\n"
 	."</html>";
-
 ?>
