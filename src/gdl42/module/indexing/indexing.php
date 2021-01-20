@@ -5,8 +5,8 @@ if (preg_match("/indexing.php/i",$_SERVER['PHP_SELF'])) {
 
 include("./class/indexing.php");
 $indexing = new indexing();
-$main = date("Y-m-d H:i:s")."<br/><br/>$main";
-$index_by_database = $_SESSION['index_by_database'];
+$main = date("Y-m-d H:i:s")."<br/><br/>";
+$index_by_database = isset($_SESSION['index_by_database']) ? $_SESSION['index_by_database'] : null;
 
 if (empty($index_by_database)) {
 	// Indexing using System (swish-e).
