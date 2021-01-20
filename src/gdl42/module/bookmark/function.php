@@ -1,5 +1,4 @@
 <?php 
-
 /***************************************************************************
                          /module/bookmark/function.php
                              -------------------
@@ -21,7 +20,7 @@ $user=$gdl_session->user_id;
 $dbres = $gdl_db->select("bookmark","bookmark_id,identifier","user_id='$user' and (request is null or request = 0)","bookmark_id","desc");
 
 // jika tidak ada bookmark
-$main .= "<p class=box>"._MYBOOKMARK."</p>";
+$main = "<p class=box>"._MYBOOKMARK."</p>";
 if (mysqli_num_rows($dbres)==0) {
 	$main .= "<p>"._BOOKMARKISEMPTY."</p>\n";
 }else{
@@ -31,14 +30,11 @@ if (mysqli_num_rows($dbres)==0) {
 		$frm[$rows[0]] = $gdl_metadata->read($rows[1]);
 	}
 	
-	
 	$grid = new repeater();
 	
 	// table header
 	$header[1] = "&nbsp;";
 	$header[2] = _TITLE;
-
-	
 
 	// generate item
 	foreach ($frm as $key => $val) {
@@ -72,7 +68,7 @@ $dbres = $gdl_db->select("bookmark","bookmark_id,identifier,time_stamp,response"
 $main .= "<p class=box>"._USERREQUEST."</p>";
 if (mysqli_num_rows($dbres)==0) {
 	$main .= "<p>"._USERREQUESTISEMPTY."</p>\n";
-}else{
+} else {
 	
 	$main .= "<form method=\"post\" action=\"./gdl.php?mod=bookmark\">\n";
 	$main .= "<p><input name=\"act\" type=\"hidden\" value=\"mark\"/></p>\n";
@@ -91,7 +87,6 @@ if (mysqli_num_rows($dbres)==0) {
 	$header[3] = _SENT;
 	$header[4] = _RESPONSE;
 	
-
 	require_once("./config/type.php");
 
 	// generate item
@@ -177,3 +172,4 @@ function insert_comment($bookmark_id) {
 		
 	return $content;
 }
+?>

@@ -13,16 +13,15 @@ if (preg_match("/index.php/i",$_SERVER['PHP_SELF'])) {
 }
 
 $_SESSION['DINAMIC_TITLE'] = _MYBOOKMARK;
-$id = $_GET["id"];
+$id = isset($_GET["id"]) ? $_GET["id"] : null;
 $date = date("Y-m-d H:i:s");
 $user = $gdl_session->user_id;
-$act = $_POST["act"];
-$arr_id = $_POST['id'];
-
+$act = isset($_POST["act"]) ? $_POST["act"] : null;
+$arr_id = isset($_POST['id']) ? $_POST['id'] : null;
 
 // delete bookmark
 if ((!empty($act)) and (!empty($arr_id))) {
-	$submit=$_POST["submit"];
+	$submit=isset($_POST["submit"]) ? $_POST["submit"] : null;
 	if (preg_match('/'._DELETEBOOKMARK.'/i',$submit) || preg_match('/'._DELETEREQUEST.'/i',$submit))
 	{	
 		foreach ($arr_id as $key => $val) {
@@ -38,7 +37,7 @@ if ((!empty($act)) and (!empty($arr_id))) {
 		}		
 	}
 }
-
+var_dump($gdl_session->refresh);
 if ($user=="public") $user = "public";
 if ($gdl_session->refresh==false){
 	// insert $id into bookmark
@@ -48,7 +47,7 @@ if ($gdl_session->refresh==false){
 }
 include "./module/bookmark/function.php";
 
-$main.=display_bookmark();
+$main=display_bookmark();
 $gdl_content->main = gdl_content_box($main,_MYBOOKMARK);
 $gdl_content->path="<a href=\"./index.php\">Home</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=bookmark\">"._MYBOOKMARK."</a>";
 ?>

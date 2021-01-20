@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************************
                          /module/bookmark/delete.php
                              -------------------
@@ -9,20 +8,17 @@
 	
  ***************************************************************************/
 
-
 if (preg_match("/delete.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 
-$act = $_POST["act"];
-$arr_id = $_POST['id'];
+$act = isset($_POST["act"]) ? $_POST["act"] : null;
+$arr_id = isset($_POST['id']) ? $_POST['id'] : null;
 
 // delete bookmark
 if ((!empty($act)) and (!empty($arr_id))) {
 	foreach ($arr_id as $key => $val) {
 		$gdl_db->delete("bookmark","bookmark_id=$key");
 	}
-
 }
-
 ?>
