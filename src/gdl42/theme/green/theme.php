@@ -156,10 +156,12 @@ if ($gdl_session->user_id=="public") {
     echo "<div class=\"splash\"></div>\n";
 }
 
+$path_show = "";
+
 if ($gdl_content->path <> "") $path_show = "<p class=\"dirpath\"><strong>Path</strong>: ".$gdl_content->path."</p>\n";
 
-$state	= $_GET['state'];
-$q		= $_GET['q'];
+$state	= isset($_GET['state']) ? $_GET['state'] : null;
+$q		= isset($_GET['q']) ? $_GET['q'] : null;
 
 if(($state == "offline") && !empty($q))
 	$path_show = "<div class=\"state_offline_close\">$path_show</div>";
@@ -167,7 +169,7 @@ if(($state == "offline") && !empty($q))
 echo $path_show;
 echo $gdl_content->main."\n";
 
-if (($_GET['mod']== "browse") && ($_GET['op']=="read") && (! empty ($_GET['id']))) {
+if ((isset($_GET['mod']) && $_GET['mod']== "browse") && (isset($_GET['op']) && $_GET['op']=="read") && (!empty($_GET['id']))) {
 	echo "<div id=\"rel\" class=\"hideprint\">\n";
 	$relation = "<p class=\"print\"><span style=\"cursor: pointer;\" onclick=\"window.print()\">"._PRINTTHISPAGE."</span></p>\n";
 	echo $relation.$gdl_content->relation."\n";
