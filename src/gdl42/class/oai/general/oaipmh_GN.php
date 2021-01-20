@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************************
     last modified		: Jan 15, 2007
     copyleft          		: (L) 2006 KMRG ITB
@@ -107,7 +106,7 @@ class oaipmh_GN extends oai {
 			}
 			
 			$hub_server = $this->oai_sync['sync_hub_server_name'];
-			$err_cek	= $this->gn_validationGN->cek_error_result($hub_server,$rs_verb['error'],$verb,$_SESSION['LastToken'],$this->action);
+			$err_cek	= $this->gn_validationGN->cek_error_result($hub_server, $rs_verb['error'], $verb, isset($_SESSION['LastToken']) ? $_SESSION['LastToken'] : null, $this->action);
 			
 			if(!empty($err_cek) && ($this->verb == "Connect"))
 				$err_cek	= "";

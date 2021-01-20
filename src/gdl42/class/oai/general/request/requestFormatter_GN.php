@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************************
     last modified		: Jan 15, 2007
     copyleft          		: (L) 2006 KMRG ITB
@@ -30,7 +29,7 @@ class requestFormatter_GN extends requestFormatter {
 	function request_to_hub($verb,$id_repository=""){
 		global $HTTP_SESSION_VARS,$gdl_sync;
 
-		$lastToken		= (int)$_SESSION['LastToken'];
+		$lastToken		= isset($_SESSION['LastToken']) ? (int)$_SESSION['LastToken'] : null;
 		
 		if($gdl_sync['sync_hub_server_name'] == $this->rf_sync['sync_hub_server_name']){
 			$hub_server		= $this->rf_sync['sync_hub_server_name'];
@@ -90,7 +89,7 @@ class requestFormatter_GN extends requestFormatter {
 											break;
 		}
 
-		$HTTP_SESSION_VARS[sess_val_request_xml]	= $REQUEST;
+		$HTTP_SESSION_VARS['sess_val_request_xml']	= isset($REQUEST) ? $REQUEST : null;
 		//echo "Header_GN : [$HEADER]";
 		return $HEADER;
 	}

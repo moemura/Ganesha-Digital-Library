@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************************
     last modified		: Jan 15, 2007
     copyleft          		: (L) 2006 KMRG ITB
@@ -144,6 +143,7 @@ class harvest{
 	
 	function harvest_general($verb){ //echo "V[$verb][".$this->harvest_synchronization->is_connected()."]";
 		
+		$state = '';
 		//echo "general";
 		if($verb == "RemoteLogin")$state = "remote";
 		

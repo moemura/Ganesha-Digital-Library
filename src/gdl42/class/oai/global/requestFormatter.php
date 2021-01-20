@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************************
     last modified		: Jan 15, 2007
     copyleft          		: (L) 2006 KMRG ITB
@@ -136,7 +135,7 @@ class requestFormatter{
 												break;
 
 				case "providerSerialNumber" :	if(empty($this->epochTime))$this->epochTime = date("U");
-												$this->providerSerialNumber = md5($this->rf_publisher[serialno]."-".$this->epochTime);
+												$this->providerSerialNumber = md5($this->rf_publisher['serialno']."-".$this->epochTime);
 												$this->providerSerialNumber = urlencode($this->providerSerialNumber);
 												break;
 
