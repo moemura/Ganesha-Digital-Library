@@ -3,7 +3,7 @@ if (preg_match("/index.php/i",$_SERVER['PHP_SELF'])) die();
 
 $_SESSION['DINAMIC_TITLE'] = _REGISTRATION;
 require_once "./module/register/function.php";
-$page = $_GET['page'];
+$page = isset($_GET['page']) ? $_GET['page'] : null;
 $action = "./gdl.php?mod=register&amp;page=reg";
 if (!isset($page) || empty ($page) || ($page!== "reg")){
 
@@ -13,7 +13,7 @@ if (!isset($page) || empty ($page) || ($page!== "reg")){
 	$gdl_content->set_main($main); 
 	$gdl_content->path="<a href=\"index.php\">Home</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=register\">"._REGISTRATION."</a>";
 } else {	
-	$frm = $_POST['frm'];
+	$frm = isset($_POST['frm']) ? $_POST['frm'] : null;
 	
 	if ($gdl_form->verification($frm)) {
 		if (! ($gdl_account->cek_mail($frm['EMAIL'])) || ! ($gdl_account->cek_password ($frm['PASSWORD'], $frm['PASSWORDCONFIRM'])) || ! ($gdl_account->cek_existing_mail($frm['EMAIL'])) || !($gdl_captcha->check_captcha($frm["CAPTCHA_PKEY"],$frm["CAPTCHA_TEXT"]))) {

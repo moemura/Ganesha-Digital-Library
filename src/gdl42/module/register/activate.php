@@ -15,14 +15,14 @@ $gdl_form->add_field(array(
 			"type"=>"text",
 			"name"=>"account",
 			"text"=>_USER_ACCOUNT,
-			"value"=>$_GET['account'],
+			"value"=>isset($_GET['account']) ? $_GET['account'] : null,
 			"required"=>true,
 			"size"=>45));
 $gdl_form->add_field(array(
 			"type"=>"text",
 			"name"=>"vn",
 			"text"=>_USER_CODE,
-			"value"=>$_GET['vn'],
+			"value"=>isset($_GET['vn']) ? $_GET['vn'] : null,
 			"required"=>true,
 			"size"=>45));
 $gdl_form->add_button(array(
@@ -39,7 +39,7 @@ $content = $gdl_form->generate("30%");
 return $content; 
 }
 
-$page = $_GET['page'];
+$page = isset($_GET['page']) ? $_GET['page'] : null;
 if (!isset($page)) {
 	$main = "<p>"._ACTIVATENOTE."</p>\n";
 	$main .= form_activate();

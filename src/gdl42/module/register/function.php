@@ -39,7 +39,7 @@ $gdl_form->add_field(array(
 			"required"=>$required,
 			"size"=>45));
 			
-			if ($_GET['a']) {
+			if (isset($_GET['a']) && $_GET['a']) {
 				global $grouplevel, $userstatus;
 				$gdl_form->add_field(array(
 							"type"=>"text",
@@ -136,7 +136,7 @@ $gdl_form->add_button(array(
 			"column"=>false,
 			"value"=>_SUBMIT));
 
-	if ($_GET['a']) {
+	if (isset($_GET['a']) && $_GET['a']) {
 		$gdl_form->add_button(array(
 				"type"=>"button",
 				"name"=>"button",
