@@ -14,7 +14,8 @@ if (preg_match("/server.php/i",$_SERVER['PHP_SELF'])) {
 }
 
 require_once("./module/configuration/function.php");
-$frm=$_POST["frm"];
+$frm=isset($_POST["frm"]) ? $_POST["frm"] : null;
+$main ='';
 if ($gdl_form->verification($frm) && $frm) {
 	$main .= write_file_publisher();
 }

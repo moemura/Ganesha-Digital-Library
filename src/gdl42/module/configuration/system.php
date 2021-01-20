@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************************
                          /module/configuration/system.php
                              -------------------
@@ -14,7 +13,8 @@ if (preg_match("/system.php/i",$_SERVER['PHP_SELF'])) {
 }
 
 require_once("./module/configuration/function.php");
-$frm=$_POST['frm'];
+$frm=isset($_POST['frm']) ? $_POST['frm'] : null;
+$main = '';
 if ($gdl_form->verification($frm) && $frm) {
 	$main.=write_file_system();
 }
@@ -23,5 +23,4 @@ $main .= "<p>".edit_system_form()."</p>";
 $main = gdl_content_box($main,_SYSTEMCONF);
 $gdl_content->set_main($main);
 $gdl_content->path="<a href=\"index.php\">Home</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=configuration\">"._CONFIGURATION."</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=configuration&amp;op=system\">"._SYSTEM."</a>";
-
 ?>
