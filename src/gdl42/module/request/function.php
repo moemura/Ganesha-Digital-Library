@@ -15,20 +15,19 @@ if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 function display_request($searchkey="") {
 	global $gdl_content,$gdl_sys,$gdl_db,$gdl_metadata;
 
-	
 	require_once("./class/repeater.php");
 	
-	$page=$_GET['page'];
-	$page = $_GET['page'];
+	$page = isset($_GET['page']) ? $_GET['page'] : null;
+	$page = isset($_GET['page']) ? $_GET['page'] : null;
 	if (!isset($page)){
 	 	$page = 0 ;
 	}else{
 		$page = $page-1;
 	}
 
+	$urlsearch = '';
 	if (!empty($searchkey))
 		$urlsearch="&amp;searchkey=$searchkey";
-
 	
 //	if (empty ($searchkey)) {
 		$limit = $page * $gdl_sys['perpage_request'];
@@ -58,6 +57,7 @@ function display_request($searchkey="") {
 			$url = "./gdl.php?mod=request&amp;";
 			$j=$limit+1;
 			
+			$item = array();
 			while ($row=mysqli_fetch_array($dbres)) {
 				$property=$gdl_metadata->get_property($row["identifier"]);
 				$field[1]=$j;
@@ -77,9 +77,9 @@ function display_request($searchkey="") {
 			$colwidth[5] = "75px";
 			$colwidth[6] = "75px";
 								
-			$grid->header=$header;
-			$grid->item=$item;
-			$grid->colwidth=$colwidth;
+			$grid->header = $header;
+			$grid->item = $item;
+			$grid->colwidth = $colwidth;
 			
 			if ($page==1){
 			$pref_nav = "<a href=\"./gdl.php?mod=request&amp;page=1$urlsearch\">&laquo; Prev</a>";
@@ -103,6 +103,7 @@ function display_request($searchkey="") {
 			
 			$form.= $grid->generate();
 			
+			$page_nav = '';
 			if($pages<>""){
 				$page_nav = _PAGE." : ";
 				$i = 1;
@@ -124,6 +125,7 @@ function display_request($searchkey="") {
 function delete_request($bookmark_id) {
 	global $gdl_db;
 	$dbres=$gdl_db->delete("bookmark","bookmark_id=".$bookmark_id);
+	$content = '';
 	if ($dbres)
 		$content.="<b>"._REQUESTDELETESUCCESS."</b>";
 	else
@@ -146,7 +148,7 @@ function search_request_form ($action="")
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"searchkey",			
-				"value"=>"$_POST[searchkey]",
+				"value"=>isset($_POST['searchkey']) ? "$_POST[searchkey]" : '',
 				"text"=>_SEARCHREQUEST,
 				"size"=>30));
 	$gdl_form->add_button(array(
@@ -162,20 +164,20 @@ function search_request_form ($action="")
 function comment_form($bookmark_id) {
 	global $gdl_form,$gdl_db,$gdl_metadata,$gdl_session,$frm;
 	
-	$dbres=$gdl_db->select("bookmark","*","bookmark_id=".$bookmark_id);
+	$dbres = $gdl_db->select("bookmark","*","bookmark_id=".$bookmark_id);
 	if (!$dbres)
 	{
-		$content.="<p>"._CANNOTFOUNDREQUESTDATA."</p>";
+		$content .= "<p>"._CANNOTFOUNDREQUESTDATA."</p>";
 	} else {
-		$row=mysqli_fetch_array($dbres);
-		$property=$gdl_metadata->get_property($row["identifier"]);
-		$strcontent.=_FROM." : ".$row["user_id"]."<br>";
-		$strcontent.=_SENT." : ".$row["time_stamp"]."<br>";
-		$strcontent.=_TITLE." : <a href='./gdl.php?mod=browse&amp;op=read&amp;id=".$row["identifier"]."'>".$row["identifier"]." / ".$property["title"]."</a><br>";
-		$strcontent.=_AUTHOR." : ".$property["creator"]."<br>";
-		$strcontent.="Publisher : ".$property["publisher"]."<br>";
+		$row = mysqli_fetch_array($dbres);
+		$property = $gdl_metadata->get_property($row["identifier"]);
+		$strcontent = _FROM." : ".$row["user_id"]."<br>";
+		$strcontent .= _SENT." : ".$row["time_stamp"]."<br>";
+		$strcontent .= _TITLE." : <a href='./gdl.php?mod=browse&amp;op=read&amp;id=".$row["identifier"]."'>".$row["identifier"]." / ".$property["title"]."</a><br>";
+		$strcontent .= _AUTHOR." : ".$property["creator"]."<br>";
+		$strcontent .= "Publisher : ".$property["publisher"]."<br>";
 		
-		$message="[".date("Y-m-d H:i:s")." ".$gdl_session->user_id."]";
+		$message = "[".date("Y-m-d H:i:s")." ".$gdl_session->user_id."]";
 		$gdl_form->set_name("add_comment");
 		$gdl_form->action="./gdl.php?mod=request&amp;op=comment&amp;id=".$bookmark_id;		
 			
@@ -204,6 +206,7 @@ function comment_form($bookmark_id) {
 function insert_comment($bookmark_id) {
 	global $frm, $gdl_db;
 	$dbres=$gdl_db->update("bookmark","response='".$frm["comment"]."'","bookmark_id=".$bookmark_id);
+	$content= '';
 	if ($dbres)
 		$content.="<b>"._INSERTCOMMENTSUCCESS."</b>";
 	else
@@ -211,5 +214,4 @@ function insert_comment($bookmark_id) {
 		
 	return $content;
 }
-
-
+?>
