@@ -3,6 +3,7 @@
 if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 
 function gdl_content_box($content,$title=""){
+	$form = '';
 	if ($title<>"") $form .= "<h3>$title</h3>\n\n";
 	$form .= "<div class=\"contentbox\">\n";
 	$form .= "$content\n"

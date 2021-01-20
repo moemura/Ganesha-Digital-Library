@@ -79,7 +79,7 @@ echo "<p class=\"title\">Theme</p>\n"
 echo "</div>\n\n";
 
 echo "<div id=\"rbox\" class=\"hideprint\">\n";
-if (($_GET['mod']== "browse") && ($_GET['op']=="read") && (! empty ($_GET['id']))) {
+if ((isset($_GET['mod']) && $_GET['mod']== "browse") && (isset($_GET['op']) && $_GET['op']=="read") && (!empty($_GET['id']))) {
 		$relation = "<p class=\"print\"><span style=\"cursor: pointer;\" onclick=\"window.print()\">"._PRINTTHISPAGE."					</span></p>\n";
 
 echo $relation.$gdl_content->relation."\n";
