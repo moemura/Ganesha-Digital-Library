@@ -6,12 +6,11 @@ include("./module/migration/conf.php");
 
 $title = _MIGRATION." "._FILE;
 
+$main = '';
 if (file_exists("./files/misc/user.lck")){
 	$main = "<p>"._LOCK." <b>./files/misc/user.lck</b></p>";
-}else{
-
+} else {
 	if (!isset($_GET['page'])){
-		
 		$url = "./gdl.php?mod=migration&amp;op=user&amp;page=go";
 		$gdl_content->set_meta("<META HTTP-EQUIV=Refresh CONTENT=\"2; URL=$url\">");
 		$main = "<p>"._TRYCONNECT;
@@ -24,15 +23,12 @@ if (file_exists("./files/misc/user.lck")){
 		$main .= "<p>Total : ".$row["total"]." "._FILE."</p>\n ";
 		$main .= "<p><b>"._PLEASEWAIT."</b></p>\n";
 	} else {
-		
-		@con = @mysqli_connect($db_source['host'], $db_source['uname'], $db_source['password'], $db_source['name']);
+		$con = @mysqli_connect($db_source['host'], $db_source['uname'], $db_source['password'], $db_source['name']);
 		//@mysqli_select_db($con, $db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
 		$str_sql = "select u.email,u.password,u.confirm,u.gid,u.full_name,u.datestamp,u.validation,u.address,u.city,u.country,u.institution,u.job from user u";
 		$dbsource = @mysqli_query($con, $str_sql);
-
-		
+	
 		if ($dbsource) {
-		
 			require_once ("./class/db.php");
 			$db = new database();
 		
@@ -70,7 +66,6 @@ if (file_exists("./files/misc/user.lck")){
 				$main .= "Failed to create lock file: $lckfile.";
 			}
 		}
-	
 	}
 }
 

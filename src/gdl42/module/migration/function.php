@@ -6,16 +6,15 @@ function edit_system_form() {
 	include ("./module/migration/conf.php");
 	
 	if (!isset($frm)) {
-		foreach ($db_source as $IdxGdlSys => $ValGdlSys) 
-			{
-				if ($ValGdlSys===true)
-					$frm[$IdxGdlSys]="true";
-				elseif ($ValGdlSys===false)
-					$frm[$IdxGdlSys]="false";
-				else
-					$frm[$IdxGdlSys]=$ValGdlSys;
-				
-			}
+		foreach ($db_source as $IdxGdlSys => $ValGdlSys){
+			if ($ValGdlSys===true)
+				$frm[$IdxGdlSys]="true";
+			elseif ($ValGdlSys===false)
+				$frm[$IdxGdlSys]="false";
+			else
+				$frm[$IdxGdlSys]=$ValGdlSys;
+			
+		}
 	}
 
 	$gdl_form->set_name("edit_db_conn");
@@ -28,7 +27,7 @@ function edit_system_form() {
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"frm[host]",			
-				"value"=>$frm["host"],
+				"value"=>isset($frm["host"]) ? $frm["host"] : '',
 				"text"=>_HOST,
 				"required"=>true,
 				"size"=>20));						
@@ -37,7 +36,7 @@ function edit_system_form() {
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"frm[uname]",			
-				"value"=>$frm["uname"],
+				"value"=>isset($frm["uname"]) ? $frm["uname"] : '',
 				"text"=>_USERNAME,
 				"size"=>20,
 				"required"=>true));
@@ -45,7 +44,7 @@ function edit_system_form() {
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"frm[password]",			
-				"value"=>$frm["password"],
+				"value"=>isset($frm["password"]) ? $frm["password"] : '',
 				"text"=>_PASSWORD,
 				"size"=>20));
 
@@ -53,7 +52,7 @@ function edit_system_form() {
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"frm[name]",			
-				"value"=>$frm["name"],
+				"value"=>isset($frm["name"]) ? $frm["name"] : '',
 				"text"=>_DBNAME,
 				"size"=>20,
 				"required"=>true));
@@ -71,6 +70,7 @@ function write_file_system() {
 	global $frm;
 	$file="module/migration/conf.php";
 	$filehandle=fopen($file,"w");
+	$content = '';
 	if ($filehandle) {
 		$str_system="<?php
 ";
@@ -116,7 +116,7 @@ function get_folder($path,$window) {
 	else
 		$url="./gdl.php?mod=migration&amp;op=files&amp;folder2=";
 	
-	$form.="<p>Path : <br/><b>$path</b>";
+	$form = "<p>Path : <br/><b>$path</b>";
 	
 	$header[1] = "&nbsp;";
 	$header[2] = _FILESORFOLDER;
@@ -133,7 +133,6 @@ function get_folder($path,$window) {
 	$dirresult=explode("\n",$dirresult);
 	
 	if (is_array($dirresult)) {
-		
 		$field[1]="<img src=\"./theme/".$gdl_content->theme."/image/icon_dir_list.png\"/>";
 		$field[2]="<a href='".$url."..'>..</a>";
 		$field[3]="&nbsp;";
@@ -171,7 +170,6 @@ function get_folder($path,$window) {
 	$form .= "<input type=submit name=submit value='Copy'> <input type=submit name=submit value='Delete'></form>";
 	$form .= "</form>";
 	return $form;
-		
 }
 
 function get_bin() {
@@ -192,3 +190,4 @@ function get_bin() {
 	
 	return $bin;
 }
+?>

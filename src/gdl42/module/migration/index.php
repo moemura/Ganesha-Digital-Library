@@ -27,5 +27,4 @@ $main .= "<ul class=\"filelist\">\n"
 $main = gdl_content_box($main,_MIGRATION4042);
 $gdl_content->set_main($main);
 $gdl_content->path="<a href=\"index.php\">Home</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=migration\">"._MIGRATION."</a>";
-
 ?>

@@ -7,12 +7,11 @@ include("./module/migration/conf.php");
 
 $title = _MIGRATION." "._FILE;
 
+$main = '';
 if (file_exists("./files/misc/bookmark.lck")){
 	$main = "<p>"._LOCK." <b>./files/misc/bookmark.lck</b></p>";
-}else{
-
+} else {
 	if (!isset($_GET['page'])){
-		
 		$url = "./gdl.php?mod=migration&amp;op=bookmark&amp;page=go";
 		$gdl_content->set_meta("<META HTTP-EQUIV=Refresh CONTENT=\"2; URL=$url\">");
 		$main = "<p>"._TRYCONNECT;
@@ -25,39 +24,37 @@ if (file_exists("./files/misc/bookmark.lck")){
 		$main .= "<p>Total : ".$row["total"]." "._FILE."</p>\n ";
 		$main .= "<p><b>"._PLEASEWAIT."</b></p>\n";
 	} else {
-		
-		@con = @mysqli_connect($db_source['host'], $db_source['uname'], $db_source['password'], $db_source['name']);
+		$con = @mysqli_connect($db_source['host'], $db_source['uname'], $db_source['password'], $db_source['name']);
 		//@mysqli_select_db($con, $db_source['name']) or $gdl_content->set_error("Unable to select source database","Error Connection");
 		$str_sql = "select id,datestamp,user,identifier,request,response from bookmark";
 		$dbsource = @mysqli_query($con, $str_sql);
 		
 		if ($dbsource) {
-		require_once ("./class/db.php");
-		$db = new database();
-		
-		$num = 1;
-		while ($rows = mysqli_fetch_row($dbsource)){
-			$column="bookmark_id,time_stamp,user_id,identifier,request,response";
-			$str_sql = "'".$rows[0]."','".$rows[1]."','".$rows[2]."','".$rows[3]."','".$rows[4]."','".$rows[5]."'";
-			$db->insert("bookmark","$column","$str_sql");
-			$main .= "--> $num. $rows[0] : $rows[2]<br/>\n";
-			$num ++;
+			require_once ("./class/db.php");
+			$db = new database();
+			
+			$num = 1;
+			while ($rows = mysqli_fetch_row($dbsource)){
+				$column="bookmark_id,time_stamp,user_id,identifier,request,response";
+				$str_sql = "'".$rows[0]."','".$rows[1]."','".$rows[2]."','".$rows[3]."','".$rows[4]."','".$rows[5]."'";
+				$db->insert("bookmark","$column","$str_sql");
+				$main .= "--> $num. $rows[0] : $rows[2]<br/>\n";
+				$num ++;
+			}
+			$main .= "--> $num. EOF\n";
+			
+			// lock file
+			$lckfile = "./files/misc/bookmark.lck";
+			$fp = fopen($lckfile, 'w');
+			if ($fp){
+				$lckdate = date("Y-m-d h:i:s");
+				fputs($fp,$lckdate);
+				fclose($fp);
+				$main .= "<p>"._NOWLOCK." <b>./files/misc/bookmark.lck</b></p>";
+			} else {
+				$main .= "Failed to create lock file: $lckfile.";
+			}
 		}
-		$main .= "--> $num. EOF\n";
-		
-		// lock file
-		$lckfile = "./files/misc/bookmark.lck";
-		$fp = fopen($lckfile,w);
-		if ($fp){
-			$lckdate = date("Y-m-d h:i:s");
-			fputs($fp,$lckdate);
-			fclose($fp);
-			$main .= "<p>"._NOWLOCK." <b>./files/misc/bookmark.lck</b></p>";
-		} else {
-			$main .= "Failed to create lock file: $lckfile.";
-		}
-		}
-	
 	}
 }
 
