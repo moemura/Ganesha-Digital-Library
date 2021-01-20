@@ -18,7 +18,7 @@ $frm = $gdl_metadata->read($id,1);
 // display red for searching term
 require_once ("./class/search.php");
 $search = new search();
-$query = $_GET['q'];
+$query = isset($_GET['q']) ? $_GET['q'] : null;
 if(isset($query)) $query = explode("+",$query);
 if (is_array($query)){
 	foreach ($query as $qkey => $qval) {
@@ -47,5 +47,4 @@ $main = display_metadata($frm);
 $main .= display_contact($frm);
 $main = gdl_content_box($main,$title);
 $gdl_content->set_main($main);
-
 ?>

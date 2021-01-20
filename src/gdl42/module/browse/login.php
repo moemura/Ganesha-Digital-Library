@@ -42,7 +42,7 @@ function form_login(){
 	return $main;
 }
 
-$page = $_GET['page'];
+$page = isset($_GET['page']) ? $_GET['page'] : null;
 
 if (!isset($page)) {
 	$main = "<p>"._LOGINNOTE."</p>\n";

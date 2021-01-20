@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************************
                          /module/browse/index.php
                              -------------------
@@ -12,10 +11,11 @@
 if (preg_match("/index.php/i",$_SERVER['PHP_SELF'])) die();
 $_SESSION['DINAMIC_TITLE'] = _METADATAINFOLDER;
 
-$state		= $_GET['state'];
+$state		= isset($_GET['state']) ? $_GET['state'] : null;
 $is_offline = ($state == "offline")?true:false;
-$child		= $_GET['child'];
+$child		= isset($_GET['child']) ? $_GET['child'] : null;
 
+$under_node = array();
 if($is_offline){
 	$arr_child	= explode(",",$child);
 	$arr_child	= array_unique($arr_child);
@@ -30,9 +30,9 @@ if($is_offline){
 }
 
 // get node to display
-$node = $_GET['node'];
+$node = isset($_GET['node']) ? $_GET['node'] : null;
 if (!isset($node)){
-	$node = $_SESSION['gdl_node'];
+	$node = isset($_SESSION['gdl_node']) ? $_SESSION['gdl_node'] : null;
 	if (!isset($node)) $node=0;
 }
 
@@ -45,5 +45,4 @@ if ($metadata <> ""){
 	$metadata = gdl_content_box($metadata,_METADATAINFOLDER." $folder_name");
 	$gdl_content->set_main($metadata);
 }
-
 ?>

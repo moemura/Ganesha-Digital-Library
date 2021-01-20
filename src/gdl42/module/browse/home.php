@@ -1,5 +1,4 @@
 <?php
-
 /***************************************************************************
                          /module/browse/home.php
                              -------------------
@@ -22,14 +21,12 @@ if ($gdl_session->user_id=="public"){
 }
 $gdl_content->set_main($welcome);
 
-
-
 // new articles
-$state			= $_GET['state'];
-$node_offline	= $_GET['node'];
-$ext			= $_GET['ext'];
-$parent			= $_GET['parent'];
-$folks_offline	= $_GET['folks_offline'];
+$state			= isset($_GET['state']) ? $_GET['state'] : null;
+$node_offline	= isset($_GET['node']) ? $_GET['node'] : null;
+$ext			= isset($_GET['ext']) ? $_GET['ext'] : null;
+$parent			= isset($_GET['parent']) ? $_GET['parent'] : null;
+$folks_offline	= isset($_GET['folks_offline']) ? $_GET['folks_offline'] : null;
 
 if($state == "offline"){
 	$arr_node	= explode(",",$node_offline);
@@ -46,6 +43,7 @@ if($state == "offline"){
 	$node_offline = "";
 	
 $metadata = $gdl_metadata->get_list($node_offline,"","0,5",false);
+$main = "";
 if (is_array($metadata)){
 	$main .= "<ul class=\"filelist\">\n";
 	foreach ($metadata as $key => $val) {
@@ -61,12 +59,12 @@ if (is_array($metadata)){
 	$gdl_content->set_main($main);
 }
 
-
 // display sub folder
 
 $def_node = 0;
 
 $is_offline	= false;
+$under_node = 0;
 
 if(($state == "offline")){
 	$is_offline	= true;
@@ -85,7 +83,6 @@ if(($state == "offline")){
 		}else
 			$under_node = preg_match("/^[0-9]+$/",$parent)?$parent:0;
 	}
-	
 }
 	
 $_SESSION['gdl_node']=$def_node;
@@ -106,6 +103,8 @@ if ($gdl_folks["folks_active_option"]) {
 // get last news
 
 $metadata = $gdl_metadata->get_list($node_offline,"","5,7");
+$last_news = "";
+$news = array();
 if (is_array($metadata)){
 	foreach ($metadata as $key => $val) {
 		$news[]= "<a href=\"./gdl.php?mod=browse&amp;op=read&amp;id=$key\">$val[TITLE]</a>";

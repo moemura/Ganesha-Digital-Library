@@ -11,8 +11,8 @@ if (preg_match("/comment.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
 
-$id = $_GET['id'];
-$page = $_GET['page'];
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+$page = isset($_GET['page']) ? $_GET['page'] : null;
 $dbres = $gdl_db->select("comment","count(comment_id) as total","identifier='$id'");
 $row = @mysqli_fetch_assoc($dbres);
 $count = $row["total"];
@@ -31,27 +31,27 @@ function upload_form(){
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"frm[name]",
-				"value"=>"$frm[name]",
+				"value"=>isset($frm['name']) ? "$frm[name]" : '',
 				"required"=>true,
 				"text"=>_NAME,
 				"size"=>30));
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"frm[email]",
-				"value"=>"$frm[email]",
+				"value"=>isset($frm['email']) ? "$frm[email]" : '',
 				"text"=>_EMAIL,
 				"size"=>30));
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"frm[subject]",
-				"value"=>"$frm[subject]",
+				"value"=>isset($frm['subject']) ? "$frm[subject]" : '',
 				"text"=>_SUBJECT,
 				"required"=>true,
 				"size"=>60));
 	$gdl_form->add_field(array(
 				"type"=>"textarea",
 				"name"=>"frm[desc]",
-				"value"=>"$frm[desc]",
+				"value"=>isset($frm['desc']) ? "$frm[desc]" : '',
 				"required"=>true,
 				"text"=>_COMMENT,
 				"rows"=>10,
@@ -108,7 +108,6 @@ function read_comment(){
 		$item[] = $field;
 	}
 	
-	
 	$grid->header=$header;
 	$grid->item=$item;
 	$form = $grid->generate();
@@ -117,6 +116,7 @@ function read_comment(){
 	return $form;
 }
 
+$main = '';
 if (!isset($page)) {
 	
 	// generate form upload comment
@@ -152,5 +152,4 @@ if (!isset($page)) {
 $main = gdl_content_box($main,$title['TITLE']);
 $gdl_content->set_main($main);
 $gdl_content->path="<a href=\"index.php\">Home</a> $gdl_sys[folder_separator] <a href=\"./gdl.php?mod=browse&amp;op=comment\">"._COMMENT."</a>";
-
 ?>

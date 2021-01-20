@@ -14,7 +14,7 @@ function get_metadata($node){
 	global $gdl_content,$gdl_metadata,$gdl_sys,$gdl_folder,$gdl_db,$gdl_op;
 	
 	require_once("./config/type.php");
-	$page = $_GET['page'];
+	$page = isset($_GET['page']) ? $_GET['page'] : null;
 	if (!isset($page)){
 	 	$page = 0 ;
 	}else{
@@ -23,6 +23,7 @@ function get_metadata($node){
 
 	$limit = $page * $gdl_sys['perpage_browse'];
 	$metadata = $gdl_metadata->get_list($node,"","$limit,$gdl_sys[perpage_browse]",true);
+	$meta_arr = array();
 	if (is_array($metadata)){
 		foreach ($metadata as $key => $val) {
 			$type = $val['TYPE'];
@@ -48,6 +49,7 @@ function get_metadata($node){
 function gdl_metadata_list($data,$start,$count,$total,$page,$pages,$url=""){
 	global $gdl_op, $gdl_session, $gdl_theme;
 	
+	$form = '';
 	if (is_array($data)){
 		$node = $_SESSION['gdl_node'];
 		$end = $start + $count - 1;
@@ -79,6 +81,7 @@ function gdl_metadata_list($data,$start,$count,$total,$page,$pages,$url=""){
 		$form .= "</ul>\n";
 		
 		// generate page
+		$page_nav = '';
 		if($pages<>""){
 			$page_nav = _PAGE." : ";
 			$i = 1;
@@ -152,13 +155,13 @@ function display_metadata($frm){
 }
 
 function related_file(){
-	global $gdl_content;
+	global $gdl_content, $gdl_sys;
 	// related file
 	$arr_file =  $gdl_content->files;
 	if (!empty($arr_file)){
 		if ($gdl_sys['public_download']==false) $file = "<p>"._DOWNLOADNOTE."</p>";
 		
-		$state= $_GET['state'];
+		$state= isset($_GET['state']) ? $_GET['state'] : 0;
 		
 		$type_file	= "";
 		foreach ($arr_file as $key => $val) {
@@ -196,14 +199,14 @@ function related_file(){
 function display_contact_general($frm){
 	global $gdl_publisher2, $gdl_publisher;
 	
-	$pub	= $frm["PUBLISHER"];
+	$pub	= isset($frm["PUBLISHER"]) ? $frm["PUBLISHER"] : null;
 	if(is_array($pub)) $pub = $pub[0];
 	
 	if ($pub == "#PUBLISHER#")
 		$pub = $gdl_publisher['id'];
 		
-	$orgname = $frm["CREATOR_ORGNAME"];
-	if(empty($orgname)) $orgname = $frm["CREATOR.ORGNAME"][0];
+	$orgname = isset($frm["CREATOR_ORGNAME"]) ? $frm["CREATOR_ORGNAME"] : null;
+	if(empty($orgname)) $orgname = isset($frm["CREATOR.ORGNAME"][0]) ? $frm["CREATOR.ORGNAME"][0] : null;
 	
 	if (substr($orgname,0,1) == '#' && substr($orgname,-1,1) == '#')
 		$orgname="";
@@ -322,7 +325,6 @@ function display_contact_repository($frm){
 			$grid->colwidth=$colwidth;
 			
 			return $grid->generate("500px");
-	
 		}
 	}
 	return "";
@@ -342,5 +344,4 @@ function display_contact($frm){
 	
 	return $result;
 }
-
 ?>
