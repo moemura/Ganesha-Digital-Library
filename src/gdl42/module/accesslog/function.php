@@ -1,5 +1,4 @@
 <?php 
-
 /***************************************************************************
                          /module/accesslog/function.php
                              -------------------
@@ -13,15 +12,17 @@ if (preg_match("/function.php/i",$_SERVER['PHP_SELF'])) die();
 
 function display_configuration() {
 	//global $accesslog;
+	$main = '';
 	$dirhandle=@opendir("./module");
 	if ($dirhandle) {
 			require_once("./class/repeater.php");
 			include("./module/accesslog/conf.php");
-			$main.="<form method=post action='./gdl.php?mod=accesslog'>";
+			$main="<form method=post action='./gdl.php?mod=accesslog'>";
 			$grid=new repeater();
 			$header[1]=_MODULE;
 			$header[2]=_OPERATION;
 			
+			$item = array();
 			while (false !== ($module = readdir($dirhandle))) {
 				if (is_dir("./module/".$module) && $module != "." && $module != "..") {
 					$moddirhandle=@opendir("./module/".$module);
@@ -29,7 +30,7 @@ function display_configuration() {
 						$op="";
 						while (false !== ($operation = readdir($moddirhandle))) {
 							if (is_file("./module/".$module."/".$operation) && $operation != "function.php" && $operation != "conf.php" && substr($operation,-3,3) == "php") {
-									if ($accesslog[$module."_".$operation])
+									if (isset($accesslog[$module."_".$operation]))
 										$checked="CHECKED";
 									else
 										$checked="";
@@ -59,7 +60,7 @@ function display_configuration() {
 function write_configuration() {
 	global $frm;
 	
-	$str="<?
+	$str="<?php
 if (preg_match(\"/conf.php/i\",\$_SERVER['PHP_SELF'])) {
     die();
 }
@@ -82,6 +83,7 @@ $str.="\$accesslog[\"".$idxFrm."\"] = false;
 	
 	$str.="?>";
 	
+	$res = null;
 	$filehandle=@fopen("./module/accesslog/conf.php","w");
 	if ($filehandle) {
 		fputs($filehandle,$str);
@@ -90,5 +92,4 @@ $str.="\$accesslog[\"".$idxFrm."\"] = false;
 
 	return $res;	
 }
-
-
+?>
