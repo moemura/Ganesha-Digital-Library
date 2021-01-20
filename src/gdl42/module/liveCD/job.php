@@ -18,13 +18,14 @@ $_SESSION['DINAMIC_TITLE'] = _LIVECD." | "._JOBVIEW;
 $url	= "./gdl.php?mod=liveCD&amp;op=job";
 $url2	= "./gdl.php?mod=liveCD&amp;op=export";
 
+$main = '';
 $check	= checkSupportedTheme($url);
 if(!$check['status']){
 	$main	= $check['message'];
 }else{
 	$main	.= "<br/><br/>".box_job($url);
 	
-	if($_POST['submit'] == _JOBACTION){
+	if(isset($_POST['submit']) && $_POST['submit'] == _JOBACTION){
 		$main	.= "<br/><br/>".box_info_connection(-1,$url);
 	}
 	

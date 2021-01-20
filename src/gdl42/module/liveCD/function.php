@@ -192,8 +192,8 @@ function box_info_connection($node,$url){
 	$data_connection			= $gdl_liveCD->getInfoConnectionHandle();
 
 	if(is_array($data_connection) && ($node == -1)){
-		$buffer['HOST URL']			= $data_connection[0]['host_url'];
-		$buffer['PORT HOST']		= $data_connection[0]['port_host'];
+		$buffer['HOST URL']			= isset($data_connection[0]['host_url']) ? $data_connection[0]['host_url'] : '';
+		$buffer['PORT HOST']		= isset($data_connection[0]['port_host']) ? $data_connection[0]['port_host'] : '';
 		
 		$len	= count($data_connection);
 		$node	= array();
@@ -270,9 +270,10 @@ function getTotalNode($filter){
 function handle_build_liveCD($url,$url2){
 	global $gdl_liveCD,$gdl_stdout,$gdl_sys;
 	
-	$frm 	= $_POST['frm'];
-	$type	= $_GET['type'];
+	$frm 	= isset($_POST['frm']) ? $_POST['frm'] : null;
+	$type	= isset($_GET['type']) ? $_GET['type'] : null;
 	
+	$message = '';
 	$gdl_liveCD->lv_limit	= intval($gdl_sys["perpage_browse"]);
 	if(is_array($frm)){
 		$_SESSION['livecd_relation']	= (((int)$frm['file']) == 0)?"false":"true";
@@ -438,7 +439,7 @@ function handleMessage_Fetch($token,$type){
 		if(is_array($_SESSION['livecd_paging'])){
 			$num_cell	 = count($_SESSION['livecd_paging']);
 			
-			$cell 		= $_SESSION['livecd_paging'][0];
+			$cell 		= isset($_SESSION['livecd_paging'][0]) ? $_SESSION['livecd_paging'][0] : null;
 			$paging		= ceil($cell['COUNT']/$gdl_liveCD->lv_limit);
 			
 			if(($num_cell == 0) && ($paging == 0)){
@@ -491,7 +492,7 @@ function handleMessage_Fetch($token,$type){
 function box_folder($url){
 	global $gdl_liveCD,$gdl_content,$gdl_sys;
 	
-	$node	= $_GET['node'];
+	$node	= isset($_GET['node']) ? $_GET['node'] : null;
 	$node	= preg_match("/^[0-9]+$/",$node)?$node:0;
 
 	$rs_folder	= $gdl_liveCD->getListFolder($node);
@@ -513,7 +514,8 @@ function box_folder($url){
 	$header[4]	=	_FOLDERACTION;
 		
 	if(is_array($rs_folder)){
-				
+		
+		$j = 0;
 		foreach ($rs_folder as $index => $value){
 			
 			if($value['STATE'] == "node")
@@ -549,7 +551,7 @@ function box_folder($url){
 function box_job($url){
 	global	$gdl_sys,$gdl_liveCD,$gdl_content;
 	
-	$folder	= $_POST['folder']	;
+	$folder	= isset($_POST['folder']) ? $_POST['folder'] : null;
 
 	$arr_repo	= explode("/",$gdl_sys["repository_dir"]);
 	$dir_tmp	= array_shift($arr_repo)."/tmp/liveCD";
@@ -563,11 +565,12 @@ function box_job($url){
 		}
 	}
 	
-	if($_POST['submit']== _JOBRESET)
+	if(isset($_POST['submit']) && $_POST['submit']== _JOBRESET)
 		remove_job($dir_tmp,"job.txt");
-	else if(($_POST['submit'] == _JOBREMOVE) && (is_array($_POST['remove'])))
+	else if((isset($_POST['submit']) && $_POST['submit'] == _JOBREMOVE) && (isset($_POST['remove']) && is_array($_POST['remove'])))
 		remove_job($dir_tmp,"job.txt",$_POST['remove']);
 	
+	$arr_job = array();
 	if(is_array($folder)){
 		$arr_job	= @file("$dir_tmp/job.txt");
 		if(!is_array($arr_job)){
@@ -589,7 +592,7 @@ function box_job($url){
 		$arr_job= array_unique($arr_job);
 		sort($arr_job);
 		
-		$first_node	= trim($arr_job[0]);
+		$first_node	= isset($arr_job[0]) ? trim($arr_job[0]) : '';
 		if(strlen($first_node) == 0)
 			array_shift($arr_job);
 		
@@ -616,6 +619,8 @@ function box_job($url){
 			array_push($rs_folder,$gdl_liveCD->getTaksonomyFolder($node,"node"));
 		}
 	}
+	
+	$item = array();
 	if(is_array($rs_folder)){
 
 		$i=0;
@@ -633,7 +638,6 @@ function box_job($url){
 			$item[]=$field;
 			$i++;
 		}
-		
 	}
 	
 	$colwidth[1] = "10px";
@@ -691,8 +695,8 @@ function remove_job($dir_tmp,$file,$arr_folder=""){
 
 function list_of_uploaded_file($url) {
 	
-	$action	= trim($_GET['action']);
-	$file	= trim($_GET['file']);
+	$action	= isset($_GET['action']) ? trim($_GET['action']) : null;
+	$file	= isset($_GET['file']) ? trim($_GET['file']) : null;
 	
 	if((strlen($action) > 0) && (strlen($file) > 0)){
 		@unlink("./files/export/$file");
@@ -711,6 +715,7 @@ function list_of_uploaded_file($url) {
 	closedir($dirhandle);
 	krsort($dir_file);
 	
+	$content = '';
 	$num_file	= count($dir_file);	
 	if ($num_file > 0) {
 			
@@ -821,7 +826,7 @@ function intro_liveCD(){
 		$msg_theme_support	= in_array($curr_theme,$list_theme)?_THEMESUPPORTLIVECD:_THEMENOTSUPPORTLIVECD;
 		$theme_support		= _THEMECOLLECTION."<br/>";
 		for($i=0;$i<count($list_theme);$i++){
-			$theme_support	.= "<br/>&nbsp;&nbsp;&nbsp;".($i+1).". <b>$list_theme[$i]</b>. [<a href=\"$url&amp;newtheme=$list_theme[$i]\">"._CHANGETHEME."</a>]";
+			$theme_support	.= "<br/>&nbsp;&nbsp;&nbsp;".($i+1).". <b>$list_theme[$i]</b>. [<a href=\"url&amp;newtheme=$list_theme[$i]\">"._CHANGETHEME."</a>]";
 		}
 	}else
 		$msg_theme_support	= _THEMENOTSUPPORTLIVECD;

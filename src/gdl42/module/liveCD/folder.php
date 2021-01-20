@@ -19,6 +19,7 @@ $url	= "./gdl.php?mod=liveCD&amp;op=folder";
 
 $check	= checkSupportedTheme($url);
 
+$main = '';
 if(!$check['status']){
 	$main	= $check['message'];
 }else{
