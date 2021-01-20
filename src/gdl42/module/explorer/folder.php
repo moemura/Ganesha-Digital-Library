@@ -2,12 +2,12 @@
 
 if (preg_match("/folder.php/i",$_SERVER['PHP_SELF'])) die();
 
-function generate_form ($property=""){
+function generate_form ($property=array()){
 	global $gdl_folder,$gdl_session,$gdl_form,$gdl_sys;
 	
-	$node = $_SESSION['gdl_node'];
-	if ($property=="") {
-		$property['mode']=$gdl_sys['default_mode'];
+	$node = isset($_SESSION['gdl_node']) ? $_SESSION['gdl_node'] : null;
+	if (count($property)==0) {
+		$property['mode']=isset($gdl_sys['default_mode']) ? $gdl_sys['default_mode'] : null;
 		$property['owner']=$gdl_session->user_id;
 	}
 	
@@ -26,7 +26,7 @@ function generate_form ($property=""){
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"name",
-				"value"=>"$property[name]",
+				"value"=>isset($property['name']) ? "$property[name]" : '',
 				"required"=>true,
 				"text"=>_NAME,
 				"size"=>30));
@@ -48,16 +48,17 @@ function generate_form ($property=""){
 	return $main;
 }
 
-$action = $_POST['action'];
+$action = isset($_POST['action']) ? $_POST['action'] : null;
 
+$main = '';
 if (isset($action) and $action=="upload"){
 	// create new folder
 	require_once("./module/explorer/function.php");
 	
 	if ($gdl_form->upload=="folder"){
 		$property['node'] = $node;
-		$property['name'] = $_POST['name'];
-		$property['parent'] = $_POST['parent'];
+		$property['name'] = isset($_POST['name']) ? $_POST['name'] : null;
+		$property['parent'] = isset($_POST['parent']) ? $_POST['parent'] : null;
 		if ($gdl_form->verification($property)){
 			$gdl_folder->add($property);
 			// display explorer

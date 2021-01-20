@@ -11,10 +11,10 @@
 
 if (preg_match("/property.php/i",$_SERVER['PHP_SELF'])) die();
 
-$parent = $_GET['p'];
-$node = $_GET['node'];
-$id = $_GET['id'];
-$action = $_POST['action'];
+$parent = isset($_GET['p']) ? $_GET['p'] : null;
+$node = isset($_GET['node']) ? $_GET['node'] : null;
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+$action = isset($_POST['action']) ? $_POST['action'] : null;
 
 function folder_form($property=""){
 	global $node, $gdl_session,$gdl_folder,$gdl_form,$parent;
@@ -34,7 +34,7 @@ function folder_form($property=""){
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"name",
-				"value"=>"$property[name]",
+				"value"=>isset($property['name']) ? "$property[name]" : '',
 				"required"=>true,
 				"text"=>_NAME,
 				"size"=>30));
@@ -67,7 +67,7 @@ function metadata_form($property=""){
 				"value"=>"upload"));
 	$gdl_form->add_field(array(
 				"type"=>"title",
-				"text"=>$property['title']));
+				"text"=>isset($property['title']) ? $property['title'] : ''));
 	$gdl_form->add_field(array(
 				"type"=>"select",
 				"name"=>"folder",
@@ -77,7 +77,7 @@ function metadata_form($property=""){
 	$gdl_form->add_field(array(
 				"type"=>"text",
 				"name"=>"owner",
-				"value"=>$property['owner'],
+				"value"=>isset($property['owner']) ? $property['owner'] : '',
 				"required"=>true,
 				"text"=>_OWNER,
 				"size"=>20));
@@ -89,14 +89,15 @@ function metadata_form($property=""){
 	return $main;
 }
 
+$main = '';
 // folder
 if (isset($node)){
 
 	if (isset($action) and $action=="upload"){
 		if ($gdl_form->upload=="folder"){
 			$property['node'] = $node;
-			$property['name'] = $_POST['name'];
-			$property['parent'] = $_POST['parent'];
+			$property['name'] = isset($_POST['name']) ? $_POST['name'] : null;
+			$property['parent'] = isset($_POST['parent']) ? $_POST['parent'] : null;
 			if ($gdl_form->verification($property)){
 				// edit property folder
 				$gdl_folder->edit_property($property);
@@ -131,8 +132,8 @@ if (isset($id)){
 	if (isset($action) and $action=="upload"){
 		if ($gdl_form->upload=="metadata"){
 			$property['id'] = $id;
-			$property['folder'] = $_POST['folder'];
-			$property['owner'] = $_POST['owner'];
+			$property['folder'] = isset($_POST['folder']) ? $_POST['folder'] : null;
+			$property['owner'] = isset($_POST['owner']) ? $_POST['owner'] : null;
 			if ($gdl_form->verification($property)){
 				// edit property folder
 				$gdl_metadata->edit_property($property);
@@ -159,5 +160,4 @@ if (isset($id)){
 }
 
 $gdl_content->set_main($main);
-
 ?>

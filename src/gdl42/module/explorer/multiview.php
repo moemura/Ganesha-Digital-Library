@@ -13,9 +13,9 @@ if (preg_match("/multiview.php/i",$_SERVER['PHP_SELF'])) die();
 
 $_SESSION['DINAMIC_TITLE'] = "EXPLORER";
 // get node to display
-$node = $_GET['node'];
+$node = isset($_GET['node']) ? $_GET['node'] : null;
 if (!isset($node)){
-	$node = $_SESSION['gdl_node'];
+	$node = isset($_SESSION['gdl_node']) ? $_SESSION['gdl_node'] : null;
 	if (!isset($node)) $node=0;
 }
 
@@ -28,5 +28,4 @@ require_once("./module/explorer/function.php");
 display_explorer($node);
 // simpan node pada session
 $_SESSION['gdl_node']=$node;
-
 ?>

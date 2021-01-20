@@ -11,10 +11,10 @@
 
 if (preg_match("/delete.php/i",$_SERVER['PHP_SELF'])) die();
 
-$parent = $_GET['p'];
-$node = $_GET['node'];
-$id = $_GET['id'];
-$del = $_GET['del'];
+$parent = isset($_GET['p']) ? $_GET['p'] : null;
+$node = isset($_GET['node']) ? $_GET['node'] : null;
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+$del = isset($_GET['del']) ? $_GET['del'] : null;
 
 if (isset($del) and $del=="confirm"){
 	$style = "span.title {\n"
@@ -24,6 +24,7 @@ if (isset($del) and $del=="confirm"){
 	$gdl_content->set_style( $style);
 }
 
+$main = '';
 // delete folder
 if (isset($node)){
 

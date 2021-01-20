@@ -96,6 +96,8 @@ function get_folder($folder,$window){
 		$item[] = $field;
 	}
 	if (is_array($data)){
+		$input = '';
+		$i = 0;
 		foreach ($data as $key => $val) {
 			if (isset($_SESSION["node2"]))
 				$input="<input type=checkbox name=folder[$i] value=$key />";
@@ -114,41 +116,40 @@ function get_folder($folder,$window){
 		$metadata = $gdl_metadata->get_list($folder,"","",true);
 		$i=0;
 		if (is_array($metadata)){
-				foreach ($metadata as $key => $val) {
-					$title = $val['TITLE'];
-					if (strlen($title) > 50 ) $title = substr($title,0,47)."...";
-					$meta_arr[$key] = "<a href=\"./gdl.php?mod=browse&amp;op=read&amp;id=$key\">$title</a>";
-				}
-				
-				foreach ($meta_arr as $key => $val) {
-					if (isset($_SESSION["node2"]))
-						$input="<input type=checkbox name=metadata[$i] value=$key />";
-					$property = $gdl_metadata->get_property($key);
-					$field[1] = "<img src=\"./theme/".$gdl_content->theme."/image/icon_file_list.png\" alt=\"\"/>$input";
-					$field[2] = "$val";
-					if (substr($property[owner],0,1) != '#' && substr($property[owner],-1,1) != '#')
-						$field[3] = "$property[owner]";
-					else
-						$field[3] = "&nbsp;";
-					$field[4] = "$property[date_modified]";
-					$field[5] = "<a href=\"./gdl.php?mod=explorer&amp;op=property&amp;id=$key\">"._PROPERTY."</a> - <a href=\"./gdl.php?mod=explorer&amp;op=delete&amp;del=confirm&amp;id=$key\">"._DELETE."</a></a>";
-					$item[] = $field;
-					$i++;
-				}
+			$meta_arr = array();
+			foreach ($metadata as $key => $val) {
+				$title = $val['TITLE'];
+				if (strlen($title) > 50 ) $title = substr($title,0,47)."...";
+				$meta_arr[$key] = "<a href=\"./gdl.php?mod=browse&amp;op=read&amp;id=$key\">$title</a>";
+			}
+			
+			foreach ($meta_arr as $key => $val) {
+				if (isset($_SESSION["node2"]))
+					$input="<input type=checkbox name=metadata[$i] value=$key />";
+				$property = $gdl_metadata->get_property($key);
+				$field[1] = "<img src=\"./theme/".$gdl_content->theme."/image/icon_file_list.png\" alt=\"\"/>$input";
+				$field[2] = "$val";
+				if (substr($property['owner'],0,1) != '#' && substr($property['owner'],-1,1) != '#')
+					$field[3] = "$property[owner]";
+				else
+					$field[3] = "&nbsp;";
+				$field[4] = "$property[date_modified]";
+				$field[5] = "<a href=\"./gdl.php?mod=explorer&amp;op=property&amp;id=$key\">"._PROPERTY."</a> - <a href=\"./gdl.php?mod=explorer&amp;op=delete&amp;del=confirm&amp;id=$key\">"._DELETE."</a></a>";
+				$item[] = $field;
+				$i++;
+			}
 		} 
 	}
-	
-		
-		
-		$grid->header=$header;
-		$grid->item=$item;
-		$grid->colwidth=$colwidth;
-		$form .= $grid->generate();
-		if (isset($_SESSION["node2"])) {
-			$form .= "<img src=\"./theme/".$gdl_content->theme."/image/arrow_ltr.gif\" alt=\"Delete\"/>";
-			$form .= "<input type=submit name=submit value="._MOVE."></form>";
-		}
-		
+
+	$grid->header=$header;
+	$grid->item=$item;
+	$grid->colwidth=$colwidth;
+	$form .= $grid->generate();
+	if (isset($_SESSION["node2"])) {
+		$form .= "<img src=\"./theme/".$gdl_content->theme."/image/arrow_ltr.gif\" alt=\"Delete\"/>";
+		$form .= "<input type=submit name=submit value="._MOVE."></form>";
+	}
+
 	return $form;
 }
 /*
