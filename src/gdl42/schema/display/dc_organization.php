@@ -21,7 +21,8 @@ $relation	= $gdl_metadata->get_value($frm,"RELATION_COUNT");
 
 
 include ("./config/type.php");
-$type = $gdl_type['$type_val'];
+$type = $gdl_type["$type_val"];
+$content = '';
 if (!empty($orgname) && (substr($orgname,0,1) != '#') && (substr($orgname,-1,1) != '#'))
 	$content .= "<p><b>"._ORGANIZATIONNAME."</b> : $orgname<br/>";
 
@@ -54,9 +55,6 @@ $content .= "<span class=\"note\">$type from $publisher / $datemod</span><br/>\n
 $content .=	ucfirst(_BY)." : $creator<br/>\n"
 		.ucfirst(_CREATED)." : $date, "._WITH." $relation "._FILES."<br/><br/>\n";
 
-
-
 // relation file located in relation		
 related_file();
-
 ?>

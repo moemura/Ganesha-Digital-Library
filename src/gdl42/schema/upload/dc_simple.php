@@ -1,5 +1,4 @@
 <?php
-
 if (preg_match("/dc_document.php/i",$_SERVER['PHP_SELF'])) {
     die();
 }
@@ -11,11 +10,11 @@ $gdl_form->action="./gdl.php?mod=upload&amp;op=step3";
 $gdl_form->add_field(array(
 			"type"=>"hidden",
 			"name"=>"frm[IDENTIFIER]",
-			"value"=>"$frm[IDENTIFIER]"));
+			"value"=>isset($frm['IDENTIFIER']) ? "$frm[IDENTIFIER]" : ''));
 $gdl_form->add_field(array(
 			"type"=>"hidden",
 			"name"=>"frm[IDENTIFIER_HIERARCHY]",
-			"value"=>"$frm[IDENTIFIER_HIERARCHY]"));
+			"value"=>isset($frm['IDENTIFIER_HIERARCHY']) ? "$frm[IDENTIFIER_HIERARCHY]" : ''));
 $gdl_form->add_field(array(
 			"type"=>"hidden",
 			"name"=>"frm[TYPE_SCHEMA]",
@@ -26,7 +25,7 @@ $gdl_form->add_field(array(
 $gdl_form->add_field(array(
 			"type"=>"select",
 			"name"=>"frm[TYPE]",
-			"value"=>"$frm[TYPE]",
+			"value"=>isset($frm['TYPE']) ? "$frm[TYPE]" : '',
 			"required"=>true,
 			"option"=>$gdl_type,
 			"text"=>_TYPEOFTHEDOCUMENT));
@@ -38,13 +37,13 @@ $gdl_form->add_field(array(
 			"name"=>"frm[TITLE]",
 			"required"=>true,
 			"column"=>false,
-			"value"=>"$frm[TITLE]",
+			"value"=>isset($frm['TITLE']) ? "$frm[TITLE]" : '',
 			"text"=>_INORIGINALLANGUAGE,
 			"size"=>75));
 $gdl_form->add_field(array(
 			"type"=>"text",
 			"name"=>"frm[TITLE_SERIES]",
-			"value"=>"$frm[TITLE_SERIES]",
+			"value"=>isset($frm['TITLE_SERIES']) ? "$frm[TITLE_SERIES]" : '',
 			"text"=>_SERIES,
 			"column"=>false,
 			"size"=>75));
@@ -56,7 +55,7 @@ $gdl_form->add_field(array(
 			"name"=>"frm[CREATOR]",
 			"text"=>_CREATORNAME,
 			"required"=>true,
-			"value"=>"$frm[CREATOR]",
+			"value"=>isset($frm['CREATOR']) ? "$frm[CREATOR]" : '',
 			"size"=>45));
 $org_node=$gdl_folder->check_folder("Organization",0);
 if (!preg_match("/err/",$org_node)) {
@@ -70,14 +69,14 @@ $gdl_form->add_field(array(
 			"type"=>"select",
 			"name"=>"frm[CREATOR_ORGNAME]",
 			"text"=>_CREATORORGNAME,
-			"value"=>"$frm[CREATOR_ORGNAME]",
+			"value"=>isset($frm['CREATOR_ORGNAME']) ? "$frm[CREATOR_ORGNAME]" : '',
 			"option"=>$orgname,
 			"size"=>45));
 $gdl_form->add_field(array(
 			"type"=>"text",
 			"name"=>"frm[CREATOR_EMAIL]",
 			"text"=>_CREATOREMAIL,
-			"value"=>"$frm[CREATOR_EMAIL]",
+			"value"=>isset($frm['CREATOR_EMAIL']) ? "$frm[CREATOR_EMAIL]" : '',
 			"size"=>45));
 $gdl_form->add_field(array(
 			"type"=>"title",
@@ -87,7 +86,7 @@ $gdl_form->add_field(array(
 			"name"=>"frm[SUBJECT_KEYWORDS]",
 			"required"=>true,
 			"text"=>_KEYWORDS,
-			"value"=>"$frm[SUBJECT_KEYWORDS]",
+			"value"=>isset($frm['SUBJECT_KEYWORDS']) ? "$frm[SUBJECT_KEYWORDS]" : '',
 			"size"=>45));
 $gdl_form->add_field(array(
 			"type"=>"title",
@@ -98,7 +97,7 @@ $gdl_form->add_field(array(
 			"required"=>true,
 			"column"=>false,
 			"text"=>_INORIGINALLANGUAGE,
-			"value"=>"$frm[DESCRIPTION]",
+			"value"=>isset($frm['DESCRIPTION']) ? "$frm[DESCRIPTION]" : '',
 			"rows"=>20,
 			"cols"=>59));
 $gdl_form->add_field(array(
@@ -108,7 +107,7 @@ $gdl_form->add_field(array(
 			"type"=>"textarea",
 			"column"=>false,
 			"name"=>"frm[CONTRIBUTOR]",
-			"value"=>"$frm[CONTRIBUTOR]",
+			"value"=>isset($frm['CONTRIBUTOR']) ? "$frm[CONTRIBUTOR]" : '',
 			"text"=>_CONTRIBUTORDESC,
 			"rows"=>5,
 			"cols"=>59));
@@ -118,7 +117,7 @@ $gdl_form->add_field(array(
 $gdl_form->add_field(array(
 			"type"=>"text",
 			"name"=>"frm[DATE]",
-			"value"=>"$frm[DATE]",
+			"value"=>isset($frm['DATE']) ? "$frm[DATE]" : '',
 			"column"=>false,
 			"text"=>_CREATEDDATE,
 			"size"=>10));
@@ -128,14 +127,14 @@ $gdl_form->add_field(array(
 $gdl_form->add_field(array(
 			"type"=>"text",
 			"name"=>"frm[SOURCE_URL]",
-			"value"=>"$frm[SOURCE_URL]",
+			"value"=>isset($frm['SOURCE_URL']) ? "$frm[SOURCE_URL]" : '',
 			"column"=>false,
 			"text"=>_URL,
 			"size"=>75));
 $gdl_form->add_field(array(
 			"type"=>"textarea",
 			"name"=>"frm[SOURCE]",
-			"value"=>"$frm[SOURCE]",
+			"value"=>isset($frm['SOURCE']) ? "$frm[SOURCE]" : '',
 			"column"=>false,
 			"text"=>_SOURCEFROM,
 			"rows"=>5,
@@ -146,7 +145,7 @@ $gdl_form->add_field(array(
 $gdl_form->add_field(array(
 			"type"=>"text",
 			"name"=>"frm[LANGUAGE]",
-			"value"=>"$frm[LANGUAGE]",
+			"value"=>isset($frm['LANGUAGE']) ? "$frm[LANGUAGE]" : '',
 			"text"=>_LANGUAGE,
 			"required"=>true,
 			"size"=>30));
@@ -156,7 +155,7 @@ $gdl_form->add_field(array(
 $gdl_form->add_field(array(
 			"type"=>"text",
 			"name"=>"frm[RELATION_COUNT]",
-			"value"=>"$frm[RELATION_COUNT]",
+			"value"=>isset($frm['RELATION_COUNT']) ? "$frm[RELATION_COUNT]" : '',
 			"text"=>_NUMBEROFFILE,
 			"required"=>true,
 			"size"=>10));

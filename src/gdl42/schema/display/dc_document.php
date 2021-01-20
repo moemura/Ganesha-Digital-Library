@@ -34,6 +34,7 @@ if(preg_match("/DC:/",$key) && empty($keyword)){
 
 $type = $gdl_type[strtolower($type_val)];
 
+$content ='';
 if (!empty($title2) && (substr($title2,0,1) != '#') && (substr($title2,-1,1) != '#')){
 	$content .= "<p><b>$title2</b></p>\n";
 }
@@ -53,10 +54,6 @@ if (!empty($creatormail)&& (substr($creatormail,0,1) != '#') && (substr($creator
 	$creatormail = " ($creatormail)";
 } else
 	$creatormail="";
-
-
-
-
 
 $content .= "<span class=\"note\">$type$pub / $moddate</span><br/>\n";
 $content .=	ucfirst(_BY)." : $creator$creatororg$creatormail<br/>\n"
@@ -97,5 +94,4 @@ if (!empty($rights)&& (substr($rights,0,1) != '#') && (substr($rights,-1,1) != '
 
 // relation file located in relation		
 related_file();
-
 ?>

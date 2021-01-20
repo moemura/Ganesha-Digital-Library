@@ -22,7 +22,11 @@ $content3="";
 for($i=0;$i<count($arrange);$i++){
 	$key	= $arrange[$i];
 	$exp	= explode("_",$key);
-	$idx	= $array[$exp[1]];
+	$idx 	= null;
+	
+	if(count($exp) > 1)
+		$idx = isset($array[$exp[1]]) ? $array[$exp[1]] : null;
+	
 	$val	= manipulasi($gdl_metadata->get_value($frm,$key,$exp[0],$idx));
 	
 	if(!empty($val)){
