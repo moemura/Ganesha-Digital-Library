@@ -293,6 +293,7 @@ function box_folksonomy(){
 	if(substr($bColor,0,1) != "#")
 		$bColor = "#".$bColor;
 
+	$str_folksonomy = '';
 	if(preg_match("/^[0-9]+$/",$min_hz) == FALSE) $min_hz = 30;
 	for($i='A';$i<'Z';$i++){
 
